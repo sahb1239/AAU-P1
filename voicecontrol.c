@@ -5,7 +5,6 @@ int readInput(char *input[]);
 int readUsers(FILE *pFile, USERS users[]);
 int readControllers(FILE *pFile, CONTROLLERS controllers[]);
 int readScenarie(FILE *pFile, SCENARIE scenarier[]);
-int addScenarie(FILE *pFile);
 
 int main(int argc, char *argv[]) {
 	int i = 0;
@@ -18,12 +17,12 @@ int main(int argc, char *argv[]) {
     int scenarie_last_index = readScenarie(pfile_scenarie, scenarier); // læser scenarier og gemmer sidste index
     
     if (argc > 1 && strcmp("--as", argv[1])) {
-    	addScenarie(pfile_scenarie);
-    	readScenarie(pfile_scenarie, scenarier);  
+    	/*addScenarie(pfile_scenarie);
+    	readScenarie(pfile_scenarie, scenarier);  */
     }
     
-    /*
-	initialisering();*/
+    
+	return EXIT_SUCCESS;
 
 	do {
 		fgets(voiceinput, 80, stdin);
@@ -43,8 +42,11 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
+/* Splitter en sætning op i enkelte ord */
 int splitString(const char *input, char *out[], int allocSize) {
 	int i = 0, oi = 0, oj = 0, ialloc = allocSize, jalloc = allocSize;
+	
+	out = malloc(jalloc = allocSize);
 	
 	while (input[i] != '\0') {
 		/* Alloker string */
