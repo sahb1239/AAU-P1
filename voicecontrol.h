@@ -47,16 +47,12 @@ typedef struct {
 // Prototypes
 /* Input/output - view */
 int readInput(char *input[]);
-void addScenarieRW (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char command[]);
 
 /* Beregningslag - controller */
 int splitString(const char *input, char *out[], int maxwords);
 /* Controllers */
 int addController(CONTROLLERS controllers[], int len); /* NI */
 int removeController(CONTROLLERS controllers[], int len); /* NI */
-/* Scenarier */
-int addScenarie(SCENARIE scenarier[], int len);
-int removeScenarie(SCENARIE scenarier[], int index, int len);
 /* Users */
 int addUser(USERS users[], int len); /* NI */
 int removeUser(USERS users[], int index, int len); /* NI */
@@ -65,9 +61,6 @@ int removeUser(USERS users[], int index, int len); /* NI */
 /* Controllers */
 int readControllers(FILE *pFile, CONTROLLERS controllers[]);
 int saveControllers(FILE *pFile, const CONTROLLERS controllers[], int len); /* NI */
-/* Scenarier */
-/*int readScenarie(FILE *pFile, SCENARIE scenarier[]);
-int saveScenarier(FILE *pFile, const SCENARIE scenarier[], int len);*/
 /* Users */
 int readUsers(FILE *pFile, USERS users[]);
 int saveUsers(FILE *pFile, const USERS users[], int len); /* NI */
