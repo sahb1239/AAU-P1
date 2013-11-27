@@ -1,11 +1,5 @@
 #include "voicecontrol.h"
-
-/* Skal op i header fil */ // Hvorfor ikke bare smide det ind i voicecontrol.h så? /Mikkel /* Ved godt hvordan man ligger den op */
-/* Dovenskab */
-int readInput(char *input[]);
-int readUsers(FILE *pFile, USERS users[]);
-int readControllers(FILE *pFile, CONTROLLERS controllers[]);
-int readScenarie(FILE *pFile, SCENARIE scenarier[]);
+#include "scenarie.h"
 
 int main(int argc, char *argv[]) {
 	int i = 0;
@@ -13,13 +7,12 @@ int main(int argc, char *argv[]) {
 	char voiceinput[80];
     
     SCENARIE scenarier[50];
-    FILE *pfile_scenarie;
-    int len_scenarier = sizeof(scenarier) / sizeof(scenarier[0]);
-    int scenarie_last_index = readScenarie(pfile_scenarie, scenarier); // læser scenarier og gemmer sidste index
+    FILE *pfile_scenarie; /* TODO: Filer burde måske bare læses inde i funktionerne og ikke sættes som inputparameter */
+    int scenarie_len = readScenarie(pfile_scenarie, scenarier); // læser scenarier og gemmer sidste index
     
     for (i = 1; i < argc; i++)
     	if (strcmp("--as", argv[i]) == 0) {
-    	
+    		testFunc();
     	} else if (strcmp("--ss", argv[i]) == 0) {
     		char *input = "jarvis dette her er en test";
     		char *parm[10];
@@ -133,7 +126,7 @@ int readScenarie(FILE *pFile, SCENARIE scenarier[]) {
       fscanf(pFile, " %d %d %d %d %d #%d %d #%d %d #%d %[0-9a-zA-Z ]s",  &scenarier[i].num, &scenarier[i].allow_p1, &scenarier[i].allow_p2,
                                                                          &scenarier[i].allow_p3, &scenarier[i].c1_state, &scenarier[i].c1_id, 
                                                                          &scenarier[i].c2_state, &scenarier[i].c2_id, &scenarier[i].c3_state,
-                                                                         &scenarier[i].c3_id, &scenarier[i].desc);
+                                                                         &scenarier[i].c3_id, scenarier[i].desc);
       
     }
       
@@ -159,24 +152,23 @@ int saveScenarier(FILE *pFile, const SCENARIE scenarier[], int len) {
 
 }
 
-int addScenarie(SCENARIE scenarier[], const int last_index) {
-
-    int i, p1, p2, p3, state1, id1, state2, id2, state3, id3;
+int addScenarie(SCENARIE scenarier[], int len) {
+    int p1, p2, p3, state1, id1, state2, id2, state3, id3;
     char command[50];
 
     addScenarieRW(&p1, &p2, &p3, &state1, &id1, &state2, &id2, &state3, &id3, command);
     
-    scenarier[last_index].num      = last_index + 1;
-    scenarier[last_index].allow_p1 = p1;
-    scenarier[last_index].allow_p2 = p2;
-    scenarier[last_index].allow_p3 = p3;
-    scenarier[last_index].c1_id    = id1;
-    scenarier[last_index].c2_id    = id2;
-    scenarier[last_index].c3_id    = id3;
-    scenarier[last_index].c1_state = state1;
-    scenarier[last_index].c2_state = state2;
-    scenarier[last_index].c3_state = state3;
-    strcpy(scenarier[last_index].desc, command);
+    scenarier[len].num      = len + 1;
+    scenarier[len].allow_p1 = p1;
+    scenarier[len].allow_p2 = p2;
+    scenarier[len].allow_p3 = p3;
+    scenarier[len].c1_id    = id1;
+    scenarier[len].c2_id    = id2;
+    scenarier[len].c3_id    = id3;
+    scenarier[len].c1_state = state1;
+    scenarier[len].c2_state = state2;
+    scenarier[len].c3_state = state3;
+    strcpy(scenarier[len].desc, command);
 
 }
 
@@ -190,11 +182,11 @@ void addScenarieRW (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *
                       
 }
 
-int removeScenarie (SCENARIE scenarier[], int id, int len) {
+int removeScenarie (SCENARIE scenarier[], int index, int len) {
     int i, j;
     
     for (i = 0; i < len - 44; i++) {
-       if (scenarier[i].num == id) {
+       if (scenarier[i].num == index) {
           len--;
           
           for (j = i; j < len - 44; j++) {
