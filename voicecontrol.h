@@ -18,11 +18,6 @@ typedef struct {
 } COMMANDS;
 
 typedef struct {
-	int num, allow_p1, allow_p2, allow_p3, c1_id, c2_id, c3_id, c1_state, c2_state, c3_state;
-	char desc[80];
-} SCENARIE;
-
-typedef struct {
 	char unit[40];
 } UNITNAME;
 
@@ -71,8 +66,8 @@ int removeUser(USERS users[], int index, int len); /* NI */
 int readControllers(FILE *pFile, CONTROLLERS controllers[]);
 int saveControllers(FILE *pFile, const CONTROLLERS controllers[], int len); /* NI */
 /* Scenarier */
-int readScenarie(FILE *pFile, SCENARIE scenarier[]);
-int saveScenarier(FILE *pFile, const SCENARIE scenarier[], int len);
+/*int readScenarie(FILE *pFile, SCENARIE scenarier[]);
+int saveScenarier(FILE *pFile, const SCENARIE scenarier[], int len);*/
 /* Users */
 int readUsers(FILE *pFile, USERS users[]);
 int saveUsers(FILE *pFile, const USERS users[], int len); /* NI */
