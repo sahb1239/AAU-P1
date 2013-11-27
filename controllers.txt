@@ -1,0 +1,22 @@
+#90801	Lyd 1;		Stue
+#90802	Lyd 2;		Stue
+#90803	Lyd 3;		Stue
+#90804	Kaffemaskine;	Køkken
+#90805	Stikkontakt;	Spisestue
+#90806	Lampe;		Over spisebordet
+#90807	Lampe;		Over stuebordet
+#90808	Lampe;		Køkken
+#90809	Lampe;		Toilet
+#90810	Lampe;		Gangen
+#90811	Sengelampe;	Sengebord 1 soveværelse (forældre)
+#90812	Sengelampe;	Sengebord 2 soveværelse (forældre)
+#90813	TV;		Kontor
+#90814	Printer;	Kontor
+#90815	Computer;	Kontor
+#90816	Lampe;		Kontor
+#90817	TV;		Børnværelse 1
+#90818	Lampe;		Børnværelse 1
+#90819	Sengelampe;	Børnværelse 1
+#90820	TV;		Børnværelse 2
+#90821	Lampe;		Børnværelse 2
+#90822	Sengelampe;	Børnværelse 2

@@ -1,0 +1,2 @@
+1	1	1	0	Kom hjem;		1 #90810	1 #90818	1 #90821
+2	1	1	0	Sluk alt unødvendigt;	0 ALL

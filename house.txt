@@ -1,0 +1,7 @@
+Entre
+Toilet
+Stue
+Soveværelse
+Kontor
+Værelse1
+Værelse2
