@@ -1,6 +1,6 @@
 #include "voicecontrol.h"
 
-/* Skal op i header fil */
+/* Skal op i header fil */ // Hvorfor ikke bare smide det ind i voicecontrol.h så? /Mikkel
 int readInput(char *input[]);
 int readUsers(FILE *pFile, USERS users[]);
 int readControllers(FILE *pFile, CONTROLLERS controllers[]);
@@ -188,5 +188,3 @@ void addScenarieRW (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *
                                                        pstate3, pid3, command);
                       
 }
-
-//int removeScenarie (SCENARIE scenarier[], int id) {
