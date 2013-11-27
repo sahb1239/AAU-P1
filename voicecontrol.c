@@ -1,5 +1,5 @@
 #include "voicecontrol.h"
-
+//testdtsd
 void collectdataDB();
 void validate_userrights();
 void status();
