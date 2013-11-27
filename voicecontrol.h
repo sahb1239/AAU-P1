@@ -50,5 +50,7 @@ typedef struct {
 #define ERROR_OCCURRED -1
 
 // Prototypes
+int readScenarie(FILE *pFile, SCENARIE scenarier[]);
+int saveScenarier(FILE *pFile, const SCENARIE scenarier[], int len);
 int addScenarie(SCENARIE scenarier[], const int last_index);
 void addScenarieRW (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char command[]);

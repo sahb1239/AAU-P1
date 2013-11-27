@@ -163,9 +163,11 @@ int addScenarie(SCENARIE scenarier[], const int last_index) {
 void addScenarieRW (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char command[]) {
        
     printf("Brug f%slgende format for at tilf%sje scenarie:\n"
-           "[P1] [P2] [P3] [STATE] [ID] [STATE] [ID] [STATE] [ID] [KOMMANDO];\n", oe, oe); // Tjek om ; er nødvendig
+           "[P1] [P2] [P3] [STATE] [ID] [STATE] [ID] [STATE] [ID] [KOMMANDO]\n", oe, oe);
            
-    scanf("%d %d %d %d %d %d %d %d %d %[0-9a-zA-Z ]s;", pp1, pp2, pp3, pstate1, pid1, pstate2, pid2,
-                                                        pstate3, pid3, command);
+    scanf("%d %d %d %d %d %d %d %d %d %[0-9a-zA-Z ]s", pp1, pp2, pp3, pstate1, pid1, pstate2, pid2,
+                                                       pstate3, pid3, command);
                       
 }
+
+//int removeScenarie (SCENARIE scenarier[], int id) {
