@@ -21,9 +21,9 @@ int main(int argc, char *argv[]) {
     	
     	} else if (strcmp("--ss", argv[i]) == 0) {
     		char *input = "jarvis dette her er en test";
-    		char *parm[20];
+    		char **parm; /*= malloc(2*sizeof(char *));*/
     		
-    		int len = splitString(input, parm, 20);
+    		int len = splitString(input, parm, 2);
     		
     		for (i = 0; i < len; i++)
     			printf("%s\n", parm[i]);
@@ -53,14 +53,21 @@ int main(int argc, char *argv[]) {
 
 /* Splitter en sætning op i enkelte ord */
 int splitString(const char *input, char *out[], int allocSize) {
-	int i = 0, oi = 0, oj = 0, ialloc = allocSize, jalloc = allocSize;
+	int i = 0, oi = 0, oj = 0, iAlloc = allocSize, jAlloc = allocSize;
+	
+	/* Allokerer hukommelse til arrayet */
+	*out = malloc(allocSize);
 	
 	while (input[i] != '\0') {
 		/* Alloker string */
-		out[oi] = malloc(ialloc = allocSize);
+		out[oi] = malloc(jAlloc = allocSize);
 	
 		while (input[i] != ' ' && input[i] != '\0') {
 			out[oi][oj++] = input[i];
+			
+			/* Tjek om der er behov for at gøre arrayet større + 1 fordi der også skal være plads til \0 */
+			if (oi + 1 >= jAlloc)
+				out[oi] = realloc(out[oi], jAlloc += allocSize);
 			
 			i++;
 		}
@@ -71,6 +78,10 @@ int splitString(const char *input, char *out[], int allocSize) {
 		
 		if (input[i] != '\0') {
 			i++;
+		} else {
+			/* Tjek at der er plads til næste string */
+			if (oi >= iAlloc)
+				*out = realloc(*out, (iAlloc += allocSize));
 		}
 	}
 	
