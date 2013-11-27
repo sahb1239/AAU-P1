@@ -11,10 +11,13 @@ int main(int argc, char *argv[]) {
     
     SCENARIE scenarier[50];
     FILE *pfile_scenarie;
+    int len_scenarier = sizeof(scenarier) / sizeof(scenarier[0]);
+    int scenarie_last_index = readScenarie(pfile_scenarie, scenarier); // læser scenarier og gemmer sidste index
     
-    addScenarie(pfile_scenarie);
-
-    readScenarie(pfile_scenarie, scenarier);    
+    addScenarie(scenarier, scenarie_last_index);
+    
+    saveScenarier(pfile_scenarie, scenarier, len_scenarier);
+   
     exit(0);
     
     /*
@@ -57,7 +60,7 @@ int readUsers(FILE *pFile, USERS users[]) {
 	if (pFile != NULL) {
 		return ERROR_OCCURRED;
 	}
-   /* Test */
+    
 	while (fscanf(pFile, "%s %s %d ", users[i].firstName, users[i].lastName, &users[i].priority) != EOF) {
 		i++;
 	}
@@ -98,9 +101,6 @@ int readScenarie(FILE *pFile, SCENARIE scenarier[]) {
                                                                          &scenarier[i].c3_id, &scenarier[i].desc);
       
     }
-    
-    for (i = 0; i < 3; i++) {
-      printf("Scenarie %d: %s\n", scenarier[i].num, scenarier[i].desc); }
       
 	fclose(pFile);
 
@@ -108,32 +108,49 @@ int readScenarie(FILE *pFile, SCENARIE scenarier[]) {
 }
 
 int saveScenarier(FILE *pFile, const SCENARIE scenarier[], int len) {
-
-}
-
-int addScenarie(FILE *pFile) {
-    // Tilføjelse af nyt scenarie kræver genstart af programmet
-    int i, highID, p1, p2, p3, state1, id1, state2, id2, state3, id3;
-    char command[50];
+    int i;
     
-    pFile = fopen(FILE_SCENARIE, "a+");
+    pFile = fopen(FILE_SCENARIE, "w");
     rewind(pFile);
     
     if (pFile == NULL) {
 	  return ERROR_OCCURRED;
 	}
     
+    for (i = 0; i < len && scenarier[i].num == i + 1; i++) {
+      fprintf(pFile, "%d   %d   %d   %d   %d #%d    %d #%d    %d #%d %s\n", scenarier[i].num, scenarier[i].allow_p1, scenarier[i].allow_p2, scenarier[i].allow_p3, 
+                                                                            scenarier[i].c1_state, scenarier[i].c1_id, scenarier[i].c2_state, scenarier[i].c2_id, 
+                                                                            scenarier[i].c3_state, scenarier[i].c3_id, scenarier[i].desc); }
+
+}
+
+int addScenarie(SCENARIE scenarier[], const int last_index) {
+
+    int i, p1, p2, p3, state1, id1, state2, id2, state3, id3;
+    char command[50];
+
+    addScenarieRW(&p1, &p2, &p3, &state1, &id1, &state2, &id2, &state3, &id3, command);
+    
+    scenarier[last_index].num      = last_index + 1;
+    scenarier[last_index].allow_p1 = p1;
+    scenarier[last_index].allow_p2 = p2;
+    scenarier[last_index].allow_p3 = p3;
+    scenarier[last_index].c1_id    = id1;
+    scenarier[last_index].c2_id    = id2;
+    scenarier[last_index].c3_id    = id3;
+    scenarier[last_index].c1_state = state1;
+    scenarier[last_index].c2_state = state2;
+    scenarier[last_index].c3_state = state3;
+    strcpy(scenarier[last_index].desc, command);
+
+}
+
+void addScenarieRW (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char command[]) {
+       
     printf("Brug f%slgende format for at tilf%sje scenarie:\n"
            "[P1] [P2] [P3] [STATE] [ID] [STATE] [ID] [STATE] [ID] [KOMMANDO];\n", oe, oe); // Tjek om ; er nødvendig
            
-    scanf("%d %d %d %d %d %d %d %d %d %[0-9a-zA-Z ]s;", &p1, &p2, &p3, &state1, &id1, &state2, &id2,
-                                                       &state3, &id3, &command);
-    
-    while (!feof(pFile)) {
-      fscanf(pFile, " %d %*d %*d %*d %*d #%*d %*d #%*d %*d #%*d %*[0-9a-zA-Z ]s", &highID); }
-
-    fseek(pFile, 0L, SEEK_END);
-    fprintf(pFile, "\n%d   %d   %d   %d   %d #%d    %d #%d    %d #%d %s", highID + 1, p1, p2, p3, state1, id1, 
-                                                                          state2, id2, state3, id3, command);
-
+    scanf("%d %d %d %d %d %d %d %d %d %[0-9a-zA-Z ]s;", pp1, pp2, pp3, pstate1, pid1, pstate2, pid2,
+                                                        pstate3, pid3, command);
+                      
 }
