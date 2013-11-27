@@ -1,8 +1,11 @@
 #include "voicecontrol.h"
 
-void collectdataDB();
-void validate_userrights();
-void status();
+/* Skal op i header fil */
+int readInput(char *input[]);
+int readUsers(FILE *pFile, USERS users[]);
+int readControllers(FILE *pFile, CONTROLLERS controllers[]);
+int readScenarie(FILE *pFile, SCENARIE scenarier[]);
+int addScenarie(FILE *pFile);
 
 int main(int argc, char *argv[]) {
 	int i = 0;
@@ -12,10 +15,10 @@ int main(int argc, char *argv[]) {
     SCENARIE scenarier[50];
     FILE *pfile_scenarie;
     
-    addScenarie(pfile_scenarie);
-
-    readScenarie(pfile_scenarie, scenarier);    
-    exit(0);
+    if (argc > 1 && strcmp("--as", argv[1])) {
+    	addScenarie(pfile_scenarie);
+    	readScenarie(pfile_scenarie, scenarier);  
+    }
     
     /*
 	initialisering();*/
@@ -38,16 +41,29 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
-void collectdataDB() {
-
-}
-
-void validate_userrights() {
-
-}
-
-void status() {
-
+int splitString(const char *input, char *out[], int allocSize) {
+	int i = 0, oi = 0, oj = 0, ialloc = allocSize, jalloc = allocSize;
+	
+	while (input[i] != '\0') {
+		/* Alloker string */
+		out[oi] = malloc(ialloc = allocSize);
+	
+		while (input[i] != ' ' && input[i] != '\0') {
+			out[oi][oj++] = input[i];
+			
+			i++;
+		}
+		
+		/* Afslut string */
+		out[oi++][oj] = '\0';
+		oj = 0;
+		
+		if (input[i] != '\0') {
+			i++;
+		}
+	}
+	
+	return oi;
 }
 
 int readUsers(FILE *pFile, USERS users[]) {
