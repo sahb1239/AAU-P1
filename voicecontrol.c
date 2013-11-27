@@ -1,6 +1,7 @@
 #include "voicecontrol.h"
 
-/* Skal op i header fil */ // Hvorfor ikke bare smide det ind i voicecontrol.h så? /Mikkel
+/* Skal op i header fil */ // Hvorfor ikke bare smide det ind i voicecontrol.h så? /Mikkel /* Ved godt hvordan man ligger den op */
+/* Dovenskab */
 int readInput(char *input[]);
 int readUsers(FILE *pFile, USERS users[]);
 int readControllers(FILE *pFile, CONTROLLERS controllers[]);
