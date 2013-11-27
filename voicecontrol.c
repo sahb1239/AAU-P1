@@ -16,11 +16,20 @@ int main(int argc, char *argv[]) {
     int len_scenarier = sizeof(scenarier) / sizeof(scenarier[0]);
     int scenarie_last_index = readScenarie(pfile_scenarie, scenarier); // læser scenarier og gemmer sidste index
     
-    if (argc > 1 && strcmp("--as", argv[1])) {
-    	/*addScenarie(pfile_scenarie);
-    	readScenarie(pfile_scenarie, scenarier);  */
-    }
-    
+    for (i = 1; i < argc; i++)
+    	if (strcmp("--as", argv[i]) == 0) {
+    	
+    	} else if (strcmp("--ss", argv[i]) == 0) {
+    		char *input = "jarvis dette her er en test";
+    		char *parm[20];
+    		
+    		int len = splitString(input, parm, 20);
+    		
+    		for (i = 0; i < len; i++)
+    			printf("%s\n", parm[i]);
+    	} else if (strcmp("--print", argv[i]) == 0) {
+    		printf("Test\n");
+    	}
     
 	return EXIT_SUCCESS;
 
@@ -45,8 +54,6 @@ int main(int argc, char *argv[]) {
 /* Splitter en sætning op i enkelte ord */
 int splitString(const char *input, char *out[], int allocSize) {
 	int i = 0, oi = 0, oj = 0, ialloc = allocSize, jalloc = allocSize;
-	
-	out = malloc(jalloc = allocSize);
 	
 	while (input[i] != '\0') {
 		/* Alloker string */
