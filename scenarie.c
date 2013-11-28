@@ -3,7 +3,16 @@
 #include "scenarie.h"
 #include "danish.h"
 
-void addScenarieRW (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char command[]) {
+int addScenarie(SCENARIE scenarier[], int len) {
+	SCENARIE scenarie;
+	
+	readUserInputScenarie(&scenarie.allow_p1, &scenarie.allow_p2, &scenarie.allow_p3, &scenarie.c1_state, &scenarie.c1_id, &scenarie.c2_state, &scenarie.c2_id, &scenarie.c3_state, &scenarie.c3_id, &scenarie.desc);
+	addScenarieC(scenarier, scenarie, len);
+	
+	return len + 1;
+}
+
+void readInputScenarie (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char command[]) {
        
     printf("Brug f%slgende format for at tilf%sje scenarie:\n"
            "[P1] [P2] [P3] [STATE] [ID] [STATE] [ID] [STATE] [ID] [KOMMANDO]\n", oe, oe);
@@ -13,41 +22,36 @@ void addScenarieRW (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *
                       
 }
 
-int addScenarie(SCENARIE scenarier[], int len) {
-    int p1, p2, p3, state1, id1, state2, id2, state3, id3;
-    char command[50];
-
-    addScenarieRW(&p1, &p2, &p3, &state1, &id1, &state2, &id2, &state3, &id3, command);
-    
+void addScenarieC(SCENARIE scenarier[], SCENARIE scenarie, int len) {
     scenarier[len].num      = len + 1;
-    scenarier[len].allow_p1 = p1;
-    scenarier[len].allow_p2 = p2;
-    scenarier[len].allow_p3 = p3;
-    scenarier[len].c1_id    = id1;
-    scenarier[len].c2_id    = id2;
-    scenarier[len].c3_id    = id3;
-    scenarier[len].c1_state = state1;
-    scenarier[len].c2_state = state2;
-    scenarier[len].c3_state = state3;
-    strcpy(scenarier[len].desc, command);
-    
-    return 1;
-
+    scenarier[len].allow_p1 = scenarie.allow_p1;
+    scenarier[len].allow_p2 = scenarie.allow_p2;
+    scenarier[len].allow_p3 = scenarie.allow_p3;
+    scenarier[len].c1_id    = scenarie.c1_id;
+    scenarier[len].c2_id    = scenarie.c2_id;
+    scenarier[len].c3_id    = scenarie.c3_id;
+    scenarier[len].c1_state = scenarie.c1_state;
+    scenarier[len].c2_state = scenarie.c2_state;
+    scenarier[len].c3_state = scenarie.c3_state;
+    strcpy(scenarier[len].desc, scenarie.desc);
+    saveScenarier(scenarier, len + 1);
 }
 
-int removeScenarie(SCENARIE scenarier[], int index, int len) {
+void removeScenarie(SCENARIE scenarier[], int index, int len) {
     int i, j;
     
     for (i = 0; i < len - 44; i++) {
        if (scenarier[i].num == index) {
-          len--;
+          	len--;
           
-          for (j = i; j < len - 44; j++) {
-             scenarier[j] = scenarier[j + 1];
-             scenarier[j].num--; }
+          	for (j = i; j < len - 44; j++) {
+             	scenarier[j] = scenarier[j + 1];
+             	scenarier[j].num--; 
+        	}
        }
     }
-    return i;
+    
+    saveScenarier(scenarier, len - 1);
 }
 
 int readScenarie(SCENARIE scenarier[]) {
