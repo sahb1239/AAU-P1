@@ -19,12 +19,13 @@ int removeController(CONTROLLERS controllers[], int index, int len) {
     int i, j;
     
     for (i = 0; i < len - 44; i++) {
-       if (controllers[i].id == index) {
-          len--;
+       	if (controllers[i].id == index) {
+          	len--;
           
-          for (j = i; j < len - 44; j++) {
-             controllers[j] = controllers[j + 1];
-             controllers[j].id--; }
+          	for (j = i; j < len - 44; j++) {
+             	controllers[j] = controllers[j + 1];
+             	controllers[j].id--; 
+             }
        }
     }
     return i;
@@ -40,11 +41,11 @@ int readControllers(CONTROLLERS controllers[]) {
 	}
    
     for (i = 0; !feof(pFile); i++) {
-       fscanf(pFile, " #%d %[0-9a-zA-Z ]s", &controllers[i].id, controllers[i].unit);
-       fseek(pFile, 2L, SEEK_CUR);
-       fscanf(pFile, " %[0-9a-zA-Z ]s", controllers[i].position);
-       controllers[i].status = 0;
-       }
+    	fscanf(pFile, " #%d %[0-9a-zA-Z ]s", &controllers[i].id, controllers[i].unit);
+       	fseek(pFile, 2L, SEEK_CUR);
+       	fscanf(pFile, " %[0-9a-zA-Z ]s", controllers[i].position);
+       	controllers[i].status = 0;
+    }
     
 	fclose(pFile);
 
@@ -55,9 +56,10 @@ int changeController(CONTROLLERS controllers[], int cid, int state, int len) {
     int i;
     
     for (i = 0; i <= len; i++) {
-      if (controllers[i].id == cid) {
-        controllers[i].status = state; 
-        break; }
+      	if (controllers[i].id == cid) {
+        	controllers[i].status = state; 
+        	break; 
+        }
     }
     
     return state;
@@ -72,11 +74,11 @@ int saveControllers(const CONTROLLERS controllers[], int len) {
     rewind(pFile);
     
     if (pFile == NULL) {
-	  return ERROR_OCCURRED;
+	  	return ERROR_OCCURRED;
 	}
     
     for (i = 0; i < len && controllers[i].id == i + 1; i++) {
-      fprintf(pFile, "#%d\t%s;\t%s",  controllers[i].id, controllers[i].unit, controllers[i].position); 
+      	fprintf(pFile, "#%d\t%s;\t%s",  controllers[i].id, controllers[i].unit, controllers[i].position); 
     }
 	return 1;
 }
@@ -85,9 +87,10 @@ int statusController (const CONTROLLERS controllers[], int cid, int len) {
     int i;
     
     for (i = 0; i <= len; i++) {
-      if (controllers[i].id == cid) {
-        statusControllerPrint(controllers, i);
-        break; }
+      	if (controllers[i].id == cid) {
+        	statusControllerPrint(controllers, i);
+        	break; 
+    	}
     }
     return 1;
 }
