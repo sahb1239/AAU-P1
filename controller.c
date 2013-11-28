@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include "controller.h"
 
-int readControllers(FILE *pFile, CONTROLLERS controllers[]) {
+int readControllers(CONTROLLERS controllers[]) {
 	int i = 0;
 
-	pFile = fopen(FILE_CONTROLLERS, "r");
+	FILE *pFile = fopen(FILE_CONTROLLERS, "r");
 	if (pFile == NULL) {
 		return ERROR_OCCURRED;
 	}

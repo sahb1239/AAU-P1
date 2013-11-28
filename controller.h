@@ -11,5 +11,5 @@ int addController(CONTROLLERS controllers[], int len); /* NI */
 int removeController(CONTROLLERS controllers[], int len); /* NI */
 
 /* Model */
-int readControllers(FILE *pFile, CONTROLLERS controllers[]);
-int saveControllers(FILE *pFile, const CONTROLLERS controllers[], int len); /* NI */
+int readControllers(CONTROLLERS controllers[]);
+int saveControllers(const CONTROLLERS controllers[], int len); /* NI */

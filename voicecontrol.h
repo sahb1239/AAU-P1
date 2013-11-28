@@ -15,7 +15,7 @@ typedef struct {
 	char room[40];
 } HOUSE;
 
-// Define Danish letters
+/* Danske karakterer i Windows */
 #define ae "\x91"
 #define oe "\x9B"
 #define aa "\x86"
@@ -23,7 +23,7 @@ typedef struct {
 #define OE "\x9D"
 #define AA "\x8F"
 
-// Defining database-dir
+/* Definerer database filer */
 #define FILE_USERS "users.txt"
 #define FILE_CONTROLLERS "controllers.txt"
 #define FILE_COMMANDS "commands.txt"
@@ -31,10 +31,9 @@ typedef struct {
 #define FILE_UNITNAME "unitname.txt"
 #define FILE_HOUSE "house.txt"
 
-// Defining
 #define ERROR_OCCURRED -1
 
-// Prototypes
+/* Prototyper */
 /* Input/output - view */
 int readInput(char *input[]);
 

@@ -22,5 +22,5 @@ int addScenarie(SCENARIE scenarier[], int len);
 int removeScenarie(SCENARIE scenarier[], int index, int len);
 
 /* Model */
-int readScenarie(FILE *pFile, SCENARIE scenarier[]);
-int saveScenarier(FILE *pFile, const SCENARIE scenarier[], int len);
+int readScenarie(SCENARIE scenarier[]);
+int saveScenarier(const SCENARIE scenarier[], int len);

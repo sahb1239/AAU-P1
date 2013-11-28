@@ -13,8 +13,7 @@ int main(int argc, char *argv[]) {
 	char voiceinput[80];
     
     SCENARIE scenarier[50];
-    FILE *pfile_scenarie; /* TODO: Filer burde måske bare læses inde i funktionerne og ikke sættes som inputparameter */
-    int scenarie_len = readScenarie(pfile_scenarie, scenarier); // læser scenarier og gemmer sidste index
+    int scenarie_len = readScenarie(scenarier); /* læser scenarier og gemmer sidste index */
     
     for (i = 1; i < argc; i++)
     	if (strcmp("--test", argv[i]) == 0) {
@@ -33,7 +32,6 @@ int main(int argc, char *argv[]) {
     			printf("%s\n", parm[i]);
     			free(parm[i]);
     		}
-    			
     	} else if (strcmp("--print", argv[i]) == 0) {
     		printf("Test\n");
     	}

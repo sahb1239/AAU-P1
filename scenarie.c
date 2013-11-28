@@ -47,10 +47,10 @@ int removeScenarie(SCENARIE scenarier[], int index, int len) {
     return i;
 }
 
-int readScenarie(FILE *pFile, SCENARIE scenarier[]) {
+int readScenarie(SCENARIE scenarier[]) {
 	int i = 0;
     
-    pFile = fopen(FILE_SCENARIE, "r");
+    FILE *pFile = fopen(FILE_SCENARIE, "r");
 
 	if (pFile == NULL) {
 		return ERROR_OCCURRED;
@@ -69,10 +69,10 @@ int readScenarie(FILE *pFile, SCENARIE scenarier[]) {
 	return i;
 }
 
-int saveScenarier(FILE *pFile, const SCENARIE scenarier[], int len) {
+int saveScenarier(const SCENARIE scenarier[], int len) {
     int i;
     
-    pFile = fopen(FILE_SCENARIE, "w");
+    FILE *pFile = fopen(FILE_SCENARIE, "w");
     rewind(pFile);
     
     if (pFile == NULL) {
