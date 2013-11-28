@@ -5,6 +5,7 @@
 #include "voicecontrol.h"
 #include "scenarie.h"
 #include "controller.h"
+#include "rooms.h"
 #include "danish.h"
 #include "test.h"
 
@@ -18,6 +19,9 @@ int main(int argc, char *argv[]) {
     
     CONTROLLERS controllers[50];
     int controller_len = readControllers(controllers); /* læser controllers og gemmer sidste index */
+    
+    HOUSE rooms[50];
+    int rooms_len = readRooms(rooms); /* læser rum og gemmer sidste index */
     
     for (i = 1; i < argc; i++)
     	if (strcmp("--test", argv[i]) == 0) {

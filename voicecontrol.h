@@ -11,10 +11,6 @@ typedef struct {
 	char unit[40];
 } UNITNAME;
 
-typedef struct {
-	char room[40];
-} HOUSE;
-
 /* Definerer database filer */
 #define FILE_USERS "users.txt"
 
