@@ -1,4 +1,3 @@
-
  /*
   * Dette program laver stavekontrol vha. Edit Distance metoden.
   * Grundlag: http://norvig.com/spell-correct.html Python
@@ -7,6 +6,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
+/* Implementer en funktion lignende denne */
+char *correct(char input[], int *like_percent);
 
 /*
 Input/output til programmet:
