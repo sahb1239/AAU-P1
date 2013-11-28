@@ -1,22 +1,30 @@
 #include <stdio.h>
 #include "controller.h"
+#include "danish.h"
 
-void addController (int *id, char *genstand[], int *char[]) {
+/*
+Addcontroller
+Removecontroller
+Savecontroller
+*/
+
+
+void addControllerRW (int *id, char genstand[], char placering[]) {
 	printf("Brug f%slgende format for at tilf%sje en controller:\n"
            "[ID] [GENSTAND] [PLACERING]\n", oe, oe);
-    scanf("%d %d; %d", id, genstand, placering);                
+    scanf("%d %s; %s", id, genstand, placering);                
 }
 
-int removeController(SCENARIE controllers[], int index, int len) {
+int removeController(CONTROLLERS controllers[], int index, int len) {
     int i, j;
     
     for (i = 0; i < len - 44; i++) {
-       if (controllers[i].num == index) {
+       if (controllers[i].id == index) {
           len--;
           
           for (j = i; j < len - 44; j++) {
              controllers[j] = controllers[j + 1];
-             controllers[j].num--; }
+             controllers[j].id--; }
        }
     }
     return i;
@@ -60,15 +68,15 @@ int changeController(CONTROLLERS controllers[], int cid, int state, int len) {
 int saveControllers(const CONTROLLERS controllers[], int len) {
     int i;
     
-    FILE *pFile = fopen(FILE_SCENARIE, "w");
+    FILE *pFile = fopen(FILE_CONTROLLERS, "w");
     rewind(pFile);
     
     if (pFile == NULL) {
 	  return ERROR_OCCURRED;
 	}
     
-    for (i = 0; i < len && controllers[i].num == i + 1; i++) {
-      fprintf(pFile, "#%d %d; %d",  controllers[i].id, controllers[i].genstand, controllers[i].placering); 
+    for (i = 0; i < len && controllers[i].id == i + 1; i++) {
+      fprintf(pFile, "#%d %s; %s",  controllers[i].id, controllers[i].unit, controllers[i].position); 
     }
 	return 1;
 }
