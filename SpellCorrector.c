@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* Implementer en funktion lignende denne */
 char *correct(char input[], int *like_percent);
@@ -70,40 +71,83 @@ Edit2:
 
 */
 
+void deletion (const char *input, char output[][5]);
+
+int main () {
+  int i, len;
+  char input[] = "test"; 
+  len = strlen(input);
+  char output[len][len + 1];
+  
+  deletion (input, output);
+  /*for (i = 0; i < len; i++) {
+    printf("%s\n",output[i]);		Det virker!
+  }*/
+  
+  return 0;
+}
+
 // Bemærk at input parametre og funktionstyper ikke er sat på endnu
-/*
-int Spellcontrol() {
-// samler lortet
+
+
+
+
+int Spellcontrol() {									// samler lortet
+
+
+
+
 
 }
 
-string_compare () {
-// Sammenligner indtrykkede ord med ord i databasen
+string_compare () {										// Sammenligner indtrykkede ord med ord i databasen
+
+
+
+
 
 }
 
-Edit1 () {
-// De 4 edit funktioner kommer herunder
+Edit1 () {												// De 4 edit funktioner kommer herunder
+
+
+
+
+
+
 
 }
 
-Indsætning () {
-//Indsætter et ord
+insert () {											//Indsætter et ord
+
+
+
+
 
 }
 
-Sletning () {
-//Sletter et ord
+void deletion (const char *input, char output[][5]) {											//Sletter et ord
+  int i;
+  char temp_word[strlen(input) + 1];
+  // memmove sletter en char på plads i. 
+  for (i = 0; i < strlen(input); i++) {
+	strcpy(temp_word, input);
+    memmove( &temp_word[i] , &temp_word[i + 1], strlen(temp_word) - i);
+	strcpy(output[i], temp_word);
+  }
+}
+
+replace () {											//Erstatter et ord med et andet
+
+
+
 
 }
 
-Erstatning () {
-//Erstatter et ord med et andet
+switch_words () {											// Ombytter to vedsiden af hinanden stående ord
+
+
+
+
 
 }
-
-Ombytning () {
-// Ombytter to vedsiden af hinanden stående ord
-
-}
-*/
