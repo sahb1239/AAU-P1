@@ -2,13 +2,6 @@
 #include "controller.h"
 #include "danish.h"
 
-/*
-Addcontroller
-Removecontroller
-Savecontroller
-*/
-
-
 void addControllerRW (int *id, char genstand[], char placering[]) {
 	printf("Brug f%slgende format for at tilf%sje en controller:\n"
            "[ID] [GENSTAND] [PLACERING]\n", oe, oe);
