@@ -2,7 +2,7 @@
 #include "controller.h"
 #include "danish.h"
 
-void addControllerRW (int *id, char genstand[], char placering[]) {
+void readInputController (int *id, char genstand[], char placering[]) {
 	printf("Brug f%slgende format for at tilf%sje en controller:\n"
            "[ID] [GENSTAND] [PLACERING]\n", oe, oe);
     scanf("%d %s; %s", id, genstand, placering);                
@@ -90,6 +90,7 @@ int statusController (const CONTROLLERS controllers[], int cid, int len) {
 
 void statusControllerPrint (const CONTROLLERS controllers[], int i) {
 
+	/* Skal indkodes med danish header for at supportere linux og mac brugere */
    printf("#%d %s - %s: %s", controllers[i].id, controllers[i].unit, controllers[i].position, controllers[i].status == 1 ? "T\x92NDT" : "SLUKKET", AE);
    
 }
