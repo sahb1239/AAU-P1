@@ -13,3 +13,6 @@ int removeController(CONTROLLERS controllers[], int len); /* NI */
 /* Model */
 int readControllers(CONTROLLERS controllers[]);
 int saveControllers(const CONTROLLERS controllers[], int len); /* NI */
+
+/* View (tror jeg? */
+int changeController(CONTROLLERS controllers[], int cid, int state, int len);

@@ -35,12 +35,27 @@ int readControllers(CONTROLLERS controllers[]) {
        fscanf(pFile, " #%d %[0-9a-zA-Z ]s", &controllers[i].id, controllers[i].unit);
        fseek(pFile, 2L, SEEK_CUR);
        fscanf(pFile, " %[0-9a-zA-Z ]s", controllers[i].position);
+       controllers[i].status = 0;
        }
     
 	fclose(pFile);
 
 	return i;
 }
+
+int changeController(CONTROLLERS controllers[], int cid, int state, int len) {
+    int i;
+    
+    for (i = 0; i <= len; i++) {
+      if (controllers[i].id == cid) {
+        controllers[i].status = state; 
+        break; }
+    }
+    
+    return state;
+}
+
+
 
 int saveControllers(const CONTROLLERS controllers[], int len) {
     int i;

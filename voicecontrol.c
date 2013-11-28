@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     int scenarie_len = readScenarie(scenarier); /* læser scenarier og gemmer sidste index */
     
     CONTROLLERS controllers[50];
-    readControllers(controllers);
+    int controller_len = readControllers(controllers); /* læser controllers og gemmer sidste index */
     
     for (i = 1; i < argc; i++)
     	if (strcmp("--test", argv[i]) == 0) {
