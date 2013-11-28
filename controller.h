@@ -2,7 +2,7 @@
 #define FILE_CONTROLLERS "controllers.txt"
 
 typedef struct {
-	int id;
+	int id, status;
 	char unit[80], position[80];
 } CONTROLLERS;
 

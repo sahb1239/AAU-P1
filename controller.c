@@ -8,15 +8,12 @@ int readControllers(CONTROLLERS controllers[]) {
 	if (pFile == NULL) {
 		return ERROR_OCCURRED;
 	}
-
-	/* while (fscanf(pFile, " #%d %s[0-9a-zA-Z ]; %[0-9a-zA-Z ]s", &controllers[i].id, controllers[i].unit, controllers[i].position) != EOF) {
-		i++;
-	} */
-    
+   
     for (i = 0; !feof(pFile); i++) {
        fscanf(pFile, " #%d %[0-9a-zA-Z ]s", &controllers[i].id, controllers[i].unit);
        fseek(pFile, 2L, SEEK_CUR);
-       fscanf(pFile, " %[0-9a-zA-Z ]s", controllers[i].position); }
+       fscanf(pFile, " %[0-9a-zA-Z ]s", controllers[i].position);
+       }
     
 	fclose(pFile);
 
