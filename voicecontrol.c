@@ -4,6 +4,7 @@
 
 #include "voicecontrol.h"
 #include "scenarie.h"
+#include "controller.h"
 #include "test.h"
 
 int main(int argc, char *argv[]) {
@@ -99,22 +100,6 @@ int readUsers(FILE *pFile, USERS users[]) {
 	}
     
 	while (fscanf(pFile, "%s %s %d ", users[i].firstName, users[i].lastName, &users[i].priority) != EOF) {
-		i++;
-	}
-	fclose(pFile);
-
-	return i;
-}
-
-int readControllers(FILE *pFile, CONTROLLERS controllers[]) {
-	int i = 0;
-
-	pFile = fopen(FILE_CONTROLLERS, "r");
-	if (pFile == NULL) {
-		return ERROR_OCCURRED;
-	}
-
-	while (fscanf(pFile, "#%d %10[0-9a-zA-Z ]s %10[0-9a-zA-Z ]s ", &controllers[i].id, controllers[i].unit, controllers[i].position) != EOF) {
 		i++;
 	}
 	fclose(pFile);

@@ -2,5 +2,5 @@
 #include "test.h"
 
 void testAll() {
-	printf("Starter tests");
+	printf("Starter tests\n");
 }

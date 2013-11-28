@@ -1,0 +1,15 @@
+#define ERROR_OCCURRED -1
+#define FILE_CONTROLLERS "controllers.txt"
+
+typedef struct {
+	int id;
+	char unit[80], position[80];
+} CONTROLLERS;
+
+/* Controller */
+int addController(CONTROLLERS controllers[], int len); /* NI */
+int removeController(CONTROLLERS controllers[], int len); /* NI */
+
+/* Model */
+int readControllers(FILE *pFile, CONTROLLERS controllers[]);
+int saveControllers(FILE *pFile, const CONTROLLERS controllers[], int len); /* NI */

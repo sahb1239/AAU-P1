@@ -1,2 +1,2 @@
 voicecontrol: voicecontrol.c scenarie.c
-	gcc voicecontrol.c scenarie.c test.c -Wall -ansi
+	gcc voicecontrol.c scenarie.c controller.c test.c -Wall -ansi

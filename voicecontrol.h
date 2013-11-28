@@ -4,11 +4,6 @@ typedef struct {
 } USERS;
 
 typedef struct {
-	int id;
-	char unit[80], position[80];
-} CONTROLLERS;
-
-typedef struct {
 	char mode[10];
 } COMMANDS;
 
@@ -45,17 +40,11 @@ int readInput(char *input[]);
 
 /* Beregningslag - controller */
 int splitString(const char *input, char *out[], int maxwords);
-/* Controllers */
-int addController(CONTROLLERS controllers[], int len); /* NI */
-int removeController(CONTROLLERS controllers[], int len); /* NI */
 /* Users */
 int addUser(USERS users[], int len); /* NI */
 int removeUser(USERS users[], int index, int len); /* NI */
 
 /* Datalag - Model */
-/* Controllers */
-int readControllers(FILE *pFile, CONTROLLERS controllers[]);
-int saveControllers(FILE *pFile, const CONTROLLERS controllers[], int len); /* NI */
 /* Users */
 int readUsers(FILE *pFile, USERS users[]);
 int saveUsers(FILE *pFile, const USERS users[], int len); /* NI */
