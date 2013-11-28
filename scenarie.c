@@ -6,7 +6,7 @@
 int addScenarie(SCENARIE scenarier[], int len) {
 	SCENARIE scenarie;
 	
-	readUserInputScenarie(&scenarie.allow_p1, &scenarie.allow_p2, &scenarie.allow_p3, &scenarie.c1_state, &scenarie.c1_id, &scenarie.c2_state, &scenarie.c2_id, &scenarie.c3_state, &scenarie.c3_id, &scenarie.desc);
+	readInputScenarie(&scenarie.allow_p1, &scenarie.allow_p2, &scenarie.allow_p3, &scenarie.c1_state, &scenarie.c1_id, &scenarie.c2_state, &scenarie.c2_id, &scenarie.c3_state, &scenarie.c3_id, &scenarie.desc);
 	addScenarieC(scenarier, scenarie, len);
 	
 	return len + 1;
