@@ -17,11 +17,6 @@ typedef struct {
 
 /* Definerer database filer */
 #define FILE_USERS "users.txt"
-#define FILE_CONTROLLERS "controllers.txt"
-#define FILE_COMMANDS "commands.txt"
-#define FILE_SCENARIE "scenarier.txt"
-#define FILE_UNITNAME "unitname.txt"
-#define FILE_HOUSE "house.txt"
 
 #define ERROR_OCCURRED -1
 
@@ -31,6 +26,7 @@ int readInput(char *input[]);
 
 /* Beregningslag - controller */
 int splitString(const char *input, char *out[], int maxwords);
+char *correct(char input[], int *like_percent);
 /* Users */
 int addUser(USERS users[], int len); /* NI */
 int removeUser(USERS users[], int index, int len); /* NI */
