@@ -30,6 +30,8 @@ int addScenarie(SCENARIE scenarier[], int len) {
     scenarier[len].c2_state = state2;
     scenarier[len].c3_state = state3;
     strcpy(scenarier[len].desc, command);
+    
+    return 1;
 
 }
 
