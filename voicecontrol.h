@@ -15,14 +15,6 @@ typedef struct {
 	char room[40];
 } HOUSE;
 
-/* Danske karakterer i Windows */
-#define ae "\x91"
-#define oe "\x9B"
-#define aa "\x86"
-#define AE "\x92"
-#define OE "\x9D"
-#define AA "\x8F"
-
 /* Definerer database filer */
 #define FILE_USERS "users.txt"
 #define FILE_CONTROLLERS "controllers.txt"

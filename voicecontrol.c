@@ -5,6 +5,7 @@
 #include "voicecontrol.h"
 #include "scenarie.h"
 #include "controller.h"
+#include "danish.h"
 #include "test.h"
 
 int main(int argc, char *argv[]) {

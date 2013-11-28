@@ -1,14 +1,6 @@
 #define ERROR_OCCURRED -1
 #define FILE_SCENARIE "scenarier.txt"
 
-/* Danske karakterer i Windows */
-#define ae "\x91"
-#define oe "\x9B"
-#define aa "\x86"
-#define AE "\x92"
-#define OE "\x9D"
-#define AA "\x8F"
-
 typedef struct {
 	int num, allow_p1, allow_p2, allow_p3, c1_id, c2_id, c3_id, c1_state, c2_state, c3_state;
 	char desc[80];
