@@ -4,12 +4,15 @@
   * http://marcelotoledo.com/2007/08/10/how-to-write-a-spelling-corrector/
   */
 
+
+//#include <danish.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define ALPHABET 29
 
 /* Implementer en funktion lignende denne */
-char *correct(char input[], int *like_percent);
+//char *correct(char input[], int *like_percent);
 
 /*
 Input/output til programmet:
@@ -65,42 +68,38 @@ Edit2:
 	
 	indput: 	Ord redigeret af Edit1.
 	Output:		Ord redigeret af funktioner i Edit1 endnu en gang.
-	
-
-
 
 */
+char alphabet (int i);
+void deletion (const char *input, int len, char **output);
+void insert (const char *input, int len, char output[][len + 1]);
+void replace (const char *input, int len, char output[][len]);
+void switch_word (const char *input, int len, char output[][len + 1]);
 
-void deletion (const char *input, char output[][5]);
 
-int main () {
+
+int main () {											// omdøbes senere
   int i, len;
-  char input[] = "test"; 
+  char input[] = "test";         						// fejlordet
   len = strlen(input);
-  char output[len][len + 1];
+  char **del_output, **ins_output, **rep_output, **swi_output;
   
-  deletion (input, output);
-  /*for (i = 0; i < len; i++) {
-    printf("%s\n",output[i]);		Det virker!
-  }*/
+
+  
+  //del_output = (char **)malloc(len * len * sizeof(char));									//	Størelse: len rækker, len kolonner.
+  //ins_output = (char **)malloc(ALPHABET * len + 1 * len + 1 * sizeof(char));				//	Størelse: ALPHABET * len + 1 rækker, len + 2 kolonner.
+  //rep_output = (char **)malloc(ALPHABET * len * len * sizeof(char));						//	Størelse: ALPHABET * len rækker, len kolonner.
+  //swi_output = (char **)malloc(len - 1 * len * sizeof(char));								//	Størelse: len rækker, len kolonner.
+  //deletion(input, len ,del_output);
+  
   
   return 0;
 }
 
-// Bemærk at input parametre og funktionstyper ikke er sat på endnu
 
 
 
-
-int Spellcontrol() {									// samler lortet
-
-
-
-
-
-}
-
-string_compare () {										// Sammenligner indtrykkede ord med ord i databasen
+void string_compare () {										// Sammenligner indtrykkede ord med ord i databasen
 
 
 
@@ -118,36 +117,84 @@ Edit1 () {												// De 4 edit funktioner kommer herunder
 
 }
 
-insert () {											//Indsætter et ord
-
-
-
-
-
+void insert (const char *input, int len, char output[][len + 1]) {			//Indsætter et bogstav
+  int i, j, k = 0;
+  char temp_word[len + 2], temp_alph[2] = "a";
+  for (j = 0; j < len; j++) {
+	strcpy(temp_word, input);
+	// memmove flytter j hen på j + 1. bogstav bliver sat på js plads.	
+    memmove( &temp_word[j + 1] , &temp_word[j], strlen(temp_word) - j + 1);
+    for (i = 0; i < ALPHABET; i++) {   				
+      temp_word[j] = alphabet(i);
+	  strcpy(output[k], temp_word);
+	  k++;
+    }
+  }
+  for (i = 0; i < ALPHABET; i++) {   				
+    strcpy(temp_word, input);
+	temp_alph[0] = alphabet(i);
+    strcat(temp_word, temp_alph);
+ 	strcpy(output[k], temp_word);
+	k++;
+  }
 }
 
-void deletion (const char *input, char output[][5]) {											//Sletter et ord
+void deletion (const char *input, int len, char **output) {											//Sletter et bogstav
   int i;
-  char temp_word[strlen(input) + 1];
-  // memmove sletter en char på plads i. 
-  for (i = 0; i < strlen(input); i++) {
+  char temp_word[len + 1];
+  // memmove flytter i + 1 ned på i's plads og sletter derved char i. 
+  for (i = 0; i < len; i++) {
 	strcpy(temp_word, input);
     memmove( &temp_word[i] , &temp_word[i + 1], strlen(temp_word) - i);
 	strcpy(output[i], temp_word);
   }
 }
 
-replace () {											//Erstatter et ord med et andet
-
-
-
-
+void replace (const char *input, int len, char output[][len]) {											//Erstatter et bogstav med et andet
+  int i, j, k = 0;
+  char temp_word[len];
+  for (j = 0; j < len; j++) {
+	strcpy(temp_word, input);
+    for (i = 0; i < ALPHABET; i++) {   				
+      temp_word[j] = alphabet(i);
+	  strcpy(output[k], temp_word);
+	  k++;
+    }
+  }
 }
 
-switch_words () {											// Ombytter to vedsiden af hinanden stående ord
-
-
-
-
-
+void switch_word (const char *input, int len, char output[][len + 1]) {											// Ombytter to vedsiden af hinanden stående bogstaver
+  int i;
+  char temp_word[len + 1], temp_char;
+  for (i = 0; i < len - 1; i++) {
+    strcpy(temp_word, input);
+	temp_char = temp_word[i];
+	temp_word[i] = temp_word[i + 1];
+	temp_word[i + 1] = temp_char;
+	strcpy(output[i], temp_word);
+  }
 }
+
+char alphabet (int i) {
+  char alphabet[] = "abcdefghijklmnopqrstuvwxyz\x91\x9B\x86";
+  return alphabet[i];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
