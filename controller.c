@@ -76,7 +76,7 @@ int saveControllers(const CONTROLLERS controllers[], int len) {
 	}
     
     for (i = 0; i < len && controllers[i].id == i + 1; i++) {
-      fprintf(pFile, "#%d %s; %s",  controllers[i].id, controllers[i].unit, controllers[i].position); 
+      fprintf(pFile, "#%d\t%s;\t%s",  controllers[i].id, controllers[i].unit, controllers[i].position); 
     }
 	return 1;
 }
