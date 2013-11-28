@@ -1,5 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "voicecontrol.h"
 #include "scenarie.h"
+#include "test.h"
 
 int main(int argc, char *argv[]) {
 	int i = 0;
@@ -11,7 +16,11 @@ int main(int argc, char *argv[]) {
     int scenarie_len = readScenarie(pfile_scenarie, scenarier); // læser scenarier og gemmer sidste index
     
     for (i = 1; i < argc; i++)
-    	if (strcmp("--as", argv[i]) == 0) {
+    	if (strcmp("--test", argv[i]) == 0) {
+    		testAll();
+    		return EXIT_SUCCESS;
+    	}
+    	else if (strcmp("--as", argv[i]) == 0) {
     		
     	} else if (strcmp("--ss", argv[i]) == 0) {
     		char *input = "jarvis dette her er en test";
