@@ -19,3 +19,5 @@ int saveControllers(const CONTROLLERS controllers[], int len); /* NI */
 
 /* View (tror jeg? */
 int changeController(CONTROLLERS controllers[], int cid, int state, int len);
+int statusController (const CONTROLLERS controllers[], int cid, int len);
+void statusControllerPrint (const CONTROLLERS controllers[], int i);

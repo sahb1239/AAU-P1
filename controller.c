@@ -80,3 +80,20 @@ int saveControllers(const CONTROLLERS controllers[], int len) {
     }
 	return 1;
 }
+
+int statusController (const CONTROLLERS controllers[], int cid, int len) {
+    int i;
+    
+    for (i = 0; i <= len; i++) {
+      if (controllers[i].id == cid) {
+        statusControllerPrint(controllers, i);
+        break; }
+    }
+    return 1;
+}
+
+void statusControllerPrint (const CONTROLLERS controllers[], int i) {
+
+   printf("#%d %s - %s: %s", controllers[i].id, controllers[i].unit, controllers[i].position, controllers[i].status == 1 ? "T\x92NDT" : "SLUKKET", AE);
+   
+}
