@@ -1,3 +1,6 @@
+#include "scenarie.h"
+#include "controller.h"
+
 typedef struct {
 	char firstName[30], lastName[30];
 	int priority;
@@ -12,16 +15,14 @@ typedef struct {
 } UNITNAME;
 
 typedef enum { 
-	turn_on, turn_off, scenarie
+	turn_on, turn_off, status, scenarie
 } ACTIONTYPE;
 
-#include "controller.h" /* Skal fjernes på et tidspunkt */
-#include "scenarie.h"
 typedef struct {
 	ACTIONTYPE type;
 	union item { 
 		CONTROLLERS controller; 
-		SCENARIE scenarie 
+		SCENARIE scenarie;
 	};
 	USERS user;
 } ACTION;

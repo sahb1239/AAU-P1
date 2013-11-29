@@ -3,8 +3,6 @@
 #include <string.h>
 
 #include "voicecontrol.h"
-#include "scenarie.h"
-#include "controller.h"
 #include "rooms.h"
 #include "danish.h"
 #include "test.h"
