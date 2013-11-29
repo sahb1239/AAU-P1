@@ -11,7 +11,7 @@ int readRooms (HOUSE rooms[]) {
 	}
     
     for (i = 0; !feof(pFile); i++) {
-      fscanf(pFile, " %[0-9a-zA-Z ]s ", &rooms[i]); }
+      fscanf(pFile, " %[0-9a-zA-Z ]s ", rooms[i].room); }
 
     return i;
 }

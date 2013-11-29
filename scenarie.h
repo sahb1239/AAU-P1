@@ -8,7 +8,7 @@ typedef struct {
 
 /* View */
 int addScenarie(SCENARIE scenarier[], int len);
-void readInputScenarie (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char command[]);
+void readInputScenarie (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char *command);
 
 /* Controller */
 void addScenarieC(SCENARIE scenarier[], SCENARIE scenarie, int len);

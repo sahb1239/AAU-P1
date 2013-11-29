@@ -6,13 +6,13 @@
 int addScenarie(SCENARIE scenarier[], int len) {
 	SCENARIE scenarie;
 	
-	readInputScenarie(&scenarie.allow_p1, &scenarie.allow_p2, &scenarie.allow_p3, &scenarie.c1_state, &scenarie.c1_id, &scenarie.c2_state, &scenarie.c2_id, &scenarie.c3_state, &scenarie.c3_id, &scenarie.desc);
+	readInputScenarie(&scenarie.allow_p1, &scenarie.allow_p2, &scenarie.allow_p3, &scenarie.c1_state, &scenarie.c1_id, &scenarie.c2_state, &scenarie.c2_id, &scenarie.c3_state, &scenarie.c3_id, scenarie.desc);
 	addScenarieC(scenarier, scenarie, len);
 	
 	return len + 1;
 }
 
-void readInputScenarie (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char command[]) {
+void readInputScenarie (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char *command) {
        
     printf("Brug f%slgende format for at tilf%sje scenarie:\n"
            "[P1] [P2] [P3] [STATE] [ID] [STATE] [ID] [STATE] [ID] [KOMMANDO]\n", oe, oe);
