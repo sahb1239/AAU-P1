@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define ALPHABET 29
+#define DB_WORDS 9		// antal ord i databasen
 
 /* Implementer en funktion lignende denne */
 //char *correct(char input[], int *like_percent);
@@ -70,30 +71,56 @@ Edit2:
 	Output:		Ord redigeret af funktioner i Edit1 endnu en gang.
 
 */
+
 char alphabet (int i);
+void database_extract (FILE *file, char *words[10][10]);
 void deletion (const char *input, int len, char **output);
-void insert (const char *input, int len, char output[][len + 1]);
-void replace (const char *input, int len, char output[][len]);
-void switch_word (const char *input, int len, char output[][len + 1]);
+void insert (const char *input, int len, char **output);
+void replace (const char *input, int len, char **output);
+void switch_word (const char *input, int len, char **output);
 
 
 
-int main () {											// omdøbes senere
+int main () {
   int i, len;
   char input[] = "test";         						// fejlordet
+  FILE *f_data;
+  f_data = fopen("midlertidig_kommando_database.txt","r"); 				
   len = strlen(input);
+  char *data_words[DB_WORDS][10];					// ændres til dynamisk allokering når jeg kan finde ud af det :p
   char **del_output, **ins_output, **rep_output, **swi_output;
   
-
+  database_extract (f_data, data_words);
   
+  
+  /*for (i = 0; i < DB_WORDS; i++) {
+    printf("%s ", data_words[i]);
+  }*/
+  
+  
+  
+  // her prøver jeg at allokere plads. Det går ikke så godt. Tænker at det skal gøres i funktionerne måske.
+
   //del_output = (char **)malloc(len * len * sizeof(char));									//	Størelse: len rækker, len kolonner.
   //ins_output = (char **)malloc(ALPHABET * len + 1 * len + 1 * sizeof(char));				//	Størelse: ALPHABET * len + 1 rækker, len + 2 kolonner.
   //rep_output = (char **)malloc(ALPHABET * len * len * sizeof(char));						//	Størelse: ALPHABET * len rækker, len kolonner.
   //swi_output = (char **)malloc(len - 1 * len * sizeof(char));								//	Størelse: len rækker, len kolonner.
   //deletion(input, len ,del_output);
   
+  /*deletion (input, len, del_output);
+  for (i = 0; i < len; i++) {
+    printf("%s\n",del_output[i]);
+  }*/
   
   return 0;
+}
+
+void database_extract (FILE *file, char *words[DB_WORDS][10]) {
+  int i;
+  char text[DB_WORDS][10];
+  for (i = 0; i < DB_WORDS; i++) {
+    fscanf(file, "%s ", text[i]);
+  }
 }
 
 
@@ -117,7 +144,7 @@ Edit1 () {												// De 4 edit funktioner kommer herunder
 
 }
 
-void insert (const char *input, int len, char output[][len + 1]) {			//Indsætter et bogstav
+void insert (const char *input, int len, char **output) {			//Indsætter et bogstav
   int i, j, k = 0;
   char temp_word[len + 2], temp_alph[2] = "a";
   for (j = 0; j < len; j++) {
@@ -142,6 +169,7 @@ void insert (const char *input, int len, char output[][len + 1]) {			//Indsætte
 void deletion (const char *input, int len, char **output) {											//Sletter et bogstav
   int i;
   char temp_word[len + 1];
+  del_output = (char **)malloc(len * len * sizeof(char))
   // memmove flytter i + 1 ned på i's plads og sletter derved char i. 
   for (i = 0; i < len; i++) {
 	strcpy(temp_word, input);
@@ -150,7 +178,7 @@ void deletion (const char *input, int len, char **output) {											//Sletter 
   }
 }
 
-void replace (const char *input, int len, char output[][len]) {											//Erstatter et bogstav med et andet
+void replace (const char *input, int len, char **output) {											//Erstatter et bogstav med et andet
   int i, j, k = 0;
   char temp_word[len];
   for (j = 0; j < len; j++) {
@@ -163,7 +191,7 @@ void replace (const char *input, int len, char output[][len]) {											//Erst
   }
 }
 
-void switch_word (const char *input, int len, char output[][len + 1]) {											// Ombytter to vedsiden af hinanden stående bogstaver
+void switch_word (const char *input, int len, char **output) {											// Ombytter to vedsiden af hinanden stående bogstaver
   int i;
   char temp_word[len + 1], temp_char;
   for (i = 0; i < len - 1; i++) {
