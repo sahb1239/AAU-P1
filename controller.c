@@ -8,6 +8,43 @@ void readInputController (int *id, char genstand[], char placering[]) {
     scanf("%d %s; %s", id, genstand, placering);                
 }
 
+void statusControllerPrint (const CONTROLLERS controllers[], int i) {
+
+	/* Skal indkodes med danish header for at supportere linux og mac brugere */
+   printf("#%d %s - %s: %s", controllers[i].id, controllers[i].unit, controllers[i].position, controllers[i].status == 1 ? "T\x92NDT" : "SLUKKET", AE);
+   
+}
+
+int addController(CONTROLLERS controllers[], int len) {
+	CONTROLLERS controller;
+	
+	readInputController(&controller.id, controller.unit, controller.position);
+	addControllerC(controllers, controller, len);
+	
+	return len + 1;
+}
+
+void addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int len) {
+	controllers[len].id = len + 1;
+	controllers[len].status = controller.status;
+	strcpy(controllers[len].unit, controller.unit);
+	strcpy(controllers[len].position, controller.position);
+	saveControllers(controllers, len + 1);
+}
+
+int changeControllerState(CONTROLLERS controllers[], int cid, int state, int len) {
+    int i;
+    
+    for (i = 0; i <= len; i++) {
+      	if (controllers[i].id == cid) {
+        	controllers[i].status = state; 
+        	break; 
+        }
+    }
+    
+    return state;
+}
+
 int removeController(CONTROLLERS controllers[], int index, int len) {
     int i, j;
     
@@ -24,6 +61,17 @@ int removeController(CONTROLLERS controllers[], int index, int len) {
     return i;
 }
 
+int controllerState (const CONTROLLERS controllers[], int cid, int len) {
+    int i;
+    
+    for (i = 0; i <= len; i++) {
+      	if (controllers[i].id == cid) {
+        	statusControllerPrint(controllers, i);
+        	break; 
+    	}
+    }
+    return 1;
+}
 
 int readControllers(CONTROLLERS controllers[]) {
 	int i = 0;
@@ -45,21 +93,6 @@ int readControllers(CONTROLLERS controllers[]) {
 	return i;
 }
 
-int changeController(CONTROLLERS controllers[], int cid, int state, int len) {
-    int i;
-    
-    for (i = 0; i <= len; i++) {
-      	if (controllers[i].id == cid) {
-        	controllers[i].status = state; 
-        	break; 
-        }
-    }
-    
-    return state;
-}
-
-
-
 int saveControllers(const CONTROLLERS controllers[], int len) {
     int i;
     
@@ -74,23 +107,4 @@ int saveControllers(const CONTROLLERS controllers[], int len) {
       	fprintf(pFile, "#%d\t%s;\t%s",  controllers[i].id, controllers[i].unit, controllers[i].position); 
     }
 	return 1;
-}
-
-int statusController (const CONTROLLERS controllers[], int cid, int len) {
-    int i;
-    
-    for (i = 0; i <= len; i++) {
-      	if (controllers[i].id == cid) {
-        	statusControllerPrint(controllers, i);
-        	break; 
-    	}
-    }
-    return 1;
-}
-
-void statusControllerPrint (const CONTROLLERS controllers[], int i) {
-
-	/* Skal indkodes med danish header for at supportere linux og mac brugere */
-   printf("#%d %s - %s: %s", controllers[i].id, controllers[i].unit, controllers[i].position, controllers[i].status == 1 ? "T\x92NDT" : "SLUKKET", AE);
-   
 }
