@@ -18,7 +18,10 @@ typedef enum {
 #include "controller.h" /* Skal fjernes på et tidspunkt */
 typedef struct {
 	ACTIONTYPE type;
-	CONTROLLERS controller;
+	union item { 
+		CONTROLLERS controller; 
+		SCENARIE scenarie 
+	};
 	USERS user;
 } ACTION;
 
