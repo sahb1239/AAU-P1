@@ -16,6 +16,7 @@ typedef enum {
 } ACTIONTYPE;
 
 #include "controller.h" /* Skal fjernes på et tidspunkt */
+#include "scenarie.h"
 typedef struct {
 	ACTIONTYPE type;
 	union item { 
