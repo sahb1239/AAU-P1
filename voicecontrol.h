@@ -11,6 +11,17 @@ typedef struct {
 	char unit[40];
 } UNITNAME;
 
+typedef enum { 
+	turn_on, turn_off, scenarie
+} ACTIONTYPE;
+
+#include "controller.h" /* Skal fjernes på et tidspunkt */
+typedef struct {
+	ACTIONTYPE type;
+	CONTROLLERS controller;
+	USERS user;
+} ACTION;
+
 /* Definerer database filer */
 #define FILE_USERS "users.txt"
 
