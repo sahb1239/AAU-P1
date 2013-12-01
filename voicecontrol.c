@@ -7,28 +7,21 @@
 #include "danish.h"
 #include "test.h"
 
+#define UNIT_NAME "jarvis"
+
 int main(int argc, char *argv[]) {
-	int i = 0;
-	char unitname[] = "jarvis";
+	int i, numstrings,
+		scenarie_len, controller_len;
 	char voiceinput[80];
-    
     SCENARIE scenarier[50];
-    int scenarie_len = readScenarie(scenarier); /* læser scenarier og gemmer sidste index */
-    
     CONTROLLERS controllers[50];
-    int controller_len = readControllers(controllers); /* læser controllers og gemmer sidste index */
     
-    HOUSE rooms[50];
-    int rooms_len = readRooms(rooms); /* læser rum og gemmer sidste index */
-    
+    /* Tjekker kommandolinje */
     for (i = 1; i < argc; i++)
     	if (strcmp("--test", argv[i]) == 0) {
     		testAll();
-    		return EXIT_SUCCESS;
     	}
-    	else if (strcmp("--as", argv[i]) == 0) {
-    		
-    	} else if (strcmp("--ss", argv[i]) == 0) {
+    	else if (strcmp("--stringsplit", argv[i]) == 0) {
     		char *input = "jarvis dette her er en test";
     		char *parm[10];
     		
@@ -38,28 +31,63 @@ int main(int argc, char *argv[]) {
     			printf("%s\n", parm[i]);
     			free(parm[i]);
     		}
-    	} else if (strcmp("--print", argv[i]) == 0) {
-    		printf("Test\n");
     	}
+	
+	/* Indlæser scenarier og controllers og gemmer antallet af elemnter læst */
+	scenarie_len = readScenarie(scenarier);
+    controller_len = readControllers(controllers);
     
-	return EXIT_SUCCESS;
-
-	do {
-		fgets(voiceinput, 80, stdin);
-
-		if (voiceinput[strlen(voiceinput) - 1] == '\n') {
-			voiceinput[strlen(voiceinput) - 1] = '\0';
+	/* TODO: Mangler at define de flest længder på arraysne */
+	while(1) {
+		printf("Indtast input => ");
+		if (scanf(" %[^\n]s", voiceinput)) {
+			char *out[80];
+			char **ptr;
+			numstrings = splitString(voiceinput, out, 80);
+			int len = numstrings;
+			
+			/* Tjekker hvilket index ordet UNIT_NAME ligger i */
+			for (i = 0; i < numstrings; i++) {
+				if (strcmp(out[i], UNIT_NAME) == 0) {
+					numstrings -= i + 1;
+					ptr = out + i * sizeof(char) + 1; /* Sizeof char is 1 */
+					break;
+				}
+			}
+			
+			if (ptr != NULL) {
+				/* Tjek ord at de er stavet korrekt */
+				int percentUnderstood = 100;
+				for (i = 0; i < numstrings; i++) {
+					/* TODO: Stavekontrolsfunktion her */
+				}
+				
+				if (percentUnderstood < 80) {
+					printf("Mente du:");
+					for (i = 0; i < numstrings; i++) {
+						printf(" %s", ptr[i]);
+					}
+					printf(" (j/n) => ");
+					
+					char yn;
+					scanf(" %c", &yn);
+					if (yn == 'j' || yn == 'y')
+						percentUnderstood = 80;
+				}
+			
+				if (percentUnderstood >= 80) {
+					for (i = 0; i < numstrings; i++) {
+						printf("Ord: %s\n", ptr[i]);
+					}
+				}
+			} else printf("Input blev ikke forstået\n");
+			
+			/* Free splitString array */
+			for (i = 0; i < len; i++) {
+    			free(ptr[i]);
+    		}
 		}
-
-		if (strncmp(unitname, voiceinput, 6) == 0) {
-			printf("Forst%set!\n", aa);
-		} else {
-			printf("\nInputtet: %s. Ikke forst%set.\nPr%sv igen: ", voiceinput, aa, oe);
-		}
-
-	} while (1);
-
-	return 0;
+	}
 }
 
 /* Splitter en sætning op i enkelte ord */
