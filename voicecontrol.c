@@ -57,11 +57,12 @@ int main(int argc, char *argv[]) {
 			
 			if (ptr != NULL) {
 				/* Tjek ord at de er stavet korrekt */
-				int percentUnderstood = 100;
+				int percentUnderstood = 100, acceptCorrection;
 				for (i = 0; i < numstrings; i++) {
 					/* TODO: Stavekontrolsfunktion her */
 				}
 				
+				/* Spørg om kommando skal udføres hvis antal procent var mindre end 80 */
 				if (percentUnderstood < 80) {
 					printf("Mente du:");
 					for (i = 0; i < numstrings; i++) {
@@ -71,14 +72,22 @@ int main(int argc, char *argv[]) {
 					
 					char yn;
 					scanf(" %c", &yn);
-					if (yn == 'j' || yn == 'y')
-						percentUnderstood = 80;
+					
+					acceptCorrection = yn == 'j' || yn == 'y';
 				}
 			
-				if (percentUnderstood >= 80) {
-					for (i = 0; i < numstrings; i++) {
-						printf("Ord: %s\n", ptr[i]);
-					}
+				if (percentUnderstood >= 80 || acceptCorrection) {
+					ACTION action;
+					/* TODO: her skal action genereres gennem en funktion */
+					
+					/* TODO: her skal action udføres gennem en funktion */
+					
+					/* Print hvis debug er defined */
+					#ifdef DEBUG
+						for (i = 0; i < numstrings; i++) {
+							printf("Ord: %s\n", ptr[i]);
+						}
+					#endif
 				}
 			} else printf("Input blev ikke forstået\n");
 			
