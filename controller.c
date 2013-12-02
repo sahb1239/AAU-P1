@@ -132,3 +132,14 @@ int saveControllers(const CONTROLLERS controllers[], int len) {
     
     return 1;
 }
+
+int findController(const CONTROLLERS controllers[], const char name[], const char room[], int len) {
+   int i;
+   
+   for (i = 0; i < len; i++) {
+      if (strcmp(room, controllers[i].position) == 0 && strcmp(name, controllers[i].unit) == 0) {
+         return controllers[i].id;
+      }
+   }
+   return ERROR_OCCURRED;
+}
