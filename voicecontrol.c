@@ -131,19 +131,3 @@ int splitString(const char *input, char *out[], int maxwords) {
 	
 	return oi;
 }
-
-int readUsers(FILE *pFile, USERS users[]) {
-	int i = 0;
-
-	pFile = fopen(FILE_USERS, "r");
-	if (pFile != NULL) {
-		return ERROR_OCCURRED;
-	}
-    
-	while (fscanf(pFile, "%s %s %d ", users[i].firstName, users[i].lastName, &users[i].priority) != EOF) {
-		i++;
-	}
-	fclose(pFile);
-
-	return i;
-}
