@@ -7,7 +7,7 @@
 #include "danish.h"
 #include "test.h"
 
-#define UNIT_NAME "jarvis"
+#define UNIT_NAME "jarvis" /* Er denne nødvendig? */
 
 int main(int argc, char *argv[]) {
 	int i, numstrings,
