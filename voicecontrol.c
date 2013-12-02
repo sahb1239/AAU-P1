@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
 				}
 			
 				if (percentUnderstood >= 80 || acceptCorrection) {
-					ACTION action;
+					
 					/* TODO: her skal action genereres gennem en funktion */
 					
 					/* TODO: her skal action udføres gennem en funktion */
@@ -108,7 +108,7 @@ int splitString(const char *input, char *out[], int maxwords) {
 		out[oi] = malloc(alloc_size = 10); /* TODO: konstant */
 	
 		while (input[i] != ' ' && input[i] != '\0') {
-			out[oi][oj++] = input[i];
+			out[oi][oj++] = tolower(input[i]);
 			
 			/* Tjek om der er behov for at gøre arrayet større + 1 fordi der også skal være plads til \0 */
 			if (oi + 1 >= alloc_size)
@@ -130,4 +130,27 @@ int splitString(const char *input, char *out[], int maxwords) {
 	}
 	
 	return oi;
+}
+
+int doCommand(char *input[], int len, CONTROLLERS controllers, const SCENARIE scenarier) {
+	int i, numactions = 0;
+	
+	ACTIONTYPE type;
+	union { CONTROLLERS controller; SCENARIE scenarie; } items[5];
+	
+	for (i = 0; i < len; i++) {
+		/* Find keyword */
+		if (strcmp(input[i], "tænd") == 0)
+			type = turn_on;
+		else if (strcmp(input[i], "sluk") == 0)
+			type = turn_off;
+		else if (strcmp(input[i], "status") == 0)
+			type = status;
+		else if (strcmp(input[i], "scenarie") == 0)
+			type = scenarie;
+		
+		
+	}
+	
+	
 }

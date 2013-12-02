@@ -70,11 +70,11 @@ int changeControllerState(CONTROLLERS controllers[], int cid, int state, int len
 int removeController(CONTROLLERS controllers[], int index, int len) {
     int i, j;
     
-    for (i = 0; i < len - 44; i++) {
+    for (i = 0; i < len; i++) {
        	if (controllers[i].id == index) {
           	len--;
           
-          	for (j = i; j < len - 44; j++) {
+          	for (j = i; j < len; j++) {
              	controllers[j] = controllers[j + 1];
              	controllers[j].id--; 
              }
