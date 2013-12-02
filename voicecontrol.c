@@ -78,10 +78,8 @@ int main(int argc, char *argv[]) {
 				}
 			
 				if (percentUnderstood >= 80 || acceptCorrection) {
-					
-					/* TODO: her skal action genereres gennem en funktion */
-					
-					/* TODO: her skal action udføres gennem en funktion */
+					if (!doCommand(ptr, numstrings, controllers, controller_len, scenarier, scenarie_len))
+						printf("Input blev ikke forstået\n"); /* TODO: DEFINE */
 					
 					/* Print hvis debug er defined */
 					#ifdef DEBUG
@@ -109,7 +107,7 @@ int splitString(const char *input, char *out[], int maxwords) {
 		out[oi] = malloc(alloc_size = 10); /* TODO: konstant */
 	
 		while (input[i] != ' ' && input[i] != '\0') {
-			out[oi][oj++] = tolower(input[i]);
+			out[oi][oj++] = input[i];
 			
 			/* Tjek om der er behov for at gøre arrayet større + 1 fordi der også skal være plads til \0 */
 			if (oi + 1 >= alloc_size)
@@ -133,6 +131,26 @@ int splitString(const char *input, char *out[], int maxwords) {
 	return oi;
 }
 
+int strcmpI(const char *string1, const char *string2) {
+	int out, i, str1len = strlen(string1), str2len = strlen(string2);
+	char *str1 = malloc((str1len + 1) * sizeof(char)), *str2 = malloc((str2len + 1) * sizeof(char));
+	
+	strcpy(str1, string1);
+	strcpy(str2, string2);
+	
+	for (i = 0; i < str1len; i++)
+		str1[i] = tolower(str1[i]);
+	for (i = 0; i < str2len; i++)
+		str2[i] = tolower(str2[i]);
+		
+	out = strcmp(str1, str2);
+	
+	free(str1);
+	free(str2);
+	
+	return out;
+}
+
 int doCommand(char *input[], int len, CONTROLLERS controllers[], int controllersLen, const SCENARIE scenarier[], int scenarierLen) {
 	int i, j, numactions;
 	
@@ -143,46 +161,53 @@ int doCommand(char *input[], int len, CONTROLLERS controllers[], int controllers
 	
 	for (i = 0, numactions = 0; i < len; i++) {
 		/* Find keyword */
-		if (strcmp(input[i], "tænd") == 0)
+		if (strcmpI(input[i], "tænd") == 0)
 			type = turn_on;
-		else if (strcmp(input[i], "sluk") == 0)
+		else if (strcmpI(input[i], "sluk") == 0)
 			type = turn_off;
-		else if (strcmp(input[i], "status") == 0)
+		else if (strcmpI(input[i], "status") == 0)
 			type = status;
-		else if (strcmp(input[i], "scenarie") == 0)
+		else if (strcmpI(input[i], "scenarie") == 0)
 			type = scenarie;
 		
 		for (j = 0; j < controllersLen; j++) {
-			if (strcmp(input[i], controllers[j].unit) == 0)
+			if (strcmpI(input[i], controllers[j].unit) == 0)
 				controlScenarieTmp[numactions++] = input[i];
 				
-			if (strcmp(input[i], controllers[j].position) == 0)
+			if (strcmpI(input[i], controllers[j].position) == 0)
 				strcpy(position, input[i]);
 		}
 		
 		for (j = 0; j < scenarierLen; j++) {
-			if (strcmp(input[i], scenarier[j].desc) == 0)
+			if (strcmpI(input[i], scenarier[j].desc) == 0)
 				controlScenarieTmp[numactions++] = input[i];
 		}
 	}
+	
 	
 	int id;
 	
 	for (i = 0; i < numactions; i++) {
 		switch (type) {
 			case turn_on: case turn_off:
-				id = findController(controllers, controlScenarieTmp, position, controllersLen);
-			
+				id = findController(controllers, controlScenarieTmp[i], position, controllersLen);
+				
+				if (id < 0)
+					return 0;
+				
 				changeControllerState(controllers, id, type == turn_on ? 1 : 0, controllersLen);
 			case status:
-				id = findController(controllers, controlScenarieTmp, position, controllersLen);
+				id = findController(controllers, controlScenarieTmp[i], position, controllersLen);
+				
+				if (id < 0)
+					return 0;
 			
 				statusControllerPrint(controllers, id);
-				return 1;
+				break;
 			case scenarie:
 				break;
 		}
 	}
 	
-	return ERROR_OCCURRED;
+	return numactions != 0;
 }

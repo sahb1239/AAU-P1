@@ -9,7 +9,7 @@ typedef struct {
 /* View */
 int addController(CONTROLLERS controllers[], int len);
 void readInputController (int *id, char genstand[], char placering[]);
-void statusControllerPrint (const CONTROLLERS controllers[], int i);
+void statusControllerPrint (const CONTROLLERS controllers[], int index);
 void statusControllerPrintAll (const CONTROLLERS controllers[], int len);
 
 /* Controller */

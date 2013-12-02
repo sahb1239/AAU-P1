@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "controller.h"
+#include "voicecontrol.h"
 #include "danish.h"
 
 void readInputController (int *id, char genstand[], char placering[]) {
@@ -17,7 +17,7 @@ void statusControllerPrint (const CONTROLLERS controllers[], int i) {
 	else
     	strcpy(status, "Slukket");
 	
-   	printf("#%d %s - %s: %s", controllers[i].id, controllers[i].unit, controllers[i].position, status);
+   	printf("#%d %s - %s: %s\n", controllers[i].id, controllers[i].unit, controllers[i].position, status);
    
 }
 
@@ -54,16 +54,9 @@ void addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int len) 
 	saveControllers(controllers, len + 1);
 }
 
-int changeControllerState(CONTROLLERS controllers[], int cid, int state, int len) {
-    int i;
-    
-    for (i = 0; i <= len; i++) {
-      	if (controllers[i].id == cid) {
-        	controllers[i].status = state; 
-        	break; 
-        }
-    }
-    
+int changeControllerState(CONTROLLERS controllers[], int index, int state, int len) {
+    controllers[index].status = state; 
+
     return state;
 }
 
@@ -137,8 +130,8 @@ int findController(const CONTROLLERS controllers[], const char name[], const cha
    int i;
    
    for (i = 0; i < len; i++) {
-      if (strcmp(room, controllers[i].position) == 0 && strcmp(name, controllers[i].unit) == 0) {
-         return controllers[i].id;
+      if (strcmpI(room, controllers[i].position) == 0 && strcmpI(name, controllers[i].unit) == 0) {
+         return i;
       }
    }
    return ERROR_OCCURRED;
