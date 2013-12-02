@@ -8,8 +8,8 @@
 #90808       Koekkenlampe;         Koekken
 #90809       Badevaerelseslampe;   Toilet
 #90810       Ganglampe;            Gangen
-#90811       Sengelampe1;          Sengebord 1 sovevaerelse (foraeldre)
-#90812       Sengelampe2;          Sengebord 2 sovevaerelse (foraeldre)
+#90811       Sengelampe1;          Sengebord 1 sovevaerelse
+#90812       Sengelampe2;          Sengebord 2 sovevaerelse
 #90813       TV;                   Kontor
 #90814       Printer;              Kontor
 #90815       Computer;             Kontor

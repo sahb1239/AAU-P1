@@ -16,6 +16,16 @@ void statusControllerPrint (const CONTROLLERS controllers[], int i) {
    
 }
 
+void statusControllerPrintAll (const CONTROLLERS controllers[], int len) {
+    int i;
+    
+    printf("ID     GENSTAND             PLACERING                 STATUS\n\n");
+    
+    for (i = 0; i < len; i++) {
+       printf("#%d %-20s %-25s %s\n", controllers[i].id, controllers[i].unit, controllers[i].position, controllers[i].status == 1 ? "T\x91ndt" : "Slukket", AE); }
+       
+}
+
 int addController(CONTROLLERS controllers[], int len) {
 	CONTROLLERS controller;
 	

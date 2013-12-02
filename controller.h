@@ -10,6 +10,7 @@ typedef struct {
 int addController(CONTROLLERS controllers[], int len);
 void readInputController (int *id, char genstand[], char placering[]);
 void statusControllerPrint (const CONTROLLERS controllers[], int i);
+void statusControllerPrintAll (const CONTROLLERS controllers[], int len);
 
 /* Controller */
 void addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int len);
