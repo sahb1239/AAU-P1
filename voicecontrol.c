@@ -10,6 +10,8 @@
 
 #define UNIT_NAME "jarvis" /* Er denne nødvendig? */
 
+int runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len); /* Skal fjernes */
+
 int main(int argc, char *argv[]) {
 	int i, numstrings,
 		scenarie_len, controller_len;
@@ -37,6 +39,8 @@ int main(int argc, char *argv[]) {
 	/* Indlæser scenarier og controllers og gemmer antallet af elemnter læst */
 	scenarie_len = readScenarie(scenarier);
     controller_len = readControllers(controllers);
+    
+    runScenarie(scenarier[1], controllers, controller_len);
     
 	/* TODO: Mangler at define de flest længder på arraysne */
 	while(1) {

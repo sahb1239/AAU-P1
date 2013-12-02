@@ -107,4 +107,8 @@ void printAllScenarier (const SCENARIE scenarier[], int len) {
 
 int runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len) {
 	
+    changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c1_id, len), scenarie.c1_state, len);
+    changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c2_id, len), scenarie.c2_state, len);
+    changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c3_id, len), scenarie.c3_state, len);
+    
 }
