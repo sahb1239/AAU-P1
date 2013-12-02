@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 		printf("Indtast input => ");
 		if (scanf(" %[^\n]s", voiceinput)) {
 			char *out[80];
-			char **ptr;
+			char **ptr = NULL;
 			numstrings = splitString(voiceinput, out, 80);
 			int len = numstrings;
 			
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 			
 			/* Free splitString array */
 			for (i = 0; i < len; i++) {
-    			free(ptr[i]);
+    			free(out[i]);
     		}
 		}
 	}
