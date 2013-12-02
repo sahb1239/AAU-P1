@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "voicecontrol.h"
 #include "rooms.h"
@@ -132,13 +133,15 @@ int splitString(const char *input, char *out[], int maxwords) {
 	return oi;
 }
 
-int doCommand(char *input[], int len, CONTROLLERS controllers, const SCENARIE scenarier) {
-	int i, numactions = 0;
+int doCommand(char *input[], int len, CONTROLLERS controllers[], int controllersLen, const SCENARIE scenarier[], int scenarierLen) {
+	int i, j, numactions;
 	
+	/* Generer actions */
 	ACTIONTYPE type;
-	union { CONTROLLERS controller; SCENARIE scenarie; } items[5];
+	char* controlScenarieTmp[5];
+	char position[20];
 	
-	for (i = 0; i < len; i++) {
+	for (i = 0, numactions = 0; i < len; i++) {
 		/* Find keyword */
 		if (strcmp(input[i], "tænd") == 0)
 			type = turn_on;
@@ -149,8 +152,37 @@ int doCommand(char *input[], int len, CONTROLLERS controllers, const SCENARIE sc
 		else if (strcmp(input[i], "scenarie") == 0)
 			type = scenarie;
 		
+		for (j = 0; j < controllersLen; j++) {
+			if (strcmp(input[i], controllers[j].unit) == 0)
+				controlScenarieTmp[numactions++] = input[i];
+				
+			if (strcmp(input[i], controllers[j].position) == 0)
+				strcpy(position, input[i]);
+		}
 		
+		for (j = 0; j < scenarierLen; j++) {
+			if (strcmp(input[i], scenarier[j].desc) == 0)
+				controlScenarieTmp[numactions++] = input[i];
+		}
 	}
 	
+	int id;
 	
+	for (i = 0; i < numactions; i++) {
+		switch (type) {
+			case turn_on: case turn_off:
+				id = findController(controllers, controlScenarieTmp, position, controllersLen);
+			
+				changeControllerState(controllers, id, type == turn_on ? 1 : 0, controllersLen);
+			case status:
+				id = findController(controllers, controlScenarieTmp, position, controllersLen);
+			
+				statusControllerPrint(controllers, id);
+				return 1;
+			case scenarie:
+				break;
+		}
+	}
+	
+	return ERROR_OCCURRED;
 }
