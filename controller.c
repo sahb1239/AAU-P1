@@ -136,3 +136,14 @@ int findController(const CONTROLLERS controllers[], const char name[], const cha
    }
    return ERROR_OCCURRED;
 }
+
+int controllerIDtoIndex(const CONTROLLERS controllers[], int cid, int len) {
+	int i;
+	
+	for (i = 0; i < len; i++) {
+		if (controllers[i].id == cid)
+			return i;
+	}
+	
+	return ERROR_OCCURRED;
+}

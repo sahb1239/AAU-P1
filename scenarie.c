@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "scenarie.h"
+#include "controller.h"
 #include "danish.h"
 
 int addScenarie(SCENARIE scenarier[], int len) {
@@ -102,4 +103,8 @@ void printAllScenarier (const SCENARIE scenarier[], int len) {
                                                                      scenarier[i].c1_state, scenarier[i].c1_id, scenarier[i].c2_state, scenarier[i].c2_id, 
                                                                      scenarier[i].c3_state, scenarier[i].c3_id, scenarier[i].desc); }
 
+}
+
+int runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len) {
+	
 }
