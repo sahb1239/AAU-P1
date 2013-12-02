@@ -119,14 +119,16 @@ int saveControllers(const CONTROLLERS controllers[], int len) {
     int i;
     
     FILE *pFile = fopen(FILE_CONTROLLERS, "w");
-    rewind(pFile);
     
     if (pFile == NULL) {
 	  	return ERROR_OCCURRED;
 	}
     
     for (i = 0; i < len; i++) {
-      	fprintf(pFile, "#%d\t%s;\t%s",  controllers[i].id, controllers[i].unit, controllers[i].position); 
+      	fprintf(pFile, "\n#%d\t%s;\t%s",  controllers[i].id, controllers[i].unit, controllers[i].position); 
     }
-	return 1;
+	
+    fclose(pFile);
+    
+    return 1;
 }

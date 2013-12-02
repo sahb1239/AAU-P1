@@ -1,22 +1,23 @@
-#90801       Lyd1;                 Stue
-#90802       Lyd2;                 Stue
-#90803       Lyd3;                 Stue
-#90804       Kaffemaskine;         Koekken
-#90805       Stikkontakt;          Spisestue
-#90806       Spisebordslampe;      Over spisebordet
-#90807       Stuebordslampe;       Over stuebordet
-#90808       Koekkenlampe;         Koekken
-#90809       Badevaerelseslampe;   Toilet
-#90810       Ganglampe;            Gangen
-#90811       Sengelampe1;          Sengebord 1 sovevaerelse
-#90812       Sengelampe2;          Sengebord 2 sovevaerelse
-#90813       TV;                   Kontor
-#90814       Printer;              Kontor
-#90815       Computer;             Kontor
-#90816       Kontorlampe;          Kontor
-#90817       TV;                   Boernevaerelse 1
-#90818       Boernelampe1;         Boernevaerelse 1
-#90819       Sengelampe;           Boernevaerelse 1
-#90820       TV;                   Boernevaerelse 2
-#90821       Boernelampe2;         Boernevaerelse 2
-#90822       Sengelampe;           Boernevaerelse 2
+
+#90801	Lyd1;	Stue
+#90802	Lyd2;	Stue
+#90803	Lyd3;	Stue
+#90804	Kaffemaskine;	Koekken
+#90805	Stikkontakt;	Spisestue
+#90806	Spisebordslampe;	Over spisebordet
+#90807	Stuebordslampe;	Over stuebordet
+#90808	Koekkenlampe;	Koekken
+#90809	Badevaerelseslampe;	Toilet
+#90810	Ganglampe;	Gangen
+#90811	Sengelampe1;	Sengebord 1 sovevaerelse
+#90812	Sengelampe2;	Sengebord 2 sovevaerelse
+#90813	TV;	Kontor
+#90814	Printer;	Kontor
+#90815	Computer;	Kontor
+#90816	Kontorlampe;	Kontor
+#90817	TV;	Boernevaerelse 1
+#90818	Boernelampe1;	Boernevaerelse 1
+#90819	Sengelampe;	Boernevaerelse 1
+#90820	TV;	Boernevaerelse 2
+#90821	Boernelampe2;	Boernevaerelse 2
+#90822	Sengelampe;	Boernevaerelse 2

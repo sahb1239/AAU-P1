@@ -80,17 +80,18 @@ int saveScenarier(const SCENARIE scenarier[], int len) {
     int i;
     
     FILE *pFile = fopen(FILE_SCENARIE, "w");
-    rewind(pFile);
     
     if (pFile == NULL) {
 	  return ERROR_OCCURRED;
 	}
     
-    for (i = 0; i < len && scenarier[i].num == i + 1; i++) {
-      fprintf(pFile, "%d   %d   %d   %d   %d #%d    %d #%d    %d #%d %s\n", scenarier[i].num, scenarier[i].allow_p1, scenarier[i].allow_p2, scenarier[i].allow_p3, 
+    for (i = 0; i < len; i++) {
+      fprintf(pFile, "\n%d   %d   %d   %d   %d #%d    %d #%d    %d #%d %s", scenarier[i].num, scenarier[i].allow_p1, scenarier[i].allow_p2, scenarier[i].allow_p3, 
                                                                             scenarier[i].c1_state, scenarier[i].c1_id, scenarier[i].c2_state, scenarier[i].c2_id, 
                                                                             scenarier[i].c3_state, scenarier[i].c3_id, scenarier[i].desc); }
-	return 1;
+	fclose(pFile);
+    
+    return 1;
 }
 
 void printAllScenarier (const SCENARIE scenarier[], int len) {

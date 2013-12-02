@@ -37,6 +37,9 @@ int main(int argc, char *argv[]) {
 	scenarie_len = readScenarie(scenarier);
     controller_len = readControllers(controllers);
     
+    saveControllers(controllers, controller_len);
+    saveScenarier(scenarier, scenarie_len);
+    
 	/* TODO: Mangler at define de flest længder på arraysne */
 	while(1) {
 		printf("Indtast input => ");
