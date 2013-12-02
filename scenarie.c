@@ -92,3 +92,13 @@ int saveScenarier(const SCENARIE scenarier[], int len) {
                                                                             scenarier[i].c3_state, scenarier[i].c3_id, scenarier[i].desc); }
 	return 1;
 }
+
+void printAllScenarier (const SCENARIE scenarier[], int len) {
+    int i;
+    
+    for (i = 0; i < len; i++) {
+       printf("%d   %d   %d   %d   %d #%d    %d #%d    %d #%d %s\n", scenarier[i].num, scenarier[i].allow_p1, scenarier[i].allow_p2, scenarier[i].allow_p3, 
+                                                                     scenarier[i].c1_state, scenarier[i].c1_id, scenarier[i].c2_state, scenarier[i].c2_id, 
+                                                                     scenarier[i].c3_state, scenarier[i].c3_id, scenarier[i].desc); }
+
+}
