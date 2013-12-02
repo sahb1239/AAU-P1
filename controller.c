@@ -125,7 +125,7 @@ int saveControllers(const CONTROLLERS controllers[], int len) {
 	  	return ERROR_OCCURRED;
 	}
     
-    for (i = 0; i < len && controllers[i].id == i + 1; i++) {
+    for (i = 0; i < len; i++) {
       	fprintf(pFile, "#%d\t%s;\t%s",  controllers[i].id, controllers[i].unit, controllers[i].position); 
     }
 	return 1;
