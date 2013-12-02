@@ -2,11 +2,6 @@
 #include "controller.h"
 
 typedef struct {
-	char firstName[30], lastName[30];
-	int priority;
-} USERS;
-
-typedef struct {
 	char mode[10];
 } COMMANDS;
 
