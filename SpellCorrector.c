@@ -5,10 +5,12 @@
   */
 
 
-//#include <danish.h>
+//#include <danish.h>			// denne giver fejl på trods af at danish.h filen er i min mappe
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <sys/stat.h>			// bruges til finde filstørelse til malloc  // ikke længere nødvendig
 #define ALPHABET 29
 #define DB_WORDS 9		// antal ord i databasen
 
@@ -73,70 +75,66 @@ Edit2:
 */
 
 char alphabet (int i);
-void database_extract (FILE *file, char *words[10][10]);
-void deletion (const char *input, int len, char **output);
-void insert (const char *input, int len, char **output);
-void replace (const char *input, int len, char **output);
-void switch_word (const char *input, int len, char **output);
+char *database_extract (FILE *f_data);
+void deletion (const char *input, int len, char ***output);
+void insert (const char *input, int len, char ***output);
+void replace (const char *input, int len, char ***output);
+void switch_letter (const char *input, int len, char ***output);
+void edit1 (char *input, int len, char ***word_combinations);
+char *correct (char *input);
 
-
+// der skal gøres noget ved æøå i filen eller programmet
 
 int main () {
-  int i, len;
-  char input[] = "test";         						// fejlordet
+  char input[20] = "lyss";				// fejlordet     // ly giver seg fault
+  //scanf("%s",input);					// input kommer ind fra andetsteds
+  printf("%s", correct(input));
+}
+
+// Hvis denne returnerer en null pointer var der ikke en rettelse inden for redigerings afstand to.
+char *correct (char *input) {
+  int i, j, len = strlen(input), database_len;							
+  static char correct_word[20];
+  char **letter_combinations;  
   FILE *f_data;
-  f_data = fopen("midlertidig_kommando_database.txt","r"); 				
-  len = strlen(input);
-  char *data_words[DB_WORDS][10];					// ændres til dynamisk allokering når jeg kan finde ud af det :p
-  char **del_output, **ins_output, **rep_output, **swi_output;
+  f_data = fopen("midlertidig_kommando_database.txt","r"); 	
+  char data_words[DB_WORDS][20];
   
-  database_extract (f_data, data_words);
-  
-  
-  /*for (i = 0; i < DB_WORDS; i++) {
-    printf("%s ", data_words[i]);
-  }*/
-  
-  
-  
-  // her prøver jeg at allokere plads. Det går ikke så godt. Tænker at det skal gøres i funktionerne måske.
-
-  //del_output = (char **)malloc(len * len * sizeof(char));									//	Størelse: len rækker, len kolonner.
-  //ins_output = (char **)malloc(ALPHABET * len + 1 * len + 1 * sizeof(char));				//	Størelse: ALPHABET * len + 1 rækker, len + 2 kolonner.
-  //rep_output = (char **)malloc(ALPHABET * len * len * sizeof(char));						//	Størelse: ALPHABET * len rækker, len kolonner.
-  //swi_output = (char **)malloc(len - 1 * len * sizeof(char));								//	Størelse: len rækker, len kolonner.
-  //deletion(input, len ,del_output);
-  
-  /*deletion (input, len, del_output);
-  for (i = 0; i < len; i++) {
-    printf("%s\n",del_output[i]);
-  }*/
-  
-  return 0;
-}
-
-void database_extract (FILE *file, char *words[DB_WORDS][10]) {
-  int i;
-  char text[DB_WORDS][10];
+  // indlæser database ord til data_words.
   for (i = 0; i < DB_WORDS; i++) {
-    fscanf(file, "%s ", text[i]);
+    strcpy(data_words[i], database_extract(f_data));
+	//printf("%s ", data_words[i]);
   }
+  fclose(f_data);
+  // Punkt 1: compare af input og database ord.
+  for (i = 0; i < DB_WORDS; i++) {
+    if (strcmp(data_words[i], input) == 0) {
+	  strcpy(correct_word, data_words[i]);
+	  return correct_word;
+	}
+  }
+  // Punkt 2: redigering af input
+  edit1 (input, len, &letter_combinations);
+  
+  // Punkt 3: sammenligning af output fra edit1 med input. Returnering hvis match.
+  for (j = 0; j < DB_WORDS; j++) {
+    for (i = 0; i < ALPHABET * (len + 1) + len + (ALPHABET * len) + len - 1; i++) {
+      if (strcmp(data_words[j], letter_combinations[i]) == 0) return letter_combinations[i];
+    }
+  }
+  return NULL;
+}
+
+char *database_extract (FILE *f_data) {
+  char *data_words;
+  int i;
+  data_words = (char *)malloc(20);
+  fscanf(f_data, "%s ", data_words);
+  return data_words;
 }
 
 
-
-
-void string_compare () {										// Sammenligner indtrykkede ord med ord i databasen
-
-
-
-
-
-}
-
-Edit1 () {												// De 4 edit funktioner kommer herunder
-
-
+char *string_compare () {										// Sammenligner indtrykkede ord med ord i databasen
 
 
 
@@ -144,62 +142,118 @@ Edit1 () {												// De 4 edit funktioner kommer herunder
 
 }
 
-void insert (const char *input, int len, char **output) {			//Indsætter et bogstav
+
+void edit1 (char *input, int len, char ***letter_combinations) {												// De 4 edit funktioner kommer herunder
+  int i, k = 0;
+  char **del_output, **ins_output, **rep_output, **swi_output;
+  *letter_combinations = (char **)calloc(10000, sizeof(char));
+  for (i = 0; i < ALPHABET * (len + 1) + len + ALPHABET * len + (len - 1); i++) {
+    (*letter_combinations)[i] = (char *)calloc((len + 1), sizeof(char));
+  }
+  
+  // behandler input i redigeringsfunktionerne og outputter resultaterne i form af et array af strings.
+  insert (input, len, &ins_output);
+  deletion (input, len, &del_output);
+  replace (input, len, &rep_output);
+  switch_letter (input, len, &swi_output);
+  
+  // kopierer output fra red. funktioner ind i tænkt output af edit1.
+  for (i = 0; i < ALPHABET * (len + 1); i++) {   		
+	strcpy((*letter_combinations)[k], ins_output[i]); k++;
+  }
+  for (i = 0; i < len; i++) {
+	strcpy((*letter_combinations)[k], del_output[i]); k++;
+  }
+  for (i = 0; i < ALPHABET * len; i++) {
+	strcpy((*letter_combinations)[k], rep_output[i]); k++;
+  }
+  for (i = 0; i < len - 1; i++) {
+	strcpy((*letter_combinations)[k], swi_output[i]); k++;
+  }
+  /*for (i = 0; i < ALPHABET * (len + 1) + len + (ALPHABET * len) + len - 1; i++) {
+    //printf("%s\t", (*letter_combinations)[i]);
+  }*/
+  
+  //befrier plads brugt til redigeringsfunktioner.
+  free (del_output);
+  free (ins_output);
+  free (rep_output);
+  free (swi_output);
+}
+
+void insert (const char *input, int len, char ***output) {			//Indsætter et bogstav
   int i, j, k = 0;
   char temp_word[len + 2], temp_alph[2] = "a";
+  *output = (char **)calloc((ALPHABET * (len + 2)) * (ALPHABET * (len + 1)), sizeof(char));
+  for (i = 0; i < ALPHABET * (len + 1); i++) {
+    (*output)[i] = (char *)calloc((len + 1), sizeof(char));
+  }
   for (j = 0; j < len; j++) {
 	strcpy(temp_word, input);
 	// memmove flytter j hen på j + 1. bogstav bliver sat på js plads.	
-    memmove( &temp_word[j + 1] , &temp_word[j], strlen(temp_word) - j + 1);
-    for (i = 0; i < ALPHABET; i++) {   				
+    memmove( &temp_word[j + 1] , &temp_word[j], strlen(temp_word) - j + 1); // j + 1 for \0 skal med
+    for (i = 0; i < ALPHABET; i++) {
       temp_word[j] = alphabet(i);
-	  strcpy(output[k], temp_word);
+	  strcpy((*output)[k], temp_word);
 	  k++;
     }
   }
-  for (i = 0; i < ALPHABET; i++) {   				
+  for (i = 0; i < ALPHABET; i++) {
     strcpy(temp_word, input);
 	temp_alph[0] = alphabet(i);
     strcat(temp_word, temp_alph);
- 	strcpy(output[k], temp_word);
+ 	strcpy((*output)[k], temp_word);
 	k++;
-  }
+  } 
 }
 
-void deletion (const char *input, int len, char **output) {											//Sletter et bogstav
+void deletion (const char *input, int len, char ***output) {											//Sletter et bogstav
   int i;
   char temp_word[len + 1];
-  del_output = (char **)malloc(len * len * sizeof(char))
+  *output = (char **)malloc((len + 1) * (len + 1));  // ved input af længde 7 og 8 virker denne linje ikke. mærkeligt mærkeligt.
+  for (i = 0; i < len; i++) { 
+      //printf("%d\n", i);  
+	(*output)[i] = (char *)malloc(len);
+    //printf("ss\n");  
+  }
   // memmove flytter i + 1 ned på i's plads og sletter derved char i. 
   for (i = 0; i < len; i++) {
 	strcpy(temp_word, input);
     memmove( &temp_word[i] , &temp_word[i + 1], strlen(temp_word) - i);
-	strcpy(output[i], temp_word);
+	strcpy((*output)[i], temp_word);
   }
 }
 
-void replace (const char *input, int len, char **output) {											//Erstatter et bogstav med et andet
+void replace (const char *input, int len, char ***output) {											//Erstatter et bogstav med et andet
   int i, j, k = 0;
   char temp_word[len];
+  *output = (char **)calloc((ALPHABET * len) * len, sizeof(char));		
+  for (i = 0; i < ALPHABET * len; i++) {
+    (*output)[i] = (char *)calloc((len), sizeof(char));
+  }
   for (j = 0; j < len; j++) {
 	strcpy(temp_word, input);
     for (i = 0; i < ALPHABET; i++) {   				
       temp_word[j] = alphabet(i);
-	  strcpy(output[k], temp_word);
+	  strcpy((*output)[k], temp_word);
 	  k++;
     }
   }
 }
 
-void switch_word (const char *input, int len, char **output) {											// Ombytter to vedsiden af hinanden stående bogstaver
+void switch_letter (const char *input, int len, char ***output) {											// Ombytter to vedsiden af hinanden stående bogstaver
   int i;
   char temp_word[len + 1], temp_char;
+  *output = (char **)calloc((len - 1) * len, sizeof(char));		
+  for (i = 0; i < len - 1; i++) {
+    (*output)[i] = (char *)calloc((len), sizeof(char));
+  }
   for (i = 0; i < len - 1; i++) {
     strcpy(temp_word, input);
 	temp_char = temp_word[i];
 	temp_word[i] = temp_word[i + 1];
 	temp_word[i + 1] = temp_char;
-	strcpy(output[i], temp_word);
+	strcpy((*output)[i], temp_word);
   }
 }
 
@@ -214,15 +268,6 @@ char alphabet (int i) {
 
 
 
-
-
-
-
-
-
-
-
-
-
+// husk at frigøre mallocs
 
 
