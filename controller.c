@@ -11,8 +11,8 @@ void readInputController (int *id, char genstand[], char placering[]) {
 
 void statusControllerPrint (const CONTROLLERS controllers[], int i) {
 
-	/* Skal indkodes med danish header for at supportere linux og mac brugere */
-   printf("#%d %s - %s: %s", controllers[i].id, controllers[i].unit, controllers[i].position, controllers[i].status == 1 ? "T\x92NDT" : "SLUKKET", AE);
+	/* TODO: Skal indkodes med danish header for at supportere linux og mac brugere */
+   printf("#%d %s - %s: %s", controllers[i].id, controllers[i].unit, controllers[i].position, controllers[i].status == 1 ? "T\x92NDT" : "SLUKKET");
    
 }
 
@@ -22,7 +22,7 @@ void statusControllerPrintAll (const CONTROLLERS controllers[], int len) {
     printf("ID     GENSTAND             PLACERING                 STATUS\n\n");
     
     for (i = 0; i < len; i++) {
-       printf("#%d %-20s %-25s %s\n", controllers[i].id, controllers[i].unit, controllers[i].position, controllers[i].status == 1 ? "T\x91ndt" : "Slukket", AE); }
+       printf("#%d %-20s %-25s %s\n", controllers[i].id, controllers[i].unit, controllers[i].position, controllers[i].status == 1 ? "T\x91ndt" : "Slukket"); }
        
 }
 
