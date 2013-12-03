@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Corrector.h"
+#include "voicecontrol.h"
 
 char *correct (const char input[], int *likeness) {
 	int num_words, i, j;
@@ -28,28 +29,37 @@ char *correct (const char input[], int *likeness) {
   	curptr += replace(input, curptr);
   	curptr += transpose(input, curptr);
   	
-  	/* Punkt 3: sammenligning af output fra edit1 med input. Returnering hvis match. */
+  	/* Punkt 3: sammenligning af output fra edit1 med input. Tjek om der er flere match og returner det første element. */
+  	int matchingWordsNum = 0;
+  	char *matchingWords[20];
   	for (i = 0; i < totalLen; i++) {
   		for (j = 0; j < num_words; j++) {
-  	 		if (strcmp(combinations[i], db_words[j]) == 0) {
-  	 			char *out = malloc(strlen(combinations[i]) * sizeof(char));
-  	 			strcpy(out, combinations[i]);
-  	 			
-  	 			/* Rydder op */
-  	 			for (j = 0; j < num_words; j++)
-	  				free(db_words[j]);
-				free(db_words);
-  	 		
-  	 			for (j = 0; j < totalLen; j++) {
-  	 				free(combinations[j]);
-  	 			}
-  	 			free(combinations);
-  	 		
-  	 			/* Returnerer */
-  	 			*likeness = 80;
-  				return out;
+  	 		if (strcmpI(combinations[i], db_words[j]) == 0) {
+  	 			matchingWords[matchingWordsNum] = malloc(strlen(combinations[i]) * sizeof(char));
+  	 			strcpy(matchingWords[matchingWordsNum++], combinations[i]);
   			}
   		}
+  	}
+  	
+  	if (matchingWordsNum > 0) {
+  		/* Tjek om der er flere der er lig med hinanden */
+  		for (i = 0; i < matchingWordsNum; i++)
+  			for (j = 0; j < matchingWordsNum; j++)
+  				if (i != j && strcmpI(matchingWords[i], matchingWords[j]) != 0)
+  					*likeness = 60;
+  	
+  		char *tmp = malloc(strlen(matchingWords[0]) * sizeof(char));
+  		strcpy(tmp, matchingWords[0]);
+  		
+  		for (j = 0; j < num_words; j++)
+			free(db_words[j]);
+		free(db_words);
+  	 		
+  		for (j = 0; j < totalLen; j++)
+  			free(combinations[j]);
+  		free(combinations);
+  		
+  		return tmp;
   	}
   	
   	/* Punkt 4: Redigering af input til redigeringsafstand 2. */
@@ -80,14 +90,12 @@ char *correct (const char input[], int *likeness) {
 	  				free(db_words[j]);
 				free(db_words);
   	 		
-  	 			for (j = 0; j < totalLen; j++) {
+  	 			for (j = 0; j < totalLen; j++)
   	 				free(combinations[j]);
-  	 			}
   	 			free(combinations);
   	 			
-  	 			for (j = 0; j < totalLen2; j++) {
+  	 			for (j = 0; j < totalLen2; j++)
   	 				free(combinations2[j]);
-  	 			}
   	 			free(combinations2);
   	 		
   	 			*likeness = 40;
@@ -102,14 +110,12 @@ char *correct (const char input[], int *likeness) {
 		free(db_words[j]);
 	free(db_words);
   	 		
-  	for (j = 0; j < totalLen; j++) {
+  	for (j = 0; j < totalLen; j++)
   		free(combinations[j]);
-  	}
   	free(combinations);
   	 			
-  	for (j = 0; j < totalLen2; j++) {
+  	for (j = 0; j < totalLen2; j++)
   	 	free(combinations2[j]);
-  	}
   	free(combinations2);
   	
   	/* Punkt 6: Hvis enden nås uden at en korrektion findes returneres en null pointer. */

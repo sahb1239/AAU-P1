@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     	}else if(strcmp("--print1", argv[i]) == 0){
     		char inputname[80];
     		printf("Indtast navnet på den som skal slettes:\n");
-    		scanf("%s", &inputname);
+    		scanf("%s", inputname);
     		deleteUsers(users, users_len, inputname);
     	}else if(strcmp("--print2", argv[i]) == 0){
     		char inputname[80];
@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 					scanf(" %c", &yn);
 					
 					acceptCorrection = yn == 'j' || yn == 'y';
-				} else if (percentUnderstood < 0)
+				} else if (percentUnderstood <= 0)
 					printf(NOTUNDERSTOOD_TEXT);
 			
 				if (percentUnderstood >= 80 || acceptCorrection) {
