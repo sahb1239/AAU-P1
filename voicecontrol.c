@@ -32,6 +32,9 @@ int main(int argc, char *argv[]) {
     	} else if (strcmp("--print", argv[i]) == 0) {
     		printUsers(users, users_len);
     	}else if(strcm("--print1", argv[i]) == 0){
+    		char inputname[80];
+    		printf("Indtast navnet på den som skal slettes:\n");
+    		scanf("%s", &inputname);
     		deleteUsers(users, users_len, inputname);
     	}
      
