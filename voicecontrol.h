@@ -1,11 +1,11 @@
 #include "scenarie.h"
 #include "controller.h"
-#include "users.h"
 
-typedef enum { 
+typedef enum {
 	turn_on, turn_off, status, scenarie
 } ACTIONTYPE;
 
+/*
 typedef struct {
 	ACTIONTYPE type;
 	union item { 
@@ -13,7 +13,7 @@ typedef struct {
 		SCENARIE scenarie;
 	};
 	USERS user;
-} ACTION;
+} ACTION;*/
 
 /*#define ERROR_OCCURRED -1*/
 #define UNIT_NAME "jarvis"

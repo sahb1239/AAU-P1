@@ -75,9 +75,9 @@ char *correct (char input[]) {
 	  				free(db_words[j]);
 				free(db_words);
   	 		
-  	 			/*
+  	 			/* TODO: hvorfor virker denne ikke? */
   	 			for (j = 0; j < totalLen; j++)
-  	 				free(combinations[i]);*/
+  	 				free(combinations[i]);/**/
   	 			free(combinations);
   	 		
   	 			/* Returnerer */
