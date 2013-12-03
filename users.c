@@ -29,6 +29,7 @@ void printUsers(const USERS users[], int len) {
 }
 
 void deleteUsers(const USERS users[], int len, char inputname[]){
+	int i;
    	FILE *pFile1 = fopen(FILE_USERS, "w");
     
     for (i = 0; i<len; i++) {
