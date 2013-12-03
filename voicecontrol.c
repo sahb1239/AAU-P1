@@ -31,8 +31,10 @@ int main(int argc, char *argv[]) {
     		return EXIT_SUCCESS;
     	} else if (strcmp("--print", argv[i]) == 0) {
     		printUsers(users, users_len);
+    	}else if(strcm("--print1", argv[i]) == 0){
+    		deleteUsers(users, users_len, inputname);
     	}
-    
+     
 	/* TODO: Mangler at define de flest længder på arraysne */
 	while(1) {
 		printf("Indtast input => ");
