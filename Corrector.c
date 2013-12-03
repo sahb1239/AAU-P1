@@ -26,17 +26,6 @@ char alphabet (int i) {
 int main(void) {
 	char *out = correct("hejj");
 	printf("%s\n", out);
-	
-	
-	/*
-	char *out = "langtord";
-	
-	char **output = malloc(findTranspotionsLen(out) * sizeof(char *));
-	int i, tmp = transpose(out, output);
-	
-	for (i = 0; i < tmp; i++) {
-		printf("%s\t", output[i]);
-	}*/
 }
 
 char *correct (char input[]) {
@@ -75,9 +64,9 @@ char *correct (char input[]) {
 	  				free(db_words[j]);
 				free(db_words);
   	 		
-  	 			/* TODO: hvorfor virker denne ikke? */
-  	 			for (j = 0; j < totalLen; j++)
-  	 				free(combinations[i]);/**/
+  	 			for (j = 0; j < totalLen; j++) {
+  	 				free(combinations[j]);
+  	 			}
   	 			free(combinations);
   	 		
   	 			/* Returnerer */
