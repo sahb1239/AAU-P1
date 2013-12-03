@@ -175,7 +175,7 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 	/* Find kommando */
 	for (i = 0, numactions = 0; i < len; i++) {
 		/* Find keyword */
-		if (strcmpI(input[i], "tænd") == 0 || strcmpI(input[i], "t\x91nd") == 0)
+		if (strcmpI(input[i], "tænd") == 0 || strcmpI(input[i], "taend") == 0)
 			type = turn_on;
 		else if (strcmpI(input[i], "sluk") == 0)
 			type = turn_off;
