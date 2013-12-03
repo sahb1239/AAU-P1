@@ -1,4 +1,9 @@
-#define ALPHABET "abcdefghijklmnopqrstuvwxyz\x91\x9B\x86"
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+	#define ALPHABET "abcdefghijklmnopqrstuvwxyz\x91\x9B\x86"
+#else
+	#define ALPHABET "abcdefghijklmnopqrstuvwxyzæøå"
+#endif
+
 #define FILE_WORDS "ord"
 #define DATABASE_SIZE 200
 #define DATABASE_SIZE_WORD 30
