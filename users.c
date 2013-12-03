@@ -34,7 +34,8 @@ void deleteUsers(const USERS users[], int len, char inputname[]){
    	FILE *pFile1 = fopen(FILE_USERS, "w");
     
     for (i = 0; i<len; i++) {
-    	if (strcmp(users[i].name, inputname) != 0){
+    	if (strcmp(users[i].name, inputname) == 0){
+    	}else{
     		printf("%d\t%s\n", users[i].priority, users[i].name);
     	}
     }
