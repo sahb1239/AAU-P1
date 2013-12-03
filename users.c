@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "users.h"
 #include "danish.h"
 
