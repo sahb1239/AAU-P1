@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
 			
 			if (ptr != NULL) {
 				/* Tjek ord at de er stavet korrekt */
-				int percentUnderstood = 100, acceptCorrection;
+				int percentUnderstood = 100, acceptCorrection = 0;
 				for (i = 0; i < numstrings; i++) {
 					/* TODO: Stavekontrolsfunktion her */
 				}
