@@ -11,6 +11,8 @@
 int runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len); /* Skal fjernes */
 
 int main(int argc, char *argv[]) {
+	
+	
 	int i, numstrings,
 		scenarie_len, controller_len;
 	char voiceinput[INPUT_SIZE];
@@ -20,6 +22,7 @@ int main(int argc, char *argv[]) {
     /* Tjekker kommandolinje */
     for (i = 1; i < argc; i++)
     	if (strcmp("--test", argv[i]) == 0) {
+    		printUsers(USERS users[], int len); /* Skal fjernes */
     		testAll();
     		return EXIT_SUCCESS;
     	}
