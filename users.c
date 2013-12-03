@@ -27,3 +27,17 @@ void printUsers(const USERS users[], int len) {
     	printf("%d\t\t%s\n", users[i].priority, users[i].name);
 	}
 }
+
+void deleteUsers(const USERS users[], int len, char inputname[]){
+   	FILE *pFile1 = fopen(FILE_USERS, "w");
+	if (pFile1 == NULL) {
+		return -1;
+	}
+    
+    for (i = 0; i<len; i++) {
+    	if (strcmp(users[i].name, inputname) != 0){
+    		printf("%d\t%s\n", users[i].priority, users[i].name);
+    	}
+    }
+	fclose(pFile1);  
+}
