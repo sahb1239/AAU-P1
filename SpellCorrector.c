@@ -86,26 +86,26 @@ char *correct (char *input);
 // der skal gøres noget ved æøå i filen eller programmet
 
 int main () {
-  char input[20] = "lyss";				// fejlordet     // ly giver seg fault
+  char input[20] = "ky";				// fejlordet     // ord under 3 bogstaver giver seg fault
   //scanf("%s",input);					// input kommer ind fra andetsteds
   printf("%s", correct(input));
 }
 
 // Hvis denne returnerer en null pointer var der ikke en rettelse inden for redigerings afstand to.
 char *correct (char *input) {
-  int i, j, len = strlen(input), database_len;							
+  int i, j, k, len = strlen(input), database_len;							
   static char correct_word[20];
-  char **letter_combinations;  
+  char **letter_combinations, temp_letter_combs[ALPHABET * (len + 1) + len + (ALPHABET * len) + len - 1][21];		// tænk over hvor stor den behøver at være.
   FILE *f_data;
   f_data = fopen("midlertidig_kommando_database.txt","r"); 	
   char data_words[DB_WORDS][20];
-  
   // indlæser database ord til data_words.
   for (i = 0; i < DB_WORDS; i++) {
     strcpy(data_words[i], database_extract(f_data));
 	//printf("%s ", data_words[i]);
   }
   fclose(f_data);
+  
   // Punkt 1: compare af input og database ord.
   for (i = 0; i < DB_WORDS; i++) {
     if (strcmp(data_words[i], input) == 0) {
@@ -113,15 +113,34 @@ char *correct (char *input) {
 	  return correct_word;
 	}
   }
-  // Punkt 2: redigering af input
+  
+  // Punkt 2: Redigering af input til redigeringsafstand 1.
   edit1 (input, len, &letter_combinations);
   
   // Punkt 3: sammenligning af output fra edit1 med input. Returnering hvis match.
   for (j = 0; j < DB_WORDS; j++) {
     for (i = 0; i < ALPHABET * (len + 1) + len + (ALPHABET * len) + len - 1; i++) {
-      if (strcmp(data_words[j], letter_combinations[i]) == 0) return letter_combinations[i];
+      if (strcmp(data_words[j], letter_combinations[i]) == 0) 
+	    return letter_combinations[i];	
     }
   }
+  
+  // Punkt 4: Redigering af input til redigeringsafstand 2. Sammenligning af redafs. 2 og database ord.
+  for (i = 0; i < ALPHABET * (len + 1) + len + (ALPHABET * len) + len - 1; i++) {
+  	strcpy(temp_letter_combs[i], letter_combinations[i]);
+	//printf("%s\t", temp_letter_combs[i]);		
+  }
+  for (k = 0; k < ALPHABET * (len + 1) + len + (ALPHABET * len) + len - 1; k++) {
+    edit1 (temp_letter_combs[k], len, &letter_combinations);
+	for (j = 0; j < DB_WORDS; j++) {
+      for (i = 0; i < ALPHABET * (len + 1) + len + (ALPHABET * len) + len - 1; i++) {
+        if (strcmp(data_words[j], letter_combinations[i]) == 0) 
+	      return letter_combinations[i];	
+      }
+    }
+  }
+  
+  // Punkt 5: Hvis enden nås uden at en korrektion findes returneres en null pointer.
   return NULL;
 }
 
