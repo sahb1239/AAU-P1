@@ -23,7 +23,13 @@ typedef struct {
 	USERS user;
 } ACTION;
 
-#define ERROR_OCCURRED -1
+/*#define ERROR_OCCURRED -1*/
+#define UNIT_NAME "jarvis"
+#define SPLITSTRING_SIZE 10
+#define NOTUNDERSTOOD_TEXT "Input blev ikke forstået\n"
+#define INPUT_SIZE 80
+#define SCENARIE_SIZE 50
+#define CONTROLLER_SIZE 50
 
 /* Prototyper */
 /* Input/output - view */
@@ -34,4 +40,5 @@ int splitString(const char *input, char *out[], int maxwords);
 char *correct(char input[], int *like_percent);
 int strcmpI(const char *string1, const char *string2);
 
-int doCommand(char *input[], int len, CONTROLLERS controllers[], int controllersLen, const SCENARIE scenarier[], int scenarierLen);
+int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int controllersLen, const SCENARIE scenarier[], int scenarierLen);
+
