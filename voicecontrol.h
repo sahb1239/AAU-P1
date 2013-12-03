@@ -30,7 +30,6 @@ int readInput(char *input[]);
 
 /* Beregningslag - controller */
 int splitString(const char *input, char *out[], int maxwords);
-char *correct(char input[], int *like_percent);
 int strcmpI(const char *string1, const char *string2);
 
 int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int controllersLen, const SCENARIE scenarier[], int scenarierLen);

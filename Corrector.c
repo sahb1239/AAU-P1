@@ -1,45 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Corrector.h"
+#include "voicecontrol.h"
 
-#define ALPHABET "abcdefghijklmnopqrstuvwxyz\x91\x9B\x86"
-#define FILE_WORDS "ord"
-#define DATABASE_SIZE 20
-#define DATABASE_SIZE_WORD 30
-
-char *correct (char input[]);
-char **database_extract (int *len);
-
-int findInsertLen(const char *input);
-int insert (const char *input, char** output);
-int findDeletionLen(const char *input);
-int deletion (const char *input, char **output);
-int findReplaceLen(const char *input);
-int replace(const char *input, char **output);
-int findTranspotionsLen(const char *input);
-int transpose(const char *input, char **output);
-
-char alphabet (int i) {
-  return ALPHABET[i];
-}
-
-int main(void) {
-	char *out = correct("hejj");
-	printf("%s\n", out);
-}
-
-char *correct (char input[]) {
+char *correct (const char input[], int *likeness) {
 	int num_words, i, j;
 	char **db_words = database_extract(&num_words);
 
 	/* Punkt 1: compare af input og database ord. */
   	for (i = 0; i < num_words; i++) {
-    	if (strcmp(input, db_words[i]) == 0) {
+    	if (strcmpI(input, db_words[i]) == 0) {
 	  		/* Rydder op og returnerer */
 	  		for (j = 0; j < num_words; j++)
 	  			free(db_words[j]);
 			free(db_words);
 			
+			*likeness = 100;
 	  		return input;
 		}
   	}
@@ -53,29 +30,40 @@ char *correct (char input[]) {
   	curptr += transpose(input, curptr);
   	
   	/* Punkt 3: sammenligning af output fra edit1 med input. Returnering hvis match. */
+  	char **matchingWords = malloc(1000 * sizeof(char *));
+  	int matchingWordsNum = 0;
+  	
   	for (i = 0; i < totalLen; i++) {
   		for (j = 0; j < num_words; j++) {
-  	 		if (strcmp(combinations[i], db_words[j]) == 0) {
-  	 			char *out = malloc(strlen(combinations[i]) * sizeof(char));
-  	 			strcpy(out, combinations[i]);
-  	 			
-  	 			/* Rydder op */
-  	 			for (j = 0; j < num_words; j++)
-	  				free(db_words[j]);
-				free(db_words);
-  	 		
-  	 			for (j = 0; j < totalLen; j++) {
-  	 				free(combinations[j]);
-  	 			}
-  	 			free(combinations);
-  	 		
-  	 			/* Returnerer */
-  				return out;
+  	 		if (strcmpI(combinations[i], db_words[j]) == 0) {
+  	 			matchingWords[matchingWordsNum] = malloc(strlen(combinations[i]) * sizeof(char));
+  	 			strcpy(matchingWords[matchingWordsNum++], combinations[i]);
   			}
   		}
   	}
   	
-  	return NULL;
+  	/* Rydder op */
+  	for (j = 0; j < num_words; j++)
+	  	free(db_words[j]);
+	free(db_words);
+  	 		
+  	for (j = 0; j < totalLen; j++)
+  	 	free(combinations[j]);
+  	free(combinations);
+  	
+  	if (matchingWordsNum > 0) {
+  		*likeness = 80; /* TODO: KONSTANT */
+  		/* Loop resultaterne igennem og tjek at de er lig med hinanden */
+  		for (i = 0; i < matchingWordsNum; i++)
+  			for (j = 0; j < matchingWordsNum; j++)
+  				if (i != j)
+  					if (strcmpI(matchingWords[i], matchingWords[j]) != 0)
+  						*likeness = 60;
+  		
+  		return matchingWords[0];
+  	}
+  	else
+  		return NULL;
 }
 
 char **database_extract (int *len) {
@@ -86,9 +74,6 @@ char **database_extract (int *len) {
 	for (i = 0; !feof(file); i++) {
 		out[i] = malloc(DATABASE_SIZE_WORD * sizeof(char));
 		fscanf(file, " %s", out[i]);
-		
-		if (i >= alloc_size)
-			out[i] = realloc(out[i], sizeof(char *) * (alloc_size += DATABASE_SIZE));
 	}
 	
 	fclose(file);
@@ -104,7 +89,7 @@ int findInsertLen(const char *input) {
 }
 
 int insert (const char *input, char** output) {
-	int outLen = findInsertLen(input), i, j, k;
+	int i, j, k;
 	for (j = 0, i = 0; j < strlen(ALPHABET); j++) {
 		for (k = 0; k < strlen(input) + 1; k++, i++) {
 			output[i] = malloc((strlen(input) + 2) * sizeof(char)); /* Plads til 0 tegnet og et ekstra tegn */
@@ -113,7 +98,7 @@ int insert (const char *input, char** output) {
 			strcpy(output[i], input);
 			
 			memmove(&(output[i][k + 1]), &(output[i][k]), strlen(input) - k + 1);
-			output[i][k] = alphabet(j);
+			output[i][k] = ALPHABET[j];
 		}
 	}
 	
@@ -126,7 +111,7 @@ int findDeletionLen(const char *input) {
 }
 
 int deletion (const char *input, char **output) {
-	int outLen = findDeletionLen(input), i;
+	int i;
 	for (i = 0; i < strlen(input); i++) {
 		output[i] = malloc(strlen(input) * sizeof(char));
 		
@@ -145,7 +130,7 @@ int findReplaceLen(const char *input) {
 }
 
 int replace(const char *input, char **output) {
-	int outLen = findReplaceLen(input), i, j, k;
+	int i, j, k;
 	for (j = 0, i = 0; j < strlen(ALPHABET); j++) {
 		for (k = 0; k < strlen(input); k++, i++) {
 			output[i] = malloc((strlen(input) + 1) * sizeof(char)); /* Plads til \0 */
@@ -153,7 +138,7 @@ int replace(const char *input, char **output) {
 			/* Kopierer input */
 			strcpy(output[i], input);
 			
-			output[i][k] = alphabet(j);
+			output[i][k] = ALPHABET[j];
 		}
 	}
 		

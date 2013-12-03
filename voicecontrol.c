@@ -8,6 +8,7 @@
 #include "danish.h"
 #include "test.h"
 #include "users.h"
+#include "Corrector.h"
 
 int runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len); /* Skal fjernes */
 
@@ -60,11 +61,18 @@ int main(int argc, char *argv[]) {
 				/* Tjek ord at de er stavet korrekt */
 				int percentUnderstood = 100, acceptCorrection;
 				for (i = 0; i < numstrings; i++) {
-					/* TODO: Stavekontrolsfunktion her */
+					int likeness = 10;
+					char *tmp = correct(ptr[i], &likeness);
+					if (tmp != NULL) {
+						if (strcmpI(tmp, ptr[i]) != 0) {
+							percentUnderstood -= likeness / numstrings;
+							strcpy(ptr[i], tmp);
+						}
+					} else percentUnderstood = -1;
 				}
 				
 				/* Spørg om kommando skal udføres hvis antal procent var mindre end 80 */
-				if (percentUnderstood < 80) {
+				if (percentUnderstood < 80 && percentUnderstood > 0) {
 					printf("Mente du:");
 					for (i = 0; i < numstrings; i++) {
 						printf(" %s", ptr[i]);
@@ -75,7 +83,8 @@ int main(int argc, char *argv[]) {
 					scanf(" %c", &yn);
 					
 					acceptCorrection = yn == 'j' || yn == 'y';
-				}
+				} else if (percentUnderstood < 0)
+					printf(NOTUNDERSTOOD_TEXT);
 			
 				if (percentUnderstood >= 80 || acceptCorrection) {
 					if (!findAndExecuteCommand(ptr, numstrings, controllers, controller_len, scenarier, scenarie_len))
