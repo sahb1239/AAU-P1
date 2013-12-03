@@ -23,7 +23,6 @@ int main(int argc, char *argv[]) {
     /* Tjekker kommandolinje */
     for (i = 1; i < argc; i++)
     	if (strcmp("--test", argv[i]) == 0) {
-    		printUsers(USERS users[], int len); /* Skal fjernes */
     		testAll();
     		return EXIT_SUCCESS;
     	}

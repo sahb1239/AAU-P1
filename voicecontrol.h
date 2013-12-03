@@ -2,14 +2,6 @@
 #include "controller.h"
 #include "users.h"
 
-typedef struct {
-	char mode[10];
-} COMMANDS;
-
-typedef struct {
-	char unit[40];
-} UNITNAME;
-
 typedef enum { 
 	turn_on, turn_off, status, scenarie
 } ACTIONTYPE;
