@@ -105,7 +105,19 @@ void printAllScenarier (const SCENARIE scenarier[], int len) {
 
 }
 
-int runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len) {
+int findScenarie(const SCENARIE scenarier[], const char name[], int len) {
+    int i;
+    
+    for (i = 0; i < len; i++) {
+      if (strcmpI(name, scenarier[i].desc) == 0) {
+         return i;
+      }
+   }
+   return ERROR_OCCURRED;
+   
+}
+
+int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len) {
     int i = ERROR_OCCURRED;
 	
     i = changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c1_id, len), scenarie.c1_state, len);
