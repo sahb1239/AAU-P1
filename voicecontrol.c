@@ -7,7 +7,7 @@
 #include "rooms.h"
 #include "danish.h"
 #include "test.h"
-#include "users.c"
+#include "users.h"
 
 int runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len); /* Skal fjernes */
 
