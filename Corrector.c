@@ -1,34 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Corrector.h"
 
-#define ALPHABET "abcdefghijklmnopqrstuvwxyz\x91\x9B\x86"
-#define FILE_WORDS "ord"
-#define DATABASE_SIZE 20
-#define DATABASE_SIZE_WORD 30
-
-char *correct (char input[]);
-char **database_extract (int *len);
-
-int findInsertLen(const char *input);
-int insert (const char *input, char** output);
-int findDeletionLen(const char *input);
-int deletion (const char *input, char **output);
-int findReplaceLen(const char *input);
-int replace(const char *input, char **output);
-int findTranspotionsLen(const char *input);
-int transpose(const char *input, char **output);
-
-char alphabet (int i) {
-  return ALPHABET[i];
-}
-
-int main(void) {
-	char *out = correct("hejj");
-	printf("%s\n", out);
-}
-
-char *correct (char input[]) {
+char *correct (const char input[], int *likeness) {
 	int num_words, i, j;
 	char **db_words = database_extract(&num_words);
 
@@ -40,6 +15,7 @@ char *correct (char input[]) {
 	  			free(db_words[j]);
 			free(db_words);
 			
+			*likeness = 100;
 	  		return input;
 		}
   	}
@@ -70,6 +46,7 @@ char *correct (char input[]) {
   	 			free(combinations);
   	 		
   	 			/* Returnerer */
+  	 			*likeness = 80;
   				return out;
   			}
   		}
@@ -83,7 +60,7 @@ char *correct (char input[]) {
   					  findReplaceLen(combinations[i]) + findTranspotionsLen(combinations[i]);
   	}
   	
-  	char **combinations2 = malloc(sizeNeeded * sizeof(char *)), **curptr2 = combinations2;
+  	char **combinations2 = malloc(totalLen2 * sizeof(char *)), **curptr2 = combinations2;
   	for (i = 0; i < totalLen; i++) {
   		curptr2 += insert(combinations[i], curptr2);
   		curptr2 += deletion(combinations[i], curptr2);
@@ -113,6 +90,7 @@ char *correct (char input[]) {
   	 			}
   	 			free(combinations2);
   	 		
+  	 			*likeness = 40;
   	 			/* Returnerer */
   				return out;
   			}
@@ -164,7 +142,7 @@ int findInsertLen(const char *input) {
 }
 
 int insert (const char *input, char** output) {
-	int outLen = findInsertLen(input), i, j, k;
+	int i, j, k;
 	for (j = 0, i = 0; j < strlen(ALPHABET); j++) {
 		for (k = 0; k < strlen(input) + 1; k++, i++) {
 			output[i] = malloc((strlen(input) + 2) * sizeof(char)); /* Plads til 0 tegnet og et ekstra tegn */
@@ -173,7 +151,7 @@ int insert (const char *input, char** output) {
 			strcpy(output[i], input);
 			
 			memmove(&(output[i][k + 1]), &(output[i][k]), strlen(input) - k + 1);
-			output[i][k] = alphabet(j);
+			output[i][k] = ALPHABET[j];
 		}
 	}
 	
@@ -186,7 +164,7 @@ int findDeletionLen(const char *input) {
 }
 
 int deletion (const char *input, char **output) {
-	int outLen = findDeletionLen(input), i;
+	int i;
 	for (i = 0; i < strlen(input); i++) {
 		output[i] = malloc(strlen(input) * sizeof(char));
 		
@@ -205,7 +183,7 @@ int findReplaceLen(const char *input) {
 }
 
 int replace(const char *input, char **output) {
-	int outLen = findReplaceLen(input), i, j, k;
+	int i, j, k;
 	for (j = 0, i = 0; j < strlen(ALPHABET); j++) {
 		for (k = 0; k < strlen(input); k++, i++) {
 			output[i] = malloc((strlen(input) + 1) * sizeof(char)); /* Plads til \0 */
@@ -213,7 +191,7 @@ int replace(const char *input, char **output) {
 			/* Kopierer input */
 			strcpy(output[i], input);
 			
-			output[i][k] = alphabet(j);
+			output[i][k] = ALPHABET[j];
 		}
 	}
 		
