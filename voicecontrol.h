@@ -18,11 +18,15 @@ typedef struct {
 /*#define ERROR_OCCURRED -1*/
 #define UNIT_NAME "jarvis"
 #define SPLITSTRING_SIZE 10
-#define NOTUNDERSTOOD_TEXT "Input blev ikke forstået\n"
 #define INPUT_SIZE 80
 #define SCENARIE_SIZE 50
 #define CONTROLLER_SIZE 50
 #define USERS_SIZE 50
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+	#define NOTUNDERSTOOD_TEXT "Input blev ikke forst\x86et\n"
+#else
+	#define NOTUNDERSTOOD_TEXT "Input blev ikke forstået\n"
+#endif
 
 /* Prototyper */
 /* Input/output - view */
