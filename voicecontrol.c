@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 					char *tmp = correct(ptr[i], &likeness);
 					if (tmp != NULL) {
 						if (strcmpI(tmp, ptr[i]) != 0) {
-							percentUnderstood -= likeness / numstrings;
+							percentUnderstood -= (100 - likeness) / numstrings;
 							strcpy(ptr[i], tmp);
 						}
 					} else percentUnderstood = -1;
@@ -91,6 +91,10 @@ int main(int argc, char *argv[]) {
 					acceptCorrection = yn == 'j' || yn == 'y';
 				} else if (percentUnderstood <= 0)
 					printf(NOTUNDERSTOOD_TEXT);
+					
+				#ifdef DEBUG
+					printf("Procent forstået: %d\n", percentUnderstood);
+				#endif
 			
 				if (percentUnderstood >= 80 || acceptCorrection) {
 					if (!findAndExecuteCommand(ptr, numstrings, controllers, controller_len, scenarier, scenarie_len))

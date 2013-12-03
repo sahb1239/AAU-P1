@@ -42,11 +42,13 @@ char *correct (const char input[], int *likeness) {
   	}
   	
   	if (matchingWordsNum > 0) {
+  		*likeness = 60;
+  		
   		/* Tjek om der er flere der er lig med hinanden */
   		for (i = 0; i < matchingWordsNum; i++)
   			for (j = 0; j < matchingWordsNum; j++)
   				if (i != j && strcmpI(matchingWords[i], matchingWords[j]) != 0)
-  					*likeness = 60;
+  					*likeness = 30;
   	
   		char *tmp = malloc(strlen(matchingWords[0]) * sizeof(char));
   		strcpy(tmp, matchingWords[0]);
@@ -98,7 +100,7 @@ char *correct (const char input[], int *likeness) {
   	 				free(combinations2[j]);
   	 			free(combinations2);
   	 		
-  	 			*likeness = 40;
+  	 			*likeness = 20;
   	 			/* Returnerer */
   				return out;
   			}
