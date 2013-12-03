@@ -12,24 +12,26 @@
 int runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len); /* Skal fjernes */
 
 int main(int argc, char *argv[]) {
-	
-	
 	int i, numstrings,
-		scenarie_len, controller_len;
+		scenarie_len, controller_len, users_len;
 	char voiceinput[INPUT_SIZE];
     SCENARIE scenarier[SCENARIE_SIZE];
     CONTROLLERS controllers[CONTROLLER_SIZE];
+    USERS users[USERS_SIZE];
+    
+    /* Indlæser scenarier og controllers og gemmer antallet af elemnter læst */
+	scenarie_len = readScenarie(scenarier);
+    controller_len = readControllers(controllers);
+    users_len = readUsers(users);
     
     /* Tjekker kommandolinje */
     for (i = 1; i < argc; i++)
     	if (strcmp("--test", argv[i]) == 0) {
     		testAll();
     		return EXIT_SUCCESS;
+    	} else if (strcmp("--print", argv[i]) == 0) {
+    		printUsers(users, users_len);
     	}
-	
-	/* Indlæser scenarier og controllers og gemmer antallet af elemnter læst */
-	scenarie_len = readScenarie(scenarier);
-    controller_len = readControllers(controllers);
     
 	/* TODO: Mangler at define de flest længder på arraysne */
 	while(1) {

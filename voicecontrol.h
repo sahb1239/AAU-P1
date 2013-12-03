@@ -22,6 +22,7 @@ typedef struct {
 #define INPUT_SIZE 80
 #define SCENARIE_SIZE 50
 #define CONTROLLER_SIZE 50
+#define USERS_SIZE 50
 
 /* Prototyper */
 /* Input/output - view */
