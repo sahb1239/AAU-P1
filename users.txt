@@ -1,1 +1,3 @@
-0	
+1	Jimmi
+2	Mikkel
+3	Mads
