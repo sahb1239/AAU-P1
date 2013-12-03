@@ -40,3 +40,13 @@ void deleteUsers(const USERS users[], int len, char inputname[]){
     }
 	fclose(pFile1);  
 }
+
+void addUsers(const USERS users[], int len, char inputname[], int inputpriority){
+	int i;
+   	FILE *pFile1 = fopen(FILE_USERS, "w");
+    for (i = 0; i<len; i++) {
+    	fprintf(pFile1, "%d\t%s\n", users[i].priority, users[i].name);
+    }
+    	fprintf(pFile1, "%d\t%s\n", inputpriority, inputname);
+	fclose(pFile1);  
+}

@@ -37,6 +37,12 @@ int main(int argc, char *argv[]) {
     		printf("Indtast navnet på den som skal slettes:\n");
     		scanf("%s", &inputname);
     		deleteUsers(users, users_len, inputname);
+    	}else if(strcmp("--print2", argv[i]) == 0){
+    		char inputname[80];
+    		int inputpriority;
+    		printf("Opret Bruger ved følgende syntax [prioritet] [Navn] \n");
+    		scanf("%d%s", &inputpriority, &inputname);
+    		addUsers(users, users_len, inputname, inputpriority);
     	}
      
 	/* TODO: Mangler at define de flest længder på arraysne */
