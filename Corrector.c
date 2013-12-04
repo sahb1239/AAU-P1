@@ -161,7 +161,7 @@ int insert (const char *input, char** output) {
 			/* Kopierer input */
 			strcpy(output[i], input);
 			
-			memmove(&(output[i][k + 1]), &(output[i][k]), strlen(input) - k + 1);
+			memmove(&(output[i][k + 1]), &(output[i][k]), strlen(input) - k + 2);
 			output[i][k] = ALPHABET[j];
 		}
 	}
