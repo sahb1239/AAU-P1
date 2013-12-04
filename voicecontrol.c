@@ -44,7 +44,9 @@ int main(int argc, char *argv[]) {
     		scanf("%d%s", &inputpriority, inputname);
     		addUsers(users, users_len, inputname, inputpriority);
     	} else if (strcmp("--testfree", argv[i]) == 0) {
-    		char *j = correct("kontoret", &i);
+    		char *t [10];
+    		splitString("jarvis tmp hyggeaften", t,  10);
+    		char *j = correct("hyggeaften", &i);
     		printf("%s\n", j);
     		free(j);
     		return EXIT_SUCCESS;
