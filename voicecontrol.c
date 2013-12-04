@@ -44,6 +44,10 @@ int main(int argc, char *argv[]) {
     		scanf("%d%s", &inputpriority, inputname);
     		addUsers(users, users_len, inputname, inputpriority);
     	} else if (strcmp("--testfree", argv[i]) == 0) {
+    		char *j = correct("kontoret", &i);
+    		printf("%s\n", j);
+    		free(j);
+    	
     		char *out[10]; int len = splitString("Søren kontoret tænd printer på kontor", out, 10);
 			
 			printf("START");
