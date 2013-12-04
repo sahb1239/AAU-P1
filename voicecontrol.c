@@ -44,11 +44,13 @@ int main(int argc, char *argv[]) {
     		scanf("%d%s", &inputpriority, inputname);
     		addUsers(users, users_len, inputname, inputpriority);
     	} else if (strcmp("--testfree", argv[i]) == 0) {
-    		char *t [10];
-    		splitString("jarvis tmp hyggeaften", t,  10);
-    		char *j = correct("hyggeaften", &i);
-    		printf("%s\n", j);
-    		free(j);
+    		char *t[10];
+    		int m, k = splitString("tænd printer stue printer hyggeaften", t,  10);
+    		for (i = 0; i < k; i++) {
+    			char *j = correct(t[i], &m);
+    			printf("%s\n", j);
+    			free(j);
+    		}
     		return EXIT_SUCCESS;
     	}
      
