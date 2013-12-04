@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
     		char inputname[80];
     		int inputpriority;
     		printf("Opret Bruger ved følgende syntax [prioritet] [Navn] \n");
-    		scanf("%d%s", &inputpriority, &inputname);
+    		scanf("%d%s", &inputpriority, inputname);
     		addUsers(users, users_len, inputname, inputpriority);
     	} else if (strcmp("--testfree", argv[i]) == 0) {
     		char *out[10]; int len = splitString("Søren tænd printer på kontoret", out, 10);
@@ -52,8 +52,10 @@ int main(int argc, char *argv[]) {
 					free(correct(out[i], &tmp2));
 			}
 
+			printf("STEP1");
     		/* Free splitString array */
 			for (i = 0; i < len; i++) {
+				printf("%s\n", out[i]);
     			free(out[i]);
     		}
     		printf("SUCCES");
@@ -88,8 +90,8 @@ int main(int argc, char *argv[]) {
 						if (strcmpI(tmp, ptr[i]) != 0) {
 							percentUnderstood -= (100 - likeness) / numstrings;
 							strcpy(ptr[i], tmp);
-							free(tmp); /* Free output */
 						}
+						free(tmp); /* Free output */
 					} else percentUnderstood = -1;
 				}
 				
