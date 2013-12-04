@@ -17,7 +17,10 @@ char *correct (const char input[], int *likeness) {
 			free(db_words);
 			
 			*likeness = 100;
-	  		return input;
+	  		
+	  		char *tmp = malloc(strlen(input) * sizeof(char));
+  			strcpy(tmp, input);
+  			return tmp;
 		}
   	}
   	

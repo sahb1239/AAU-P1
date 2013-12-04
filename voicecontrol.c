@@ -50,7 +50,6 @@ int main(int argc, char *argv[]) {
 			for (i = 0; i < len; i++) {
 					int tmp2;
 					char *tmp = correct(out[i], &tmp2);
-					
 			}
 
     		/* Free splitString array */
