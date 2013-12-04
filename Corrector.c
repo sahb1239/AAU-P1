@@ -18,7 +18,7 @@ char *correct (const char input[], int *likeness) {
 			
 			*likeness = 100;
 	  		
-	  		char *tmp = malloc(strlen(input) * sizeof(char));
+	  		char *tmp = malloc((strlen(input) + 1) * sizeof(char));
   			strcpy(tmp, input);
   			return tmp;
 		}
@@ -53,7 +53,7 @@ char *correct (const char input[], int *likeness) {
   				if (i != j && strcmpI(matchingWords[i], matchingWords[j]) != 0)
   					*likeness = 30;
   	
-  		char *tmp = malloc(strlen(matchingWords[0]) * sizeof(char));
+  		char *tmp = malloc((strlen(matchingWords[0]) + 1) * sizeof(char));
   		strcpy(tmp, matchingWords[0]);
   		
   		for (j = 0; j < num_words; j++)
