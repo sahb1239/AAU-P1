@@ -87,7 +87,7 @@ char *correct (const char input[], int *likeness) {
   	for (i = 0; i < totalLen2; i++) {
   		for (j = 0; j < num_words; j++) {
   	 		if (strcmp(combinations2[i], db_words[j]) == 0) {
-  	 			char *out = malloc(strlen(combinations2[i]) * sizeof(char));
+  	 			char *out = malloc((strlen(combinations2[i]) + 1) * sizeof(char));
   	 			strcpy(out, combinations2[i]);
   	 			
   	 			/* Rydder op */
