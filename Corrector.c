@@ -180,12 +180,11 @@ int deletion (const char *input, char **output) {
 		output[i] = malloc(strlen(input) * sizeof(char));
 		
 		/* Kopierer input */
-		if (i != 0)
-			strncpy(output[i], input, i);
-		if (i <= strlen(input))
-			strncpy(output[i] + (i * sizeof(char)), input + ((i + 1) * sizeof(char)), strlen(input) - i);
+		strncpy(output[i], input, strlen(input));
 
-		/*memmove(&(output[i][i]), &(output[i][i + 1]), strlen(input) - i + 1);*/
+		memmove(&(output[i][i]), &(output[i][i + 1]), strlen(input) - i + 1);
+		
+		output[i][strlen(input)] = '\0';
 	}
 	
 	return i;
