@@ -43,6 +43,13 @@ int main(int argc, char *argv[]) {
     		printf("Opret Bruger ved følgende syntax [prioritet] [Navn] \n");
     		scanf("%d%s", &inputpriority, &inputname);
     		addUsers(users, users_len, inputname, inputpriority);
+    	} else if (strcmp("--testfree", argv[i]) == 0) {
+    		char *tmp[10]; int len = splitString("Søren er awesome Søren", tmp, 10);
+    		/* Free splitString array */
+			for (i = 0; i < len; i++) {
+    			free(tmp[i]);
+    		}
+    		return EXIT_SUCCESS;
     	}
      
 	/* TODO: Mangler at define de flest længder på arraysne */
@@ -72,7 +79,7 @@ int main(int argc, char *argv[]) {
 					if (tmp != NULL) {
 						if (strcmpI(tmp, ptr[i]) != 0) {
 							percentUnderstood -= (100 - likeness) / numstrings;
-							/*strcpy(ptr[i], tmp);*/
+							strcpy(ptr[i], tmp);
 							free(tmp); /* Free output */
 						}
 					} else percentUnderstood = -1;
