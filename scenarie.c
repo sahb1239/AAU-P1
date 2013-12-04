@@ -118,10 +118,17 @@ int findScenarie(const SCENARIE scenarier[], const char name[], int len) {
 
 int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len) {
     int i, res = ERROR_OCCURRED;
+    char status[8];
     
     if (scenarie.c1_id == 00000) {
+       if (scenarie.c1_state)
+          sprintf(status, "t%sndt", ae);
+       else
+    	  strcpy(status, "slukket");
+          
        for (i = 0; i < len; i++) {
           res = changeControllerState(controllers, i, scenarie.c1_state, len); }
+       printf("Alt er nu %s\n", status);
     }
     
     else {	
