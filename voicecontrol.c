@@ -44,10 +44,19 @@ int main(int argc, char *argv[]) {
     		scanf("%d%s", &inputpriority, &inputname);
     		addUsers(users, users_len, inputname, inputpriority);
     	} else if (strcmp("--testfree", argv[i]) == 0) {
-    		char *tmp[10]; int len = splitString("Søren er awesome Søren", tmp, 10);
+    		char *out[10], **ptr; int len, blen = splitString("Søren er awesome Søren", out, 10);
+    		
+    		for (i = 0, len = blen; i < len; i++) {
+				if (strcmp(out[i], "Søren") == 0) {
+					len -= i + 1;
+					ptr = out + (i + 1) * sizeof(char); /* Sizeof char is 1 */
+					break;
+				}
+			}
+    		
     		/* Free splitString array */
-			for (i = 0; i < len; i++) {
-    			free(tmp[i]);
+			for (i = 0; i < blen; i++) {
+    			free(out[i]);
     		}
     		return EXIT_SUCCESS;
     	}
