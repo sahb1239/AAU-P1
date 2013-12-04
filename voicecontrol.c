@@ -81,6 +81,12 @@ int main(int argc, char *argv[]) {
 					if (tmp != NULL) {
 						if (strcmpI(tmp, ptr[i]) != 0) {
 							percentUnderstood -= (100 - likeness) / numstrings;
+							
+							/* Free'er det gamle memory og allokerer nyt */
+							free(ptr[i]);
+							ptr[i] = malloc((1 + strlen(tmp)) * sizeof(char));
+							
+							/* Kopierer over i array'et */
 							strcpy(ptr[i], tmp);
 						}
 						free(tmp); /* Free output */
