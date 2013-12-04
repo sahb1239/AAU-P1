@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 					char *tmp = correct(out[i], &tmp2);
 					if (tmp != NULL) {
 						if (strcmpI(tmp, out[i]) != 0) {
-							free(out[i]);
+							/*free(out[i]);
 							
 							out[i] = malloc(strlen(tmp) * sizeof(char) + 1);
 							strcpy(out[i], tmp);
