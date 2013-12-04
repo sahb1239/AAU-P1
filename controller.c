@@ -17,7 +17,7 @@ void statusControllerPrint (const CONTROLLERS controllers[], int i) {
 	else
     	strcpy(status, "slukket");
 	
-   	printf("%s i %s er nu %s\n", controllers[i].unit, controllers[i].position, status);
+   	printf("%s i %s er %s\n", controllers[i].unit, controllers[i].position, status);
    
 }
 
