@@ -126,11 +126,11 @@ int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len) {
     
     else {	
        res = changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c1_id, len), scenarie.c1_state, len);
-       printf("Jeg har nu aendret controller #%d til %d\n", scenarie.c1_id, scenarie.c1_state);
+       statusControllerPrint(controllers, controllerIDtoIndex(controllers, scenarie.c1_id, len));
        res = changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c2_id, len), scenarie.c2_state, len);
-       printf("Jeg har nu aendret controller #%d til %d\n", scenarie.c2_id, scenarie.c2_state);
+       statusControllerPrint(controllers, controllerIDtoIndex(controllers, scenarie.c2_id, len));
        res = changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c3_id, len), scenarie.c3_state, len);
-       printf("Jeg har nu aendret controller #%d til %d\n", scenarie.c3_id, scenarie.c3_state);
+       statusControllerPrint(controllers, controllerIDtoIndex(controllers, scenarie.c3_id, len));
        }
     
     return res;

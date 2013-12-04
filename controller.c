@@ -13,11 +13,11 @@ void statusControllerPrint (const CONTROLLERS controllers[], int i) {
 	char status[8];
 	
 	if (controllers[i].status)
-    	sprintf(status, "T%sndt", ae);
+    	sprintf(status, "t%sndt", ae);
 	else
-    	strcpy(status, "Slukket");
+    	strcpy(status, "slukket");
 	
-   	printf("#%d %s - %s: %s\n", controllers[i].id, controllers[i].unit, controllers[i].position, status);
+   	printf("%s i %s er nu %s\n", controllers[i].unit, controllers[i].position, status);
    
 }
 
