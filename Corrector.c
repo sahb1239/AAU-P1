@@ -183,7 +183,7 @@ int deletion (const char *input, char **output) {
 		if (i != 0)
 			strncpy(output[i], input, i);
 		if (i <= strlen(input))
-			strncpy(output[i] + (i * sizeof(char)), input + ((i + 1) * sizeof(char)), strlen(input) - i + 1);
+			strncpy(output[i] + (i * sizeof(char)), input + ((i + 1) * sizeof(char)), strlen(input) - i);
 
 		/*memmove(&(output[i][i]), &(output[i][i + 1]), strlen(input) - i + 1);*/
 	}
