@@ -118,12 +118,19 @@ int findScenarie(const SCENARIE scenarier[], const char name[], int len) {
 }
 
 int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len) {
-    int i = ERROR_OCCURRED;
-	
-    i = changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c1_id, len), scenarie.c1_state, len);
-    i = changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c2_id, len), scenarie.c2_state, len);
-    i = changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c3_id, len), scenarie.c3_state, len);
+    int i, res = ERROR_OCCURRED;
     
-    return i;
+    if (scenarie.c1_id == 00000) {
+       for (i = 0; i < len; i++) {
+          res = changeControllerState(controllers, i, scenarie.c1_state, len); }
+    }
+    
+    else {	
+       res = changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c1_id, len), scenarie.c1_state, len);
+       res = changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c2_id, len), scenarie.c2_state, len);
+       res = changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c3_id, len), scenarie.c3_state, len);
+       }
+    
+    return res;
     
 }

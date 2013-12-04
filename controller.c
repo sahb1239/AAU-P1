@@ -29,7 +29,7 @@ void statusControllerPrintAll (const CONTROLLERS controllers[], int len) {
     
     for (i = 0; i < len; i++) {
     	if (controllers[i].status)
-    		sprintf(status, "T%sndt", AE);
+    		sprintf(status, "T%sndt", ae);
     	else
     		strcpy(status, "Slukket");
     	
