@@ -47,26 +47,6 @@ int main(int argc, char *argv[]) {
     		char *j = correct("kontoret", &i);
     		printf("%s\n", j);
     		free(j);
-    	
-    		char *out[10]; int len = splitString("Søren kontoret tænd printer på kontor", out, 10);
-			
-			printf("START");
-			for (i = 0; i < len; i++) {
-					int tmp2;
-					char *t = correct(out[i], &tmp2);
-					if (t != NULL) {
-						printf("%s\n", t);
-						free(t);
-					}
-			}
-
-			printf("STEP1");
-    		/* Free splitString array */
-			for (i = 0; i < len; i++) {
-				printf("%s\n", out[i]);
-    			free(out[i]);
-    		}
-    		printf("SUCCES");
     		return EXIT_SUCCESS;
     	}
      
