@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 			printf("START");
 			for (i = 0; i < len; i++) {
 					int tmp2;
-					char *tmp = correct(out[i], &tmp2);
+					free(correct(out[i], &tmp2));
 			}
 
     		/* Free splitString array */
