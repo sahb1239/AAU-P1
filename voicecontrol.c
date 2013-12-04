@@ -72,7 +72,8 @@ int main(int argc, char *argv[]) {
 					if (tmp != NULL) {
 						if (strcmpI(tmp, ptr[i]) != 0) {
 							percentUnderstood -= (100 - likeness) / numstrings;
-							strcpy(ptr[i], tmp);
+							/*strcpy(ptr[i], tmp);*/
+							free(tmp); /* Free output */
 						}
 					} else percentUnderstood = -1;
 				}
