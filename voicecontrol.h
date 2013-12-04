@@ -17,7 +17,7 @@ typedef struct {
 
 /*#define ERROR_OCCURRED -1*/
 #define UNIT_NAME "jarvis"
-#define SPLITSTRING_SIZE 10
+#define SPLITSTRING_SIZE 15
 #define INPUT_SIZE 80
 #define SCENARIE_SIZE 50
 #define CONTROLLER_SIZE 50

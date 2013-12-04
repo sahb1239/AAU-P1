@@ -109,9 +109,6 @@ int main(int argc, char *argv[]) {
 				if (percentUnderstood >= 80 || acceptCorrection) {
 					if (!findAndExecuteCommand(ptr, numstrings, controllers, controller_len, scenarier, scenarie_len))
 						printf(NOTUNDERSTOOD_TEXT);
-					else {
-						/* TODO: Gem ny output */
-					}
 					
 					/* Print hvis debug er defined */
 					#ifdef DEBUG
