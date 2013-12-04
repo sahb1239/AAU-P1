@@ -82,9 +82,8 @@ int saveScenarier(const SCENARIE scenarier[], int len) {
     
     FILE *pFile = fopen(FILE_SCENARIE, "w");
     
-    if (pFile == NULL) {
+    if (pFile == NULL)
 	  return ERROR_OCCURRED;
-	}
     
     for (i = 0; i < len; i++) {
       fprintf(pFile, "\n%d   %d   %d   %d   %d #%d    %d #%d    %d #%d %s", scenarier[i].num, scenarier[i].allow_p1, scenarier[i].allow_p2, scenarier[i].allow_p3, 

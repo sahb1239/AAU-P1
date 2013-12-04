@@ -23,7 +23,8 @@ int readUsers(USERS users[]) {
 
 void printUsers(const USERS users[], int len) {
     int i;
-    	printf("Prioritet:\tBruger:\n");
+    printf("Prioritet:\tBruger:\n");
+    
     for (i = 0; i < len; i++) {
     	printf("%d\t\t%s\n", users[i].priority, users[i].name);
 	}
@@ -32,7 +33,7 @@ void printUsers(const USERS users[], int len) {
 void deleteUsers(const USERS users[], int len, char inputname[]){
 	int i;
    	FILE *pFile1 = fopen(FILE_USERS, "w");
-    for (i = 0; i<len; i++) {
+    for (i = 0; i < len; i++) {
     	
     	if (strcmp(users[i].name, inputname) != 0){
     		fprintf(pFile1, "%d\t%s\n", users[i].priority, users[i].name);
@@ -44,9 +45,10 @@ void deleteUsers(const USERS users[], int len, char inputname[]){
 void addUsers(const USERS users[], int len, char inputname[], int inputpriority){
 	int i;
    	FILE *pFile1 = fopen(FILE_USERS, "w");
+    
     for (i = 0; i<len; i++) {
-    	fprintf(pFile1, "%d\t%s\n", users[i].priority, users[i].name);
-    }
-    	fprintf(pFile1, "%d\t%s\n", inputpriority, inputname);
+    	fprintf(pFile1, "%d\t%s\n", users[i].priority, users[i].name); }
+        
+    fprintf(pFile1, "%d\t%s\n", inputpriority, inputname);
 	fclose(pFile1);  
 }
