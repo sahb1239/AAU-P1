@@ -50,16 +50,7 @@ int main(int argc, char *argv[]) {
 			for (i = 0; i < len; i++) {
 					int tmp2;
 					char *tmp = correct(out[i], &tmp2);
-					if (tmp != NULL) {
-						if (strcmpI(tmp, out[i]) != 0) {
-							/*free(out[i]);
-							
-							out[i] = malloc(strlen(tmp) * sizeof(char) + 1);
-							strcpy(out[i], tmp);
-							
-							free(tmp); /* Free output */
-						}
-					}
+					
 			}
 
     		/* Free splitString array */
