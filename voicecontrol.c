@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
     		addUsers(users, users_len, inputname, inputpriority);
     	} else if (strcmp("--testfree", argv[i]) == 0) {
     		char *t[10];
-    		int m, k = splitString("tænd printer stue printer hyggeaften", t,  10);
+    		int m, k = splitString("scenare printer stue printer hyggeaften", t,  10);
     		for (i = 0; i < k; i++) {
     			char *j = correct(t[i], &m);
     			printf("%s\n", j);
