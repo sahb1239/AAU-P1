@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     		scanf("%d%s", &inputpriority, &inputname);
     		addUsers(users, users_len, inputname, inputpriority);
     	} else if (strcmp("--testfree", argv[i]) == 0) {
-    		char *out[10], **ptr; int len, blen = splitString("Søren er awesome Søren", out, 10);
+    		char *out[10], **ptr; int len, blen = splitString("Søren tænd printer på kontoret", out, 10);
     		
     		for (i = 0, len = blen; i < len; i++) {
 				if (strcmp(out[i], "Søren") == 0) {
@@ -52,6 +52,17 @@ int main(int argc, char *argv[]) {
 					ptr = out + (i + 1) * sizeof(char); /* Sizeof char is 1 */
 					break;
 				}
+			}
+			
+			for (i = 0; i < len; i++) {
+					int tmp2;
+					char *tmp = correct(ptr[i], &tmp2);
+					if (tmp != NULL) {
+						if (strcmpI(tmp, ptr[i]) != 0) {
+							strcpy(ptr[i], tmp);
+							free(tmp); /* Free output */
+						}
+					}
 			}
     		
     		/* Free splitString array */
