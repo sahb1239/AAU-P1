@@ -44,25 +44,18 @@ int main(int argc, char *argv[]) {
     		scanf("%d%s", &inputpriority, &inputname);
     		addUsers(users, users_len, inputname, inputpriority);
     	} else if (strcmp("--testfree", argv[i]) == 0) {
-    		char *out[10], **ptr; int len, blen = splitString("Søren tænd printer på kontoret", out, 10);
-    		
-    		for (i = 0, len = blen; i < len; i++) {
-				if (strcmp(out[i], "Søren") == 0) {
-					len -= i + 1;
-					ptr = out + (i + 1) * sizeof(char); /* Sizeof char is 1 */
-					break;
-				}
-			}
+    		char *out[10]; int len = splitString("Søren tænd printer på kontoret", out, 10);
 			
+			printf("START");
 			for (i = 0; i < len; i++) {
 					int tmp2;
-					char *tmp = correct(ptr[i], &tmp2);
+					char *tmp = correct(out[i], &tmp2);
 					if (tmp != NULL) {
-						if (strcmpI(tmp, ptr[i]) != 0) {
-							free(ptr[i]);
+						if (strcmpI(tmp, out[i]) != 0) {
+							free(out[i]);
 							
-							ptr[i] = malloc(strlen(tmp) * sizeof(char) + 1);
-							strcpy(ptr[i], tmp);
+							out[i] = malloc(strlen(tmp) * sizeof(char) + 1);
+							strcpy(out[i], tmp);
 							
 							free(tmp); /* Free output */
 						}
@@ -70,9 +63,10 @@ int main(int argc, char *argv[]) {
 			}
 
     		/* Free splitString array */
-			for (i = 0; i < blen; i++) {
+			for (i = 0; i < len; i++) {
     			free(out[i]);
     		}
+    		printf("SUCCES");
     		return EXIT_SUCCESS;
     	}
      
