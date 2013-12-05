@@ -206,8 +206,9 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 			type = status;
 		else if (strcmpI(input[i], "scenarie") == 0)
 			type = scenarie;
-        else if (strcmpI(input[i], "tilfoejcontroller") == 0)
+        else if (strcmpI(input[i], "tilfoejcontroller") == 0) {
             type = add_controller;
+            numactions++; /* Fix for http://goo.gl/qznNd1 */}
 		
 		/* Find controllers */
 		for (j = 0; j < controllersLen; j++) {

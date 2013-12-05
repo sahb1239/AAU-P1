@@ -52,6 +52,7 @@ void addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int len) 
 	strcpy(controllers[len].unit, controller.unit);
 	strcpy(controllers[len].position, controller.position);
 	saveControllers(controllers, len + 1);
+    printf("Controller #%d er nu gemt\n", controllers[len].id);
 }
 
 int changeControllerState(CONTROLLERS controllers[], int index, int state, int len) {
