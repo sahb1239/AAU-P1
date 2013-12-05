@@ -4,8 +4,8 @@
 #include "danish.h"
 
 void readInputController (char genstand[], char placering[]) {
-	printf("Brug f%slgende format for at tilf%sje en controller:\n"
-           "[GENSTAND] [PLACERING]\n", oe, oe);
+	printf("Brug f%slgende format:\n"
+           "[GENSTAND] [PLACERING]\n", oe);
     scanf("%s %s", genstand, placering);                
 }
 
@@ -43,7 +43,7 @@ int addController(CONTROLLERS controllers[], int len) {
 	readInputController(controller.unit, controller.position);
 	addControllerC(controllers, controller, len);
 	
-	return len + 1;
+	return controller.id;
 }
 
 void addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int len) {
@@ -52,7 +52,6 @@ void addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int len) 
 	strcpy(controllers[len].unit, controller.unit);
 	strcpy(controllers[len].position, controller.position);
 	saveControllers(controllers, len + 1);
-    printf("Controller #%d er nu gemt\n", controllers[len].id);
 }
 
 int changeControllerState(CONTROLLERS controllers[], int index, int state, int len) {
@@ -61,19 +60,24 @@ int changeControllerState(CONTROLLERS controllers[], int index, int state, int l
     return state;
 }
 
-int removeController(CONTROLLERS controllers[], int index, int len) {
-    int i, j;
+int removeController(CONTROLLERS controllers[], int len) {
+    int i, j, success = -1;
+    CONTROLLERS controller;
+	
+	readInputController(controller.unit, controller.position);
     
     for (i = 0; i < len; i++) {
-       	if (controllers[i].id == index) {
+        if (strcmpI(controllers[i].unit, controller.unit) == 0 && strcmpI(controllers[i].position, controller.position) == 0) { /* Skal vel køres igennem stavekontrollen? */
           	len--;
+            success = 1;
           
           	for (j = i; j < len; j++) {
              	controllers[j] = controllers[j + 1];
              }
-       }
+        }
     }
-    return i;
+    if (success != -1) saveControllers(controllers, len - 1);
+    return success;
 }
 
 int controllerState (const CONTROLLERS controllers[], int cid, int len) {
