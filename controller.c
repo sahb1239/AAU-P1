@@ -69,7 +69,6 @@ int removeController(CONTROLLERS controllers[], int index, int len) {
           
           	for (j = i; j < len; j++) {
              	controllers[j] = controllers[j + 1];
-             	controllers[j].id--; 
              }
        }
     }
