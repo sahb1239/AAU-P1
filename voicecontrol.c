@@ -209,6 +209,9 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
         else if (strcmpI(input[i], "tilfoejcontroller") == 0) {
             type = add_controller;
             numactions++; /* Fix for http://goo.gl/qznNd1 */}
+        else if (strcmpI(input[i], "sletcontroller") == 0) {
+            type = remove_controller;
+            numactions++; }
 		
 		/* Find controllers */
 		for (j = 0; j < controllersLen; j++) {
@@ -249,8 +252,13 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
                 break;
 			case scenarie:
 				return runScenarie(scenarier[findScenarie(scenarier, controlScenarieTmp[i], scenarierLen)], controllers, controllersLen) != -1;
+                break;
             case add_controller:                
-                addController(controllers, controllersLen);
+                if (addController(controllers, controllersLen) == -1) return 0;
+                printf("Controlleren er tilf%sjet!\n", oe); break;
+            case remove_controller:
+                if (removeController(controllers, controllersLen) == -1) return 0;
+                printf("Controlleren er fjernet!\n"); break;
 		}
 	}
 	
