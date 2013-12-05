@@ -26,11 +26,12 @@ char *correct (const char input[], int *likeness) {
   	
   	/* Punkt 2: redigering af input */
   	int totalLen = findInsertLen(input) + findDeletionLen(input) + findReplaceLen(input) + findTranspotionsLen(input);
-  	char **combinations = malloc(totalLen * sizeof(char *)), **curptr = combinations;
-  	curptr += insert(input, curptr);
-  	curptr += deletion(input, curptr);
-  	curptr += replace(input, curptr);
-  	curptr += transpose(input, curptr);
+  	char **combinations = malloc(totalLen * sizeof(char *)); 
+	int startIndex = 0;
+  	startIndex += insert(input, combinations, startIndex);
+  	startIndex += deletion(input, combinations, startIndex);
+  	startIndex += replace(input, combinations, startIndex);
+  	startIndex += transpose(input, combinations, startIndex);
   	
   	/* Punkt 3: sammenligning af output fra edit1 med input. Tjek om der er flere match og returner det første element. */
   	int matchingWordsNum = 0;
@@ -59,7 +60,7 @@ char *correct (const char input[], int *likeness) {
   		for (j = 0; j < num_words; j++)
 			free(db_words[j]);
 		free(db_words);
-  	 		
+  	 	
   		for (j = 0; j < totalLen; j++)
   			free(combinations[j]);
   		free(combinations);
@@ -70,18 +71,22 @@ char *correct (const char input[], int *likeness) {
   	/* Punkt 4: Redigering af input til redigeringsafstand 2. */
   	/* Find total mængde der skal allokeres af plads */
   	int totalLen2 = 0;
-  	for (i = 0; i < totalLen; i++) {
-  		totalLen2 += findInsertLen(combinations[i]) + findDeletionLen(combinations[i]) + 
-  					  findReplaceLen(combinations[i]) + findTranspotionsLen(combinations[i]);
+  	for (j = 0; j < totalLen; j++) {
+  		totalLen2 += findInsertLen(combinations[j]) + findDeletionLen(combinations[j]) + 
+  					  findReplaceLen(combinations[j]) + findTranspotionsLen(combinations[j]);
   	}
   	
-  	char **combinations2 = malloc(totalLen2 * sizeof(char *)), **curptr2 = combinations2;
+  	char **combinations2 = malloc(totalLen2 * sizeof(char *));
+	int startIndex2 = 0;
   	for (i = 0; i < totalLen; i++) {
-  		curptr2 += insert(combinations[i], curptr2);
-  		curptr2 += deletion(combinations[i], curptr2);
-  		curptr2 += replace(combinations[i], curptr2);
-  		curptr2 += transpose(combinations[i], curptr2);
+  		startIndex2 += insert(combinations[i], combinations2, startIndex2);
+  		startIndex2 += deletion(combinations[i], combinations2, startIndex2);
+  		startIndex2 += replace(combinations[i], combinations2, startIndex2);
+  		startIndex2 += transpose(combinations[i], combinations2, startIndex2);
+
+		free(combinations[j]);
   	}
+	free(combinations);
   	
   	/* Punkt 5: sammenligning af output fra edit2 med input. Returnering hvis match. */
   	for (i = 0; i < totalLen2; i++) {
@@ -94,10 +99,6 @@ char *correct (const char input[], int *likeness) {
   	 			for (j = 0; j < num_words; j++)
 	  				free(db_words[j]);
 				free(db_words);
-  	 		
-  	 			for (j = 0; j < totalLen; j++)
-  	 				free(combinations[j]);
-  	 			free(combinations);
   	 			
   	 			for (j = 0; j < totalLen2; j++)
   	 				free(combinations2[j]);
@@ -114,10 +115,6 @@ char *correct (const char input[], int *likeness) {
   	for (j = 0; j < num_words; j++)
 		free(db_words[j]);
 	free(db_words);
-  	 		
-  	for (j = 0; j < totalLen; j++)
-  		free(combinations[j]);
-  	free(combinations);
   	 			
   	for (j = 0; j < totalLen2; j++)
   	 	free(combinations2[j]);
@@ -152,21 +149,29 @@ int findInsertLen(const char *input) {
 	return (len + 1) * alen;
 }
 
-int insert (const char *input, char** output) {
-	int i, j, k;
-	for (j = 0, i = 0; j < strlen(ALPHABET); j++) {
-		for (k = 0; k < strlen(input) + 1; k++, i++) {
-			output[i] = malloc((strlen(input) + 2) * sizeof(char)); /* Plads til 0 tegnet og et ekstra tegn */
+int insert (const char *input, char** output, int startIndex) {
+	int i, j, k, l;
+	for (j = 0, i = startIndex, l = 0; j < strlen(ALPHABET); j++) {
+		for (k = 0; k < strlen(input) + 1; k++, i++, l++) {
+			output[i] = (char *)malloc((strlen(input) + 2) * sizeof(char)); /* Plads til 0 tegnet og et ekstra tegn */
+			if (output == NULL) {
+				printf("FEJL");
+				exit(EXIT_FAILURE);
+			}
 			
 			/* Kopierer input */
 			strcpy(output[i], input);
 			
-			memmove(&(output[i][k + 1]), &(output[i][k]), strlen(input) - k + 2);
+			/* Rykker memory og indsætter bogstav */
+			memmove(output[i] + (k + 1) * sizeof(char), output[i] + k * sizeof(char), strlen(input) - k);
 			output[i][k] = ALPHABET[j];
+			
+			/* Indsætter \0 tegnet */
+			output[i][strlen(input) + 1] = '\0';
 		}
 	}
 	
-	return i;
+	return l;
 }
 
 int findDeletionLen(const char *input) {
@@ -174,20 +179,25 @@ int findDeletionLen(const char *input) {
 	return len;
 }
 
-int deletion (const char *input, char **output) {
-	int i;
-	for (i = 0; i < strlen(input); i++) {
-		output[i] = malloc(strlen(input) * sizeof(char));
+int deletion (const char *input, char **output, int startIndex) {
+	int i, j;
+	for (i = startIndex, j = 0; j < strlen(input); i++, j++) {
+		output[i] = (char *)malloc(strlen(input) * sizeof(char));
+		if (output == NULL) {
+			printf("FEJL");
+			exit(EXIT_FAILURE);
+		}
 		
-		/* Kopierer input */
+		/* Kopierer input (uden 0 tegnet) */
 		strncpy(output[i], input, strlen(input));
-
-		memmove(&(output[i][i]), &(output[i][i + 1]), strlen(input) - i + 1);
 		
-		output[i][strlen(input)] = '\0';
+		memmove(output[i] + (j * sizeof(char)), output[i] + ((j + 1) * sizeof(char)), strlen(input) - j - 1);
+		
+		/* Indsætter 0 tegnet */
+		output[i][strlen(input) - 1] = '\0';
 	}
 	
-	return i;
+	return j;
 }
 
 int findReplaceLen(const char *input) {
@@ -195,11 +205,15 @@ int findReplaceLen(const char *input) {
 	return len * alen;
 }
 
-int replace(const char *input, char **output) {
-	int i, j, k;
-	for (j = 0, i = 0; j < strlen(ALPHABET); j++) {
-		for (k = 0; k < strlen(input); k++, i++) {
-			output[i] = malloc((strlen(input) + 1) * sizeof(char)); /* Plads til \0 */
+int replace(const char *input, char **output, int startIndex) {
+	int i, j, k, l;
+	for (j = 0, i = startIndex, l = 0; j < strlen(ALPHABET); j++) {
+		for (k = 0; k < strlen(input); k++, i++, l++) {
+			output[i] = (char *)malloc((strlen(input) + 1) * sizeof(char)); /* Plads til \0 */
+			if (output == NULL) {
+				printf("FEJL");
+				exit(EXIT_FAILURE);
+			}
 			
 			/* Kopierer input */
 			strcpy(output[i], input);
@@ -208,26 +222,29 @@ int replace(const char *input, char **output) {
 		}
 	}
 		
-	return i;
+	return l;
 }
 
 int findTranspotionsLen(const char *input) {
-	int len = strlen(input);
-	return len - 1;
+	return strlen(input) - 1;
 }
 
-int transpose(const char *input, char **output) {
-	int outLen = findTranspotionsLen(input), i;
-	for (i = 0; i < outLen; i++) {
-		output[i] = malloc((strlen(input) + 1) * sizeof(char)); /* Plads til \0 */
+int transpose(const char *input, char **output, int startIndex) {
+	int outLen = findTranspotionsLen(input), i, j;
+	for (i = startIndex, j = 0; j < outLen; i++, j++) {
+		output[i] = (char *)malloc((strlen(input) + 1) * sizeof(char)); /* Plads til \0 */
+		if (output == NULL) {
+			printf("FEJL");
+			exit(EXIT_FAILURE);
+		}
 		
 		/* Kopierer input */
 		strcpy(output[i], input);
 		
-		char tmp = output[i][i];
-		output[i][i] = output[i][i + 1];
-		output[i][i + 1] = tmp;
+		char tmp = output[i][j];
+		output[i][j] = output[i][j + 1];
+		output[i][j + 1] = tmp;
 	}
 	
-	return i;
+	return j;
 }
