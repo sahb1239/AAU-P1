@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
 				#endif
 			
 				if (percentUnderstood >= 80 || acceptCorrection) {
-					if (!findAndExecuteCommand(ptr, numstrings, controllers, controller_len, scenarier, scenarie_len))
+					if (!findAndExecuteCommand(ptr, numstrings, controllers, &controller_len, scenarier, &scenarie_len))
 						printf(NOTUNDERSTOOD_TEXT, aa);
 					
 					/* Print hvis debug er defined */
@@ -187,7 +187,7 @@ int strcmpI(const char *string1, const char *string2) {
 	return out;
 }
 
-int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int controllersLen, const SCENARIE scenarier[], int scenarierLen) {
+int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen) {
 	int i, j, numactions;
 	
 	/* Generer actions */
@@ -212,9 +212,15 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
         else if (strcmpI(input[i], "sletcontroller") == 0) {
             type = remove_controller;
             numactions++; }
+        else if (strcmpI(input[i], "tilfoejscenarie") == 0) {
+            type = add_scenarie;
+            numactions++; }
+        else if (strcmpI(input[i], "sletscenarie") == 0) {
+            type = remove_scenarie;
+            numactions++; }
 		
 		/* Find controllers */
-		for (j = 0; j < controllersLen; j++) {
+		for (j = 0; j < *controllersLen; j++) {
 			if (strcmpI(input[i], controllers[j].unit) == 0)
 				controlScenarieTmp[numactions++] = input[i];
 				
@@ -223,7 +229,7 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 		}
 		
 		/* Find scenarier */
-		for (j = 0; j < scenarierLen; j++) {
+		for (j = 0; j < *scenarierLen; j++) {
 			if (strcmpI(input[i], scenarier[j].desc) == 0)
 				controlScenarieTmp[numactions++] = input[i];
 		}
@@ -234,15 +240,15 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 	for (i = 0; i < numactions; i++) {
 		switch (type) {
 			case turn_on: case turn_off:
-				id = findController(controllers, controlScenarieTmp[i], position, controllersLen);
+				id = findController(controllers, controlScenarieTmp[i], position, *controllersLen);
 				
 				/* Tjek id om ID'et er gyldigt */
 				if (id < 0)
 					return 0;
 				
-				changeControllerState(controllers, id, type == turn_on ? 1 : 0, controllersLen);
+				changeControllerState(controllers, id, type == turn_on ? 1 : 0, *controllersLen);
 			case status:
-				id = findController(controllers, controlScenarieTmp[i], position, controllersLen);
+				id = findController(controllers, controlScenarieTmp[i], position, *controllersLen);
 				
 				if (id < 0)
 					return 0;
@@ -251,14 +257,20 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 				statusControllerPrint(controllers, id);
                 break;
 			case scenarie:
-				return runScenarie(scenarier[findScenarie(scenarier, controlScenarieTmp[i], scenarierLen)], controllers, controllersLen) != -1;
+				return runScenarie(scenarier[findScenarie(scenarier, controlScenarieTmp[i], *scenarierLen)], controllers, *controllersLen) != -1;
                 break;
             case add_controller:                
-                if (addController(controllers, controllersLen) == -1) return 0;
-                printf("Controlleren er tilf%sjet!\n", oe); break;
+                if (addController(controllers, *controllersLen) == -1) return 0;
+                printf("Controlleren er tilf%sjet!\n", oe); (*controllersLen)++; break;
             case remove_controller:
-                if (removeController(controllers, controllersLen) == -1) return 0;
-                printf("Controlleren er fjernet!\n"); break;
+                if (removeController(controllers, *controllersLen) == -1) return 0;
+                printf("Controlleren er fjernet!\n"); (*controllersLen)--; break;
+            case add_scenarie:
+                if (addScenarie(scenarier, *scenarierLen) == -1) return 0;
+                printf("Scenariet er tilf%sjet!\n", oe); (*scenarierLen)++; break;
+            case remove_scenarie:
+                if (removeScenarie(scenarier, *scenarierLen) == -1) return 0;
+                printf("Scenariet er fjernet!\n"); (*scenarierLen)--; break;
 		}
 	}
 	

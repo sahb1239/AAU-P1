@@ -38,21 +38,31 @@ void addScenarieC(SCENARIE scenarier[], SCENARIE scenarie, int len) {
     saveScenarier(scenarier, len + 1);
 }
 
-void removeScenarie(SCENARIE scenarier[], int index, int len) {
-    int i, j;
+int removeScenarie(SCENARIE scenarier[], int len) {
+    int i, j, success = -1;
+    char name[50];
     
-    for (i = 0; i < len - 44; i++) {
-       if (scenarier[i].num == index) {
+    removeScenarieInput(name);
+    
+    for (i = 0; i < len; i++) {
+       if (strcmpI(scenarier[i].desc, name) == 0) {
           	len--;
+            success = 1;
           
-          	for (j = i; j < len - 44; j++) {
+          	for (j = i; j < len; j++) {
              	scenarier[j] = scenarier[j + 1];
              	scenarier[j].num--; 
         	}
        }
     }
     
-    saveScenarier(scenarier, len - 1);
+    if (success != -1) saveScenarier(scenarier, len);
+    return success;
+}
+
+void removeScenarieInput (char *name) {
+    printf("Hvilket scenarie vil du gerne fjerne?\n");
+    scanf("%s", name);
 }
 
 int readScenarie(SCENARIE scenarier[]) {
@@ -86,9 +96,9 @@ int saveScenarier(const SCENARIE scenarier[], int len) {
 	  return ERROR_OCCURRED;
     
     for (i = 0; i < len; i++) {
-      fprintf(pFile, "\n%d   %d   %d   %d   %d #%d    %d #%d    %d #%d %s", scenarier[i].num, scenarier[i].allow_p1, scenarier[i].allow_p2, scenarier[i].allow_p3, 
-                                                                            scenarier[i].c1_state, scenarier[i].c1_id, scenarier[i].c2_state, scenarier[i].c2_id, 
-                                                                            scenarier[i].c3_state, scenarier[i].c3_id, scenarier[i].desc); }
+      fprintf(pFile, "\n%d   %d   %d   %d   %d #%-5d    %d #%-5d    %d #%-5d %s", scenarier[i].num, scenarier[i].allow_p1, scenarier[i].allow_p2, scenarier[i].allow_p3, 
+                                                                                  scenarier[i].c1_state, scenarier[i].c1_id, scenarier[i].c2_state, scenarier[i].c2_id, 
+                                                                                  scenarier[i].c3_state, scenarier[i].c3_id, scenarier[i].desc); }
 	fclose(pFile);
     
     return 1;
@@ -120,7 +130,7 @@ int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len) {
     int i, res = ERROR_OCCURRED;
     char status[8];
     
-    if (scenarie.c1_id == 00000) {
+    if (scenarie.c1_id == 0) {
        if (scenarie.c1_state)
           sprintf(status, "t%sndt", ae);
        else

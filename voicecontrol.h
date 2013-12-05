@@ -33,5 +33,5 @@ int readInput(char *input[]);
 int splitString(const char *input, char *out[], int maxwords);
 int strcmpI(const char *string1, const char *string2);
 
-int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int controllersLen, const SCENARIE scenarier[], int scenarierLen);
+int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen);
 

@@ -76,7 +76,7 @@ int removeController(CONTROLLERS controllers[], int len) {
              }
         }
     }
-    if (success != -1) saveControllers(controllers, len - 1);
+    if (success != -1) saveControllers(controllers, len);
     return success;
 }
 

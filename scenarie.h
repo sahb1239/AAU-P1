@@ -13,7 +13,8 @@ void printAllScenarier (const SCENARIE scenarier[], int len);
 
 /* Controller */
 void addScenarieC(SCENARIE scenarier[], SCENARIE scenarie, int len);
-void removeScenarie(SCENARIE scenarier[], int index, int len);
+int removeScenarie(SCENARIE scenarier[], int len);
+void removeScenarieInput (char *name);
 int findScenarie(const SCENARIE scenarier[], const char name[], int len);
 
 /* Model */
