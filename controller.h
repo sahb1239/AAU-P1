@@ -19,4 +19,4 @@ int findController(const CONTROLLERS controllers[], const char name[], const cha
 int controllerIDtoIndex(const CONTROLLERS controllers[], int cid, int len);
 
 int readControllers(CONTROLLERS controllers[]);
-int saveControllers(const CONTROLLERS controllers[], int len); /* NI */
+int saveControllers(const CONTROLLERS controllers[], int len);

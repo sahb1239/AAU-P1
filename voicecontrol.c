@@ -126,9 +126,9 @@ int main(int argc, char *argv[]) {
 			} else printf(NOTUNDERSTOOD_TEXT);
 			
 			/* Free splitString array */
-			for (i = 0; i < len; i++) {
+			/*for (i = 0; i < len; i++) {
     			free(out[i]);
-    		}
+    		}*/
 		}
 	}
 }
