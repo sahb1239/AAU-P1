@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
 					
 					acceptCorrection = yn == 'j' || yn == 'y';
 				} else if (percentUnderstood <= 0)
-					printf(NOTUNDERSTOOD_TEXT);
+					printf(NOTUNDERSTOOD_TEXT, aa);
 					
 				#ifdef DEBUG
 					printf("Procent forstået: %d\n", percentUnderstood);
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
 			
 				if (percentUnderstood >= 80 || acceptCorrection) {
 					if (!findAndExecuteCommand(ptr, numstrings, controllers, controller_len, scenarier, scenarie_len))
-						printf(NOTUNDERSTOOD_TEXT);
+						printf(NOTUNDERSTOOD_TEXT, aa);
 					
 					/* Print hvis debug er defined */
 					#ifdef DEBUG
@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
 						}
 					#endif
 				}
-			} else printf(NOTUNDERSTOOD_TEXT);
+			} else printf(NOTUNDERSTOOD_TEXT, aa);
 			
 			/* Free splitString array */
 			for (i = 0; i < len; i++) {

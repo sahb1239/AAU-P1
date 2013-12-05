@@ -22,11 +22,8 @@ typedef struct {
 #define SCENARIE_SIZE 50
 #define CONTROLLER_SIZE 50
 #define USERS_SIZE 50
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-	#define NOTUNDERSTOOD_TEXT "Input blev ikke forst\x86et\n"
-#else
-	#define NOTUNDERSTOOD_TEXT "Input blev ikke forstået\n"
-#endif
+
+#define NOTUNDERSTOOD_TEXT "Input blev ikke forst%set\n"
 
 /* Prototyper */
 /* Input/output - view */

@@ -84,6 +84,7 @@ char *correct (const char input[], int *likeness) {
   		startIndex2 += replace(combinations[i], combinations2, startIndex2);
   		startIndex2 += transpose(combinations[i], combinations2, startIndex2);
 
+		/* Fjerner gammel memory */
 		free(combinations[j]);
   	}
 	free(combinations);
