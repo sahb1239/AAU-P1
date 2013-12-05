@@ -4,7 +4,7 @@
 	#define ALPHABET "abcdefghijklmnopqrstuvwxyzæøå"
 #endif
 
-#define FILE_WORDS "ord"
+#define FILE_WORDS "ord.txt"
 #define DATABASE_SIZE 200
 #define DATABASE_SIZE_WORD 30
 
