@@ -2,7 +2,7 @@
 #include "controller.h"
 
 typedef enum {
-	turn_on, turn_off, status, scenarie, add_controller, remove_controller, add_scenarie, remove_scenarie, add_user, remove_user
+	turn_on, turn_off, status, scenarie, add_controller, remove_controller, add_scenarie, remove_scenarie
 } ACTIONTYPE;
 
 /*

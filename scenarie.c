@@ -4,6 +4,8 @@
 #include "controller.h"
 #include "danish.h"
 
+int strcmpI(const char *string1, const char *string2);
+
 int addScenarie(SCENARIE scenarier[], int len) {
 	SCENARIE scenarie;
 	
