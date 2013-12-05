@@ -3,10 +3,10 @@
 #include "voicecontrol.h"
 #include "danish.h"
 
-void readInputController (int *id, char genstand[], char placering[]) {
+void readInputController (char genstand[], char placering[]) {
 	printf("Brug f%slgende format for at tilf%sje en controller:\n"
-           "[ID] [GENSTAND] [PLACERING]\n", oe, oe);
-    scanf("%d %s; %s", id, genstand, placering);                
+           "[GENSTAND] [PLACERING]\n", oe, oe);
+    scanf("%s %s", genstand, placering);                
 }
 
 void statusControllerPrint (const CONTROLLERS controllers[], int i) {
@@ -40,14 +40,14 @@ void statusControllerPrintAll (const CONTROLLERS controllers[], int len) {
 int addController(CONTROLLERS controllers[], int len) {
 	CONTROLLERS controller;
 	
-	readInputController(&controller.id, controller.unit, controller.position);
+	readInputController(controller.unit, controller.position);
 	addControllerC(controllers, controller, len);
 	
 	return len + 1;
 }
 
 void addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int len) {
-	controllers[len].id = len + 1;
+	controllers[len].id = controllers[len - 1].id + 1;
 	controllers[len].status = controller.status;
 	strcpy(controllers[len].unit, controller.unit);
 	strcpy(controllers[len].position, controller.position);

@@ -7,7 +7,7 @@ typedef struct {
 } CONTROLLERS;
 
 int addController(CONTROLLERS controllers[], int len);
-void readInputController (int *id, char genstand[], char placering[]);
+void readInputController (char genstand[], char placering[]);
 void statusControllerPrint (const CONTROLLERS controllers[], int index);
 void statusControllerPrintAll (const CONTROLLERS controllers[], int len);
 

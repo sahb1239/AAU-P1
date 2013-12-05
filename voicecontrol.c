@@ -206,6 +206,8 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 			type = status;
 		else if (strcmpI(input[i], "scenarie") == 0)
 			type = scenarie;
+        else if (strcmpI(input[i], "tilfoejcontroller") == 0)
+            type = add_controller;
 		
 		/* Find controllers */
 		for (j = 0; j < controllersLen; j++) {
@@ -243,9 +245,11 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 			
 				/* Print status */
 				statusControllerPrint(controllers, id);
-				break;
+                break;
 			case scenarie:
 				return runScenarie(scenarier[findScenarie(scenarier, controlScenarieTmp[i], scenarierLen)], controllers, controllersLen) != -1;
+            case add_controller:                
+                addController(controllers, controllersLen);
 		}
 	}
 	

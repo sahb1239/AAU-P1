@@ -2,7 +2,7 @@
 #include "controller.h"
 
 typedef enum {
-	turn_on, turn_off, status, scenarie
+	turn_on, turn_off, status, scenarie, add_controller, remove_controller, add_scenarie, remove_scenarie, add_user, remove_user
 } ACTIONTYPE;
 
 /*
@@ -17,7 +17,7 @@ typedef struct {
 
 /*#define ERROR_OCCURRED -1*/
 #define UNIT_NAME "jarvis"
-#define SPLITSTRING_SIZE 15
+#define SPLITSTRING_SIZE 50
 #define INPUT_SIZE 80
 #define SCENARIE_SIZE 50
 #define CONTROLLER_SIZE 50

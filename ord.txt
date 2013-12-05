@@ -13,3 +13,4 @@ Boernelampe1 Sengelampe Boernevaerelse1
 Boernelampe2 Boernevaerelse2
 hyggeaften hjemme
 taendkontor slukkontor taendalt slukalt
+tilfoejcontroller
