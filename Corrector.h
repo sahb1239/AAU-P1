@@ -12,10 +12,10 @@ char *correct (const char input[], int *likeness);
 char **database_extract (int *len);
 
 int findInsertLen(const char *input);
-int insert (const char *input, char** output);
+int insert (const char *input, char** output, int startIndex);
 int findDeletionLen(const char *input);
-int deletion (const char *input, char **output);
+int deletion (const char *input, char **output, int startIndex);
 int findReplaceLen(const char *input);
-int replace(const char *input, char **output);
+int replace(const char *input, char **output, int startIndex);
 int findTranspotionsLen(const char *input);
-int transpose(const char *input, char **output);
+int transpose(const char *input, char **output, int startIndex);
