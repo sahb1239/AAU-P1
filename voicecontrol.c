@@ -218,6 +218,9 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
         else if (strcmpI(input[i], "sletscenarie") == 0) {
             type = remove_scenarie;
             numactions++; }
+        else if (strcmpI(input[i], "hjælp") == 0 || strcmpI(input[i], "hjaelp") == 0) {
+            type = help;
+            numactions++; }
 		
 		/* Find controllers */
 		for (j = 0; j < *controllersLen; j++) {
@@ -271,8 +274,35 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
             case remove_scenarie:
                 if (removeScenarie(scenarier, *scenarierLen) == -1) return 0;
                 printf("Scenariet er fjernet!\n"); (*scenarierLen)--; break;
+            case help:
+                helpMe();
+                break;
 		}
 	}
 	
 	return numactions != 0;
+}
+
+void helpMe(void) {
+    system("CLS");
+  
+    /* printf("Dette program er udviklet af B2-24 p%s AAU ifm. P1-projekt\nHer f%slger en liste af kommandoer:\n\n", aa, oe); */
+    
+    printf("STATUS FOR CONTROLLER\n\"Jarvis status for [genstand] i [position]\"\n\n");
+    
+    printf("T%sND/SLUK EN CONTROLLER\n\"Jarvis t%snd/sluk for [genstand] i [position]\"\n\n", AE, ae);
+    
+    printf("K%sR SCENARIE\n\"Jarvis scenarie [scenarienavn]\"\n\n", OE);
+    
+    printf("TILF%sJ CONTROLLER\n\"Jarvis tilfoejcontroller\" (efterfulgt af en dialog)\n\n", OE);
+    
+    printf("SLET CONTROLLER\n\"Jarvis sletcontroller\" (efterfulgt af en dialog)\n\n");
+    
+    printf("TILF%sJ SCENARIE\n\"Jarvis tilfoejscenarie\" (efterfulgt af en dialog)\n\n", OE);
+    
+    printf("SLET SCENARIE\n\"Jarvis sletscenarie\" (efterfulgt af en dialog)\n\n");
+    
+    printf("STATUS FOR ALLE CONTROLLERS\n\"Jarvis statusalle\"");
+    
+    printf("\n\n");
 }

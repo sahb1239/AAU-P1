@@ -2,7 +2,7 @@
 #include "controller.h"
 
 typedef enum {
-	turn_on, turn_off, status, scenarie, add_controller, remove_controller, add_scenarie, remove_scenarie
+	turn_on, turn_off, status, scenarie, add_controller, remove_controller, add_scenarie, remove_scenarie, help
 } ACTIONTYPE;
 
 /*
@@ -26,6 +26,7 @@ typedef struct {
 #define NOTUNDERSTOOD_TEXT "Input blev ikke forst%set\n"
 
 /* Prototyper */
+void helpMe(void);
 /* Input/output - view */
 int readInput(char *input[]);
 
