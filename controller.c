@@ -4,9 +4,10 @@
 #include "danish.h"
 
 void readInputController (char genstand[], char placering[]) {
-	printf("Brug f%slgende format:\n"
-           "[GENSTAND] [PLACERING]\n", oe);
-    scanf("%s %s", genstand, placering);                
+	printf("Hvad er navnet p%s genstanden?\n", aa);
+    scanf("%s", genstand);
+    printf("Hvor er denne placeret?\n");
+    scanf("%s", placering);              
 }
 
 void statusControllerPrint (const CONTROLLERS controllers[], int i) {

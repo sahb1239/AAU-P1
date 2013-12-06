@@ -1,4 +1,4 @@
-taend tænd paa på sluk i scenarie udfoer udfør start print status hvad er
+taend tænd paa på sluk i scenarie udfoer udfør start print status hvad er og
 lyd1 lyd2 lyd3 stue
 kaffemaskine koekken
 stikkontakt spisestue
@@ -11,6 +11,7 @@ Sengelampe1 Sengelampe2 soveværelse
 TV printer computer kontorlampe kontor
 Boernelampe1 Sengelampe Boernevaerelse1
 Boernelampe2 Boernevaerelse2
-hyggeaften hjemme og
+hyggeaften hjemme
 taendkontor slukkontor taendalt slukalt
 tilfoejcontroller sletcontroller tilfoejscenarie sletscenarie
+tilføjcontroller tilføjscenarie

@@ -16,12 +16,28 @@ int addScenarie(SCENARIE scenarier[], int len) {
 }
 
 void readInputScenarie (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char *command) {
-       
-    printf("Brug f%slgende format for at tilf%sje scenarie:\n"
-           "[P1] [P2] [P3] [STATE] [ID] [STATE] [ID] [STATE] [ID] [KOMMANDO]\n", oe, oe);
-           
-    scanf("%d %d %d %d %d %d %d %d %d %[0-9a-zA-Z ]s", pp1, pp2, pp3, pstate1, pid1, pstate2, pid2,
-                                                       pstate3, pid3, command);
+    printf("Skal prioritet 1 have adgang til dette scenarie?\n");
+    scanf("%d", pp1);
+    printf("Skal prioritet 2 have adgang til dette scenarie?\n");
+    scanf("%d", pp2);
+    printf("Skal prioritet 3 have adgang til dette scenarie?\n");
+    scanf("%d", pp3);
+    
+    printf("Hvad er controller 1s ID?\n");
+    scanf("%d", pid1);
+    printf("Skal denne t%sndes eller slukkes?\n", ae);
+    scanf("%d", pstate1);
+    printf("Hvad er controller 2s ID?\n");
+    scanf("%d", pid2);
+    printf("Skal denne t%sndes eller slukkes?\n", ae);
+    scanf("%d", pstate2);
+    printf("Hvad er controller 3s ID?\n");
+    scanf("%d", pid3);
+    printf("Skal denne t%sndes eller slukkes?\n", ae);
+    scanf("%d", pstate3);
+    
+    printf("Hvad skal kommandoen v%sre?\n", ae);
+    scanf("%s", command);
                       
 }
 
