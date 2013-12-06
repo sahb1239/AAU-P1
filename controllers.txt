@@ -15,9 +15,9 @@
 #90814	Printer;	Kontor
 #90815	Computer;	Kontor
 #90816	Kontorlampe;	Kontor
-#90817	TV;	Boernevaerelse 1
+#90817	TV;	Boernevaerelse1
 #90818	Boernelampe1;	Boernevaerelse1
 #90819	Sengelampe;	Boernevaerelse1
-#90820	TV;	Boernevaerelse 2
-#90821	Boernelampe2;	Boernevaerelse 2
-#90822	Sengelampe;	Boernevaerelse 2
+#90820	TV;	Boernevaerelse2
+#90821	Boernelampe2;	Boernevaerelse2
+#90822	Sengelampe;	Boernevaerelse2

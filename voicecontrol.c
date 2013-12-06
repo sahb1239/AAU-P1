@@ -221,6 +221,9 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
         else if (strcmpI(input[i], "hjælp") == 0 || strcmpI(input[i], "hjaelp") == 0) {
             type = help;
             numactions++; }
+        else if (strcmpI(input[i], "statusalle") == 0) {
+            type = status_all;
+            numactions++; }
 		
 		/* Find controllers */
 		for (j = 0; j < *controllersLen; j++) {
@@ -276,6 +279,9 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
                 printf("Scenariet er fjernet!\n"); (*scenarierLen)--; break;
             case help:
                 helpMe();
+                break;
+            case status_all:
+                statusControllerPrintAll(controllers, *controllersLen);
                 break;
 		}
 	}
