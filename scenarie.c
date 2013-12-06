@@ -16,24 +16,24 @@ int addScenarie(SCENARIE scenarier[], int len) {
 }
 
 void readInputScenarie (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char *command) {
-    printf("Skal prioritet 1 have adgang til dette scenarie?\n");
+    printf("Skal prioritet 1 have adgang til dette scenarie? 0 = nej, 1 = ja\n");
     scanf("%d", pp1);
-    printf("Skal prioritet 2 have adgang til dette scenarie?\n");
+    printf("Skal prioritet 2 have adgang til dette scenarie? 0 = nej, 1 = ja\n");
     scanf("%d", pp2);
-    printf("Skal prioritet 3 have adgang til dette scenarie?\n");
+    printf("Skal prioritet 3 have adgang til dette scenarie? 0 = nej, 1 = ja\n");
     scanf("%d", pp3);
     
     printf("Hvad er controller 1s ID?\n");
     scanf("%d", pid1);
-    printf("Skal denne t%sndes eller slukkes?\n", ae);
+    printf("Skal denne t%sndes eller slukkes? 0 = slukket, 1 = t%sndt\n", ae, ae);
     scanf("%d", pstate1);
     printf("Hvad er controller 2s ID?\n");
     scanf("%d", pid2);
-    printf("Skal denne t%sndes eller slukkes?\n", ae);
+    printf("Skal denne t%sndes eller slukkes? 0 = slukket, 1 = t%sndt\n", ae, ae);
     scanf("%d", pstate2);
     printf("Hvad er controller 3s ID?\n");
     scanf("%d", pid3);
-    printf("Skal denne t%sndes eller slukkes?\n", ae);
+    printf("Skal denne t%sndes eller slukkes? 0 = slukket, 1 = t%sndt\n", ae, ae);
     scanf("%d", pstate3);
     
     printf("Hvad skal kommandoen v%sre?\n", ae);
