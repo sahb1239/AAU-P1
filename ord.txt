@@ -11,6 +11,6 @@ Sengelampe1 Sengelampe2 soveværelse
 TV printer computer kontorlampe kontor
 Boernelampe1 Sengelampe Boernevaerelse1
 Boernelampe2 Boernevaerelse2
-hyggeaften hjemme
+hyggeaften hjemme og
 taendkontor slukkontor taendalt slukalt
 tilfoejcontroller sletcontroller tilfoejscenarie sletscenarie
