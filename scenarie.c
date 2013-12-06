@@ -114,7 +114,7 @@ int saveScenarier(const SCENARIE scenarier[], int len) {
 	  return ERROR_OCCURRED;
     
     for (i = 0; i < len; i++) {
-      fprintf(pFile, "\n%d   %d   %d   %d   %d #%-5d    %d #%-5d    %d #%-5d %s", scenarier[i].num, scenarier[i].allow_p1, scenarier[i].allow_p2, scenarier[i].allow_p3, 
+      fprintf(pFile, "\n%d   %d   %d   %d   %d #%05d    %d #%05d    %d #%05d %s", scenarier[i].num, scenarier[i].allow_p1, scenarier[i].allow_p2, scenarier[i].allow_p3, 
                                                                                   scenarier[i].c1_state, scenarier[i].c1_id, scenarier[i].c2_state, scenarier[i].c2_id, 
                                                                                   scenarier[i].c3_state, scenarier[i].c3_id, scenarier[i].desc); }
 	fclose(pFile);
@@ -126,9 +126,9 @@ void printAllScenarier (const SCENARIE scenarier[], int len) {
     int i;
     
     for (i = 0; i < len; i++) {
-       printf("%d   %d   %d   %d   %d #%d    %d #%d    %d #%d %s\n", scenarier[i].num, scenarier[i].allow_p1, scenarier[i].allow_p2, scenarier[i].allow_p3, 
-                                                                     scenarier[i].c1_state, scenarier[i].c1_id, scenarier[i].c2_state, scenarier[i].c2_id, 
-                                                                     scenarier[i].c3_state, scenarier[i].c3_id, scenarier[i].desc); }
+       printf("%d   %d   %d   %d   %d #%05d    %d #%05d    %d #%05d %s\n", scenarier[i].num, scenarier[i].allow_p1, scenarier[i].allow_p2, scenarier[i].allow_p3, 
+                                                                           scenarier[i].c1_state, scenarier[i].c1_id, scenarier[i].c2_state, scenarier[i].c2_id, 
+                                                                           scenarier[i].c3_state, scenarier[i].c3_id, scenarier[i].desc); }
 
 }
 

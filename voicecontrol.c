@@ -224,6 +224,9 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
         else if (strcmpI(input[i], "statusalle") == 0) {
             type = status_all;
             numactions++; }
+        else if (strcmpI(input[i], "allescenarier") == 0) {
+            type = scenarie_all;
+            numactions++; }
 		
 		/* Find controllers */
 		for (j = 0; j < *controllersLen; j++) {
@@ -283,6 +286,9 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
             case status_all:
                 statusControllerPrintAll(controllers, *controllersLen);
                 break;
+            case scenarie_all:
+                printAllScenarier(scenarier, *scenarierLen);
+                break;
 		}
 	}
 	
@@ -291,8 +297,6 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 
 void helpMe(void) {
     system("CLS");
-  
-    /* printf("Dette program er udviklet af B2-24 p%s AAU ifm. P1-projekt\nHer f%slger en liste af kommandoer:\n\n", aa, oe); */
     
     printf("STATUS FOR CONTROLLER\n\"Jarvis status for [genstand] i [position]\"\n\n");
     
@@ -300,15 +304,16 @@ void helpMe(void) {
     
     printf("K%sR SCENARIE\n\"Jarvis scenarie [scenarienavn]\"\n\n", OE);
     
-    printf("TILF%sJ CONTROLLER\n\"Jarvis tilfoejcontroller\" (efterfulgt af en dialog)\n\n", OE);
+    printf("TILF%sJ OG SLET CONTROLLER\n\"Jarvis tilfoejcontroller/sletcontroller\" (efterfulgt af en dialog)\n\n", OE);
     
-    printf("SLET CONTROLLER\n\"Jarvis sletcontroller\" (efterfulgt af en dialog)\n\n");
+    printf("TILF%sJ OG SLET SCENARIE\n\"Jarvis tilfoejscenarie/sletscenarie\" (efterfulgt af en dialog)\n\n", OE);
     
-    printf("TILF%sJ SCENARIE\n\"Jarvis tilfoejscenarie\" (efterfulgt af en dialog)\n\n", OE);
+    printf("Nedenst%sende kommandoer bruges som hj%slp i simulationen\n"
+           "-------------------------------------------------------\n\n", aa, ae);
     
-    printf("SLET SCENARIE\n\"Jarvis sletscenarie\" (efterfulgt af en dialog)\n\n");
+    printf("STATUS FOR ALLE CONTROLLERS\n\"Jarvis statusalle\"\n\n");
     
-    printf("STATUS FOR ALLE CONTROLLERS\n\"Jarvis statusalle\"");
+    printf("UDSKRIV ALLE SCENARIER\n\"Jarvis allescenarier\"");
     
     printf("\n\n");
 }
