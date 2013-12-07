@@ -6,7 +6,7 @@ spisebordslampe spisestue
 stuebordslampe stue
 koekkenlampe koekken
 badevaerelseslampe toilet
-ganglampe gangen
+ganglampe gangen mikroovn
 Sengelampe1 Sengelampe2 soveværelse
 TV printer computer kontorlampe kontor
 Boernelampe1 Sengelampe Boernevaerelse1
