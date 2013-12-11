@@ -85,6 +85,8 @@ int main(int argc, char *argv[]) {
 							/* Free'er det gamle memory og allokerer nyt */
 							free(ptr[i]);
 							ptr[i] = malloc((1 + strlen(tmp)) * sizeof(char));
+							/* Tjek pointeren */
+							checkPTRALLOC(&ptr[i]);
 							
 							/* Kopierer over i array'et */
 							strcpy(ptr[i], tmp);
@@ -140,13 +142,20 @@ int splitString(const char *input, char *out[], int maxwords) {
 	while (input[i] != '\0') {
 		/* Alloker string */
 		out[oi] = malloc(alloc_size = SPLITSTRING_SIZE);
+		
+		/* Tjek pointeren */
+		checkPTRALLOC(&out[oi]);
 	
 		while (input[i] != ' ' && input[i] != '\0') {
 			out[oi][oj++] = input[i];
 			
 			/* Tjek om der er behov for at gøre arrayet større + 1 fordi der også skal være plads til \0 */
-			if (oi + 1 >= alloc_size)
+			if (oi + 1 >= alloc_size) {
 				out[oi] = realloc(out[oi], alloc_size += SPLITSTRING_SIZE);
+				
+				/* Tjekker at der kunne allokeres hukommelse */
+				checkPTRALLOC(&out[oi]);
+			}
 			
 			i++;
 		}
@@ -169,16 +178,24 @@ int splitString(const char *input, char *out[], int maxwords) {
 /* Stringcompare case insensitive */
 int strcmpI(const char *string1, const char *string2) {
 	int out, i, str1len = strlen(string1), str2len = strlen(string2);
+	
+	/* Kopirer over i 2 nye strings da de 2 strings bliver ændret (tolower) */
 	char *str1 = malloc((str1len + 1) * sizeof(char)), *str2 = malloc((str2len + 1) * sizeof(char));
 	
+	/* Tjekker at der kunne allokeres hukommelse */
+	checkPTRALLOC(&str1);
+	checkPTRALLOC(&str2);
+	
+	/* Kopierer de 2 strings */
 	strcpy(str1, string1);
 	strcpy(str2, string2);
 	
+	/* Gør alle bogstaver små */
 	for (i = 0; i < str1len; i++)
 		str1[i] = tolower(str1[i]);
 	for (i = 0; i < str2len; i++)
 		str2[i] = tolower(str2[i]);
-		
+	
 	out = strcmp(str1, str2);
 	
 	free(str1);
@@ -316,4 +333,11 @@ void helpMe(void) {
     printf("UDSKRIV ALLE SCENARIER\n\"Jarvis allescenarier\"");
     
     printf("\n\n");
+}
+
+void checkPTRALLOC(void **ptr) {
+	if (*ptr == NULL) {
+		printf(MEMORYERROR_TEXT);
+		exit(EXIT_FAILURE);
+	}
 }

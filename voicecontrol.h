@@ -24,15 +24,17 @@ typedef struct {
 #define USERS_SIZE 50
 
 #define NOTUNDERSTOOD_TEXT "Input blev ikke forst%set\n"
+#define MEMORYERROR_TEXT "Fejl: ikke nok hukommelse"
 
 /* Prototyper */
 void helpMe(void);
 /* Input/output - view */
 int readInput(char *input[]);
 
-/* Beregningslag - controller */
+/* Beregningslag */
 int splitString(const char *input, char *out[], int maxwords);
 int strcmpI(const char *string1, const char *string2);
+void checkPTRALLOC(void **ptr);
 
 int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen);
 

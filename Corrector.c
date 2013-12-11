@@ -19,6 +19,9 @@ char *correct (const char input[], int *likeness) {
 			*likeness = 100;
 	  		
 	  		char *tmp = malloc((strlen(input) + 1) * sizeof(char));
+	  		/* Tjek pointeren */
+	  		checkPTRALLOC(&tmp);
+	  		
   			strcpy(tmp, input);
   			return tmp;
 		}
@@ -26,8 +29,12 @@ char *correct (const char input[], int *likeness) {
   	
   	/* Punkt 2: redigering af input */
   	int totalLen = findInsertLen(input) + findDeletionLen(input) + findReplaceLen(input) + findTranspotionsLen(input);
-  	char **combinations = malloc(totalLen * sizeof(char *)); 
+  	char **combinations = malloc(totalLen * sizeof(char *));
 	int startIndex = 0;
+	
+	/* Tjek pointeren */
+	checkPTRALLOC(&combinations);
+	
   	startIndex += insert(input, combinations, startIndex);
   	startIndex += deletion(input, combinations, startIndex);
   	startIndex += replace(input, combinations, startIndex);
@@ -40,6 +47,10 @@ char *correct (const char input[], int *likeness) {
   		for (j = 0; j < num_words; j++) {
   	 		if (strcmpI(combinations[i], db_words[j]) == 0) {
   	 			matchingWords[matchingWordsNum] = malloc(strlen(combinations[i]) * sizeof(char));
+  	 			
+  	 			/* Tjek pointeren */
+  	 			checkPTRALLOC(&matchingWords[matchingWordsNum]);
+  	 			
   	 			strcpy(matchingWords[matchingWordsNum++], combinations[i]);
   			}
   		}
@@ -55,6 +66,10 @@ char *correct (const char input[], int *likeness) {
   					*likeness = 30;
   	
   		char *tmp = malloc((strlen(matchingWords[0]) + 1) * sizeof(char));
+  		
+  		/* Tjek pointeren */
+  		checkPTRALLOC(&tmp);
+  		
   		strcpy(tmp, matchingWords[0]);
   		
   		for (j = 0; j < num_words; j++)
@@ -77,6 +92,9 @@ char *correct (const char input[], int *likeness) {
   	}
   	
   	char **combinations2 = malloc(totalLen2 * sizeof(char *));
+  	/* Tjek pointeren */
+  	checkPTRALLOC(&combinations2);
+  	
 	int startIndex2 = 0;
   	for (i = 0; i < totalLen; i++) {
   		startIndex2 += insert(combinations[i], combinations2, startIndex2);
@@ -85,7 +103,7 @@ char *correct (const char input[], int *likeness) {
   		startIndex2 += transpose(combinations[i], combinations2, startIndex2);
 
 		/* Fjerner gammel memory */
-		free(combinations[j]);
+		free(combinations[i]);
   	}
 	free(combinations);
   	
@@ -94,6 +112,10 @@ char *correct (const char input[], int *likeness) {
   		for (j = 0; j < num_words; j++) {
   	 		if (strcmp(combinations2[i], db_words[j]) == 0) {
   	 			char *out = malloc((strlen(combinations2[i]) + 1) * sizeof(char));
+  	 			
+  	 			/* Tjek pointeren */
+  	 			checkPTRALLOC(&out);
+  	 			
   	 			strcpy(out, combinations2[i]);
   	 			
   	 			/* Rydder op */
@@ -130,12 +152,19 @@ char **database_extract (int *len) {
 	FILE *file = fopen(FILE_WORDS, "r");
 	char **out = malloc(alloc_size * sizeof(char *));
 	
+	/* Tjek pointeren */
+	checkPTRALLOC(&out);
+	
 	for (i = 0; !feof(file); i++) {
 		out[i] = malloc(DATABASE_SIZE_WORD * sizeof(char));
 		fscanf(file, " %s", out[i]);
 		
-		if (i >= alloc_size)
+		if (i >= alloc_size) {
 			out[i] = realloc(out[i], sizeof(char *) * (alloc_size += DATABASE_SIZE));
+			
+			/* Tjek pointeren */
+			checkPTRALLOC(&out[i]);	
+		}
 	}
 	
 	fclose(file);
@@ -155,10 +184,9 @@ int insert (const char *input, char** output, int startIndex) {
 	for (j = 0, i = startIndex, l = 0; j < strlen(ALPHABET); j++) {
 		for (k = 0; k < strlen(input) + 1; k++, i++, l++) {
 			output[i] = (char *)malloc((strlen(input) + 2) * sizeof(char)); /* Plads til 0 tegnet og et ekstra tegn */
-			if (output == NULL) {
-				printf("FEJL");
-				exit(EXIT_FAILURE);
-			}
+			
+			/* Tjek pointeren */
+			checkPTRALLOC(&output[i]);
 			
 			/* Kopierer input */
 			strcpy(output[i], input);
@@ -184,10 +212,8 @@ int deletion (const char *input, char **output, int startIndex) {
 	int i, j;
 	for (i = startIndex, j = 0; j < strlen(input); i++, j++) {
 		output[i] = (char *)malloc(strlen(input) * sizeof(char));
-		if (output == NULL) {
-			printf("FEJL");
-			exit(EXIT_FAILURE);
-		}
+		/* Tjek pointeren */
+		checkPTRALLOC(&output[i]);
 		
 		/* Kopierer input (uden 0 tegnet) */
 		strncpy(output[i], input, strlen(input));
@@ -211,10 +237,8 @@ int replace(const char *input, char **output, int startIndex) {
 	for (j = 0, i = startIndex, l = 0; j < strlen(ALPHABET); j++) {
 		for (k = 0; k < strlen(input); k++, i++, l++) {
 			output[i] = (char *)malloc((strlen(input) + 1) * sizeof(char)); /* Plads til \0 */
-			if (output == NULL) {
-				printf("FEJL");
-				exit(EXIT_FAILURE);
-			}
+			/* Tjek pointeren */
+			checkPTRALLOC(&output[i]);
 			
 			/* Kopierer input */
 			strcpy(output[i], input);
@@ -234,10 +258,9 @@ int transpose(const char *input, char **output, int startIndex) {
 	int outLen = findTranspotionsLen(input), i, j;
 	for (i = startIndex, j = 0; j < outLen; i++, j++) {
 		output[i] = (char *)malloc((strlen(input) + 1) * sizeof(char)); /* Plads til \0 */
-		if (output == NULL) {
-			printf("FEJL");
-			exit(EXIT_FAILURE);
-		}
+		
+		/* Tjek pointeren */
+		checkPTRALLOC(&output[i]);
 		
 		/* Kopierer input */
 		strcpy(output[i], input);
