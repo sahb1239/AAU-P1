@@ -13,8 +13,7 @@
 int runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len); /* Skal fjernes */
 
 int main(int argc, char *argv[]) {
-	int i, numstrings,
-		scenarie_len, controller_len, users_len;
+	int i, scenarie_len, controller_len, users_len;
 	char voiceinput[INPUT_SIZE];
     SCENARIE scenarier[SCENARIE_SIZE];
     CONTROLLERS controllers[CONTROLLER_SIZE];
@@ -58,81 +57,124 @@ int main(int argc, char *argv[]) {
 	while(1) {
 		printf("Indtast input => ");
 		if (scanf(" %[^\n]s", voiceinput)) {
-			char *out[80];
-			char **ptr = NULL;
-			numstrings = splitString(voiceinput, out, 80);
-			int len = numstrings;
+			/* Split vores string (char *) op til et string array (char **) efter ord */
+			char *splittedInput[80], **selIndex = NULL;
+			int numwords = splitString(voiceinput, splittedInput, 80),
+				totalwords = numwords,
+				likeness,
+				acceptcorrection;
 			
-			/* Tjekker hvilket index ordet UNIT_NAME ligger i og flytter pointeren til positionen */
-			for (i = 0; i < numstrings; i++) {
-				if (strcmp(out[i], UNIT_NAME) == 0) {
-					numstrings -= i + 1;
-					ptr = out + (i + 1) * sizeof(char); /* Sizeof char is 1 */
+			/* Udfør stavekontrol på input - ignorerer output */
+			correctInput(splittedInput, &likeness, numwords);
+			
+			/* Tjekker hvilket index ordet UNIT_NAME ligger i og sætter pointeren selIndex til positionen */
+			for (i = 0; i < numwords; i++) {
+				if (strcmpI(splittedInput[i], UNIT_NAME) == 0) {
+					numwords -= i + 1;
+					selIndex = splittedInput + (i + 1) * sizeof(char); /* Sizeof char is 1 */
 					break;
 				}
 			}
 			
-			if (ptr != NULL) {
-				/* Tjek ord at de er stavet korrekt */
-				int percentUnderstood = 100, acceptCorrection = 0;
-				for (i = 0; i < numstrings; i++) {
-					int likeness = 10;
-					char *tmp = correct(ptr[i], &likeness);
-					if (tmp != NULL) {
-						if (strcmpI(tmp, ptr[i]) != 0) {
-							percentUnderstood -= (100 - likeness) / numstrings;
-							
-							/* Free'er det gamle memory og allokerer nyt */
-							free(ptr[i]);
-							ptr[i] = malloc((1 + strlen(tmp)) * sizeof(char));
-							/* Tjek pointeren */
-							checkPTRALLOC(&ptr[i]);
-							
-							/* Kopierer over i array'et */
-							strcpy(ptr[i], tmp);
-						}
-						free(tmp); /* Free output */
-					} else percentUnderstood = -1;
-				}
-				
-				/* Spørg om kommando skal udføres hvis antal procent var mindre end 80 */
-				if (percentUnderstood < 80 && percentUnderstood > 0) {
-					printf("Mente du:");
-					for (i = 0; i < numstrings; i++) {
-						printf(" %s", ptr[i]);
-					}
-					printf(" (j/n) => ");
-					
-					char yn;
-					scanf(" %c", &yn);
-					
-					acceptCorrection = yn == 'j' || yn == 'y';
-				} else if (percentUnderstood <= 0)
+			if (selIndex != NULL) {
+				/* Udfør stavekontrol igen og fortsæt kun denne gang hvis at alle ord kunne findes - vi bruger likeness fra tidligere kørsel af stavekontrollen */
+				int tmp;
+				if (correctInput(selIndex, &tmp, numwords)) {
+					/* Finder ud af om rettelsen skal accepteres */
+					acceptcorrection = likeness > 80 || yesno(selIndex, numwords);
+				} else
 					printf(NOTUNDERSTOOD_TEXT, aa);
 					
 				#ifdef DEBUG
+					printf("DEBUG INFO\n");
 					printf("Procent forstået: %d\n", percentUnderstood);
-				#endif
-			
-				if (percentUnderstood >= 80 || acceptCorrection) {
-					if (!findAndExecuteCommand(ptr, numstrings, controllers, &controller_len, scenarier, &scenarie_len))
-						printf(NOTUNDERSTOOD_TEXT, aa);
 					
-					/* Print hvis debug er defined */
-					#ifdef DEBUG
-						for (i = 0; i < numstrings; i++) {
-							printf("Ord: %s\n", ptr[i]);
-						}
-					#endif
+					for (i = 0; i < numstrings; i++) {
+						printf("Ord: %s\n", selIndex[i]);
+					}
+				#endif
+				
+				/* Udfør kommandoen */
+				if (acceptcorrection) {
+					if (!findAndExecuteCommand(selIndex, numwords, controllers, &controller_len, scenarier, &scenarie_len))
+						printf(NOTUNDERSTOOD_TEXT, aa);
 				}
-			} else printf(NOTUNDERSTOOD_TEXT, aa);
+			}
 			
-			/* Free splitString array */
-			for (i = 0; i < len; i++) {
-    			free(out[i]);
+			/* Free midlertidigt hukommelse */
+			for (i = 0; i < totalwords; i++) {
+    			free(splittedInput[i]);
     		}
 		}
 	}
+}
+
+int yesno(const char **words, int numwords) {
+	int i;
+	char ans[10];
+	while (1) {
+		printf("Mente du: ");
+		for (i = 0; i < numwords; i++) {
+			printf("%s ", words[i]);
+		}
+		printf("(ja/nej)? => ");
+		scanf(" %s", ans);
+		
+		if (strcmpI(ans, "j") || strcmpI(ans, "y") ||
+			strcmpI(ans, "ja") || strcmpI(ans, "yes"))
+			return 1;
+		else if (strcmpI(ans, "n") ||
+			strcmpI(ans, "nej") || strcmpI(ans, "no"))
+			return 0;
+			
+		printf("Indtast venligst et gyldigt svar");
+	}
+}
+
+int correctInput(char **in, int *understoodPercent, int numwords) {
+	/* Variabler til at indeholde hvor mange procent af sætningen/ordet at stavekontrollen forstod */
+	int understood = 100,
+		likeness,
+		i;
+		
+	/* Indeholder det rettede ord */
+	char *corrected_word;
+	
+	for (i = 0; i < numwords; i++) {
+		/* Resetter procent forstået af ordet */
+		likeness = 0;
+		
+		/* Udfører stavekontrollen */
+		corrected_word = correct(in[i], &likeness);
+		
+		/* 
+		 * Tjekker at der ikke blev fundet et match (pointeren er NULL hvis der ikke blev fundet et). 
+		 * Afslutter funktionen med false for at symbolere at inputtet kunne ikke forstås 
+		 */
+		if (corrected_word == NULL) {
+			return 0;
+		}
+		
+		/* Free'er det gamle memory og allokerer nyt */
+		free(in[i]);
+		in[i] = malloc((1 + strlen(corrected_word)) * sizeof(char)); /* +1 for plads til \0 tegnet */
+		
+		/* Tjek at der blev allokeret hukommelse */
+		checkPTRALLOC((void **) &in[i]);
+		
+		/* Kopierer output over i in */
+		strcpy(in[i], corrected_word);
+		
+		/* Free'er det midlertidige hukommelse fra funktionen */
+		free(corrected_word);
+		
+		/* Opdaterer graden at sætningen matcher den oprindelige sætning */
+		understood -= (100 - likeness) / numwords;
+	}
+	
+	/* Returnerer i hvor høj grad at input matcher med det nye */
+	*understoodPercent = understood;
+	return 1;
 }
 
 /* Splitter en sætning op i enkelte ord */
