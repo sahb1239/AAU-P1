@@ -29,14 +29,14 @@ int main(int argc, char *argv[]) {
     	if (strcmp("--test", argv[i]) == 0) {
     		testAll();
     		return EXIT_SUCCESS;
-    	} else if (strcmp("--print", argv[i]) == 0) {
+    	} else if (strcmp("--printusers", argv[i]) == 0) {
     		printUsers(users, users_len);
-    	}else if(strcmp("--print1", argv[i]) == 0){
+    	}else if(strcmp("--sletbruger", argv[i]) == 0){
     		char inputname[80];
     		printf("Indtast navnet på den som skal slettes:\n");
     		scanf("%s", inputname);
     		deleteUsers(users, users_len, inputname);
-    	}else if(strcmp("--print2", argv[i]) == 0){
+    	}else if(strcmp("--opretbruger", argv[i]) == 0){
     		char inputname[80];
     		int inputpriority;
     		printf("Opret Bruger ved følgende syntax [prioritet] [Navn] \n");
@@ -80,8 +80,28 @@ int main(int argc, char *argv[]) {
 				/* Udfør stavekontrol igen og fortsæt kun denne gang hvis at alle ord kunne findes - vi bruger likeness fra tidligere kørsel af stavekontrollen */
 				int tmp;
 				if (correctInput(selIndex, &tmp, numwords)) {
+					char *voiceInputPtr = voiceinput;
+				
+					if (!(likeness > PERCENT_UNDERSTOOD_OK)) {
+						for (i = 0; i < numwords; i++) {
+							strcpy(voiceInputPtr, selIndex[i]);
+							
+							voiceInputPtr += (strlen(selIndex[i]) * sizeof(char));
+							
+							/* Tilføj mellemrum */
+							voiceInputPtr[0] = ' ';
+							
+							/* Tæl pointeren op */
+							voiceInputPtr += sizeof(char);
+						}
+						
+						/* Afslut med \0 tegnet */
+						voiceInputPtr[0] = '\0';
+					}
+					
 					/* Finder ud af om rettelsen skal accepteres */
-					acceptcorrection = likeness > PERCENT_UNDERSTOOD_OK || yesno(selIndex, numwords);
+					acceptcorrection = likeness > PERCENT_UNDERSTOOD_OK || 
+										yesno(voiceinput);
 				} else
 					printf(NOTUNDERSTOOD_TEXT, aa);
 					
@@ -109,15 +129,10 @@ int main(int argc, char *argv[]) {
 	}
 }
 
-int yesno(const char **words, int numwords) {
-	int i;
+int yesno(const char *text) {
 	char ans[ANSWER_LEN];
 	while (1) {
-		printf("Mente du: ");
-		for (i = 0; i < numwords; i++) {
-			printf("%s ", words[i]);
-		}
-		printf("(ja/nej)? => ");
+		printf("Mente du: %s(ja/nej)? => ", text);
 		scanf(" %s", ans);
 		
 		if (strcmpI(ans, "j") || strcmpI(ans, "y") ||

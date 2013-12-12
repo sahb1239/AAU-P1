@@ -25,7 +25,7 @@ typedef enum {
 void helpMe(void);
 /* Input/output - view */
 int readInput(char *input[]);
-int yesno(const char **words, int numwords);
+int yesno(const char *text);
 
 /* Beregningslag */
 int splitString(const char *input, char *out[], int maxwords);
