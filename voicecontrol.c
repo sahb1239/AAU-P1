@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
 			int numwords = splitString(voiceinput, splittedInput, SPLITTED_INPUT_LEN),
 				totalwords = numwords,
 				likeness,
-				acceptcorrection;
+				acceptcorrection = 0;
 			
 			/* Udfør stavekontrol på input - ignorerer output */
 			correctInput(splittedInput, &likeness, numwords);
@@ -186,7 +186,7 @@ int splitString(const char *input, char *out[], int maxwords) {
 		out[oi] = malloc(alloc_size = SPLITSTRING_SIZE);
 		
 		/* Tjek pointeren */
-		checkPTRALLOC(&out[oi]);
+		checkPTRALLOC((void **) &out[oi]);
 	
 		while (input[i] != ' ' && input[i] != '\0') {
 			out[oi][oj++] = input[i];
@@ -196,7 +196,7 @@ int splitString(const char *input, char *out[], int maxwords) {
 				out[oi] = realloc(out[oi], alloc_size += SPLITSTRING_SIZE);
 				
 				/* Tjekker at der kunne allokeres hukommelse */
-				checkPTRALLOC(&out[oi]);
+				checkPTRALLOC((void **) &out[oi]);
 			}
 			
 			i++;
@@ -225,8 +225,8 @@ int strcmpI(const char *string1, const char *string2) {
 	char *str1 = malloc((str1len + 1) * sizeof(char)), *str2 = malloc((str2len + 1) * sizeof(char));
 	
 	/* Tjekker at der kunne allokeres hukommelse */
-	checkPTRALLOC(&str1);
-	checkPTRALLOC(&str2);
+	checkPTRALLOC((void **) &str1);
+	checkPTRALLOC((void **) &str2);
 	
 	/* Kopierer de 2 strings */
 	strcpy(str1, string1);
