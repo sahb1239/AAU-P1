@@ -58,7 +58,7 @@ void addScenarieC(SCENARIE scenarier[], SCENARIE scenarie, int len) {
 
 int removeScenarie(SCENARIE scenarier[], int len) {
     int i, j, success = -1;
-    char name[50];
+    char name[COMMAND_LEN];
     
     removeScenarieInput(name);
     
@@ -146,7 +146,7 @@ int findScenarie(const SCENARIE scenarier[], const char name[], int len) {
 
 int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len) {
     int i, res = ERROR_OCCURRED;
-    char status[8];
+    char status[STATUS_LEN];
     
     if (scenarie.c1_id == 0) {
        if (scenarie.c1_state)

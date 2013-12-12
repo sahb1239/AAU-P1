@@ -1,3 +1,4 @@
+#define STATUS_LEN 8
 #include "scenarie.h"
 #include "controller.h"
 
@@ -5,23 +6,17 @@ typedef enum {
 	turn_on, turn_off, status, scenarie, add_controller, remove_controller, add_scenarie, remove_scenarie, help, status_all, scenarie_all
 } ACTIONTYPE;
 
-/*
-typedef struct {
-	ACTIONTYPE type;
-	union item { 
-		CONTROLLERS controller; 
-		SCENARIE scenarie;
-	};
-	USERS user;
-} ACTION;*/
-
-/*#define ERROR_OCCURRED -1*/
+#define ERROR_OCCURRED -1
 #define UNIT_NAME "jarvis"
 #define SPLITSTRING_SIZE 50
 #define INPUT_SIZE 80
 #define SCENARIE_SIZE 50
 #define CONTROLLER_SIZE 50
 #define USERS_SIZE 50
+#define SPLITTED_INPUT_LEN 80
+#define ANSWER_LEN 10
+
+#define PERCENT_UNDERSTOOD_OK 80
 
 #define NOTUNDERSTOOD_TEXT "Input blev ikke forst%set\n"
 #define MEMORYERROR_TEXT "Fejl: ikke nok hukommelse"

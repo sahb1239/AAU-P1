@@ -11,7 +11,7 @@ void readInputController (char genstand[], char placering[]) {
 }
 
 void statusControllerPrint (const CONTROLLERS controllers[], int i) {
-	char status[8];
+	char status[STATUS_LEN];
 	
 	if (controllers[i].status)
     	sprintf(status, "t%sndt", ae);
@@ -24,7 +24,7 @@ void statusControllerPrint (const CONTROLLERS controllers[], int i) {
 
 void statusControllerPrintAll (const CONTROLLERS controllers[], int len) {
     int i;
-    char status[8];
+    char status[STATUS_LEN];
     
     printf("ID     GENSTAND             PLACERING                 STATUS\n\n");
     
@@ -124,8 +124,7 @@ int readControllers(CONTROLLERS controllers[]) {
    
     for (i = 0; !feof(pFile); i++) {
     	fscanf(pFile, " #%d %[0-9a-zA-Z ]s", &controllers[i].id, controllers[i].unit);
-       	fseek(pFile, 2L, SEEK_CUR);
-       	fscanf(pFile, " %[0-9a-zA-Z ]s", controllers[i].position);
+       	fscanf(pFile, "; %[0-9a-zA-Z ]s", controllers[i].position);
        	controllers[i].status = 0;
     }
     

@@ -58,8 +58,8 @@ int main(int argc, char *argv[]) {
 		printf("Indtast input => ");
 		if (scanf(" %[^\n]s", voiceinput)) {
 			/* Split vores string (char *) op til et string array (char **) efter ord */
-			char *splittedInput[80], **selIndex = NULL;
-			int numwords = splitString(voiceinput, splittedInput, 80),
+			char *splittedInput[SPLITTED_INPUT_LEN], **selIndex = NULL;
+			int numwords = splitString(voiceinput, splittedInput, SPLITTED_INPUT_LEN),
 				totalwords = numwords,
 				likeness,
 				acceptcorrection;
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
 				int tmp;
 				if (correctInput(selIndex, &tmp, numwords)) {
 					/* Finder ud af om rettelsen skal accepteres */
-					acceptcorrection = likeness > 80 || yesno(selIndex, numwords);
+					acceptcorrection = likeness > PERCENT_UNDERSTOOD_OK || yesno(selIndex, numwords);
 				} else
 					printf(NOTUNDERSTOOD_TEXT, aa);
 					
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
 
 int yesno(const char **words, int numwords) {
 	int i;
-	char ans[10];
+	char ans[ANSWER_LEN];
 	while (1) {
 		printf("Mente du: ");
 		for (i = 0; i < numwords; i++) {
@@ -251,8 +251,8 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 	
 	/* Generer actions */
 	ACTIONTYPE type;
-	char* controlScenarieTmp[5];
-	char position[20];
+	char* controlScenarieTmp[5]; /* Skal denne have symbolsk konstant? */
+	char position[POSITION_NAME_LEN];
 	
 	/* Find kommando */
 	for (i = 0, numactions = 0; i < len; i++) {

@@ -1,9 +1,12 @@
 #define ERROR_OCCURRED -1
 #define FILE_CONTROLLERS "controllers.txt"
+#define STATUS_LEN 8
+#define UNIT_NAME_LEN 30
+#define POSITION_NAME_LEN 30
 
 typedef struct {
 	int id, status;
-	char unit[80], position[80];
+	char unit[UNIT_NAME_LEN], position[POSITION_NAME_LEN];
 } CONTROLLERS;
 
 int addController(CONTROLLERS controllers[], int len);
