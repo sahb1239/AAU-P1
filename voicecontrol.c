@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 	while(1) {
 		printf("Indtast input => ");
 		if (scanf(" %[^\n]s", voiceinput)) {
-			/* Split vores string (char *) op til et string array (char **) efter ord */
+			/* Split input string (char *) op til et string array (char **) efter ord */
 			char *splittedInput[SPLITTED_INPUT_LEN], **selIndex = NULL;
 			int numwords = splitString(voiceinput, splittedInput, SPLITTED_INPUT_LEN),
 				totalwords = numwords,
@@ -81,7 +81,8 @@ int main(int argc, char *argv[]) {
 				int tmp;
 				if (correctInput(selIndex, &tmp, numwords)) {
 					char *voiceInputPtr = voiceinput;
-				
+					
+					/* Kopirer rettet input hvis lighedsgraden er mindre end lighedsgraden tilladt */
 					if (!(likeness > PERCENT_UNDERSTOOD_OK)) {
 						for (i = 0; i < numwords; i++) {
 							strcpy(voiceInputPtr, selIndex[i]);
@@ -142,7 +143,7 @@ int yesno(const char *text) {
 			strcmpI(ans, "nej") || strcmpI(ans, "no"))
 			return 0;
 			
-		printf("Indtast venligst et gyldigt svar");
+		printf("Indtast venligst et gyldigt svar\n");
 	}
 }
 
