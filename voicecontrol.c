@@ -108,9 +108,9 @@ int main(int argc, char *argv[]) {
 					
 				#ifdef DEBUG
 					printf("DEBUG INFO\n");
-					printf("Procent forstået: %d\n", percentUnderstood);
+					printf("Procent forstået: %d\n", likeness);
 					
-					for (i = 0; i < numstrings; i++) {
+					for (i = 0; i < numwords; i++) {
 						printf("Ord: %s\n", selIndex[i]);
 					}
 				#endif
