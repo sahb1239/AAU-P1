@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
 					if (!findAndExecuteCommand(selIndex, numwords, controllers, &controller_len, scenarier, &scenarie_len))
 						printf(NOTUNDERSTOOD_TEXT, aa);
 				}
-			}
+			} else printf(NOTUNDERSTOOD_TEXT, aa);
 			
 			/* Free midlertidigt hukommelse */
 			for (i = 0; i < totalwords; i++) {
