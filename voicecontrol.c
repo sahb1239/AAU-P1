@@ -53,7 +53,6 @@ int main(int argc, char *argv[]) {
     		return EXIT_SUCCESS;
     	}
      
-	/* TODO: Mangler at define de flest længder på arraysne */
 	while(1) {
 		printf("Indtast input => ");
 		if (scanf(" %[^\n]s", voiceinput)) {
@@ -267,7 +266,7 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 	
 	/* Generer actions */
 	ACTIONTYPE type;
-	char* controlScenarieTmp[5]; /* Skal denne have symbolsk konstant? */
+	char* controlScenarieTmp[5]; 
 	char position[POSITION_NAME_LEN];
 	
 	/* Find kommando */
@@ -283,7 +282,7 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 			type = scenarie;
         else if (strcmpI(input[i], "tilføjcontroller") == 0 || strcmpI(input[i], "tilfoejcontroller") == 0) {
             type = add_controller;
-            numactions++; /* Fix for http://goo.gl/qznNd1 */}
+            numactions++; }
         else if (strcmpI(input[i], "sletcontroller") == 0) {
             type = remove_controller;
             numactions++; }
