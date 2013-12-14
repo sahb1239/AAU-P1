@@ -1,4 +1,5 @@
 #define FILE_USERS "users.txt"
+int strcmpI(const char *string1, const char *string2);
 
 typedef struct {
 	int priority;
@@ -6,7 +7,9 @@ typedef struct {
 } USERS;
 
 int readUsers(USERS users[]);
-int saveUsers(FILE *pFile, const USERS users[], int len); /* NI */
 void printUsers(const USERS users[], int len);
-void deleteUsers(const USERS users[], int len, char inputname[]);
-void addUsers(const USERS users[], int len, char inputname[], int inputpriority);
+void readInputUser(char name[], int askPriority, int *priority);
+int removeUser(USERS users[], int len);
+int addUser(USERS users[], int len);
+void addUserC(USERS users[], USERS user, int len);
+int saveUsers(const USERS users[], int len);

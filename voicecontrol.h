@@ -1,9 +1,10 @@
 #define STATUS_LEN 8
 #include "scenarie.h"
 #include "controller.h"
+#include "users.h"
 
 typedef enum {
-	turn_on, turn_off, status, scenarie, add_controller, remove_controller, add_scenarie, remove_scenarie, help, status_all, scenarie_all
+	turn_on, turn_off, status, scenarie, add_controller, remove_controller, add_scenarie, remove_scenarie, help, status_all, scenarie_all, add_user, remove_user
 } ACTIONTYPE;
 
 #define ERROR_OCCURRED -1
@@ -32,7 +33,7 @@ int splitString(const char *input, char *out[], int maxwords);
 int strcmpI(const char *string1, const char *string2);
 void checkPTRALLOC(void **ptr);
 
-int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen);
+int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen, USERS users[], int *usersLen);
 
 int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type);
-int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type);
+int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], USERS users[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int *usersLen, int numactions, ACTIONTYPE type);

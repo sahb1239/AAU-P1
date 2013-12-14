@@ -6,7 +6,6 @@
 #include "voicecontrol.h"
 #include "danish.h"
 #include "test.h"
-#include "users.h"
 #include "Corrector.h"
 
 void runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len); /* Skal fjernes */
@@ -28,19 +27,7 @@ int main(int argc, char *argv[]) {
     	if (strcmp("--test", argv[i]) == 0) {
     		testAll();
     		return EXIT_SUCCESS;
-    	} else if (strcmp("--printusers", argv[i]) == 0) {
-    		printUsers(users, users_len);
-    	}else if(strcmp("--sletbruger", argv[i]) == 0){
-    		char inputname[80];
-    		printf("Indtast navnet på den som skal slettes:\n");
-    		scanf("%s", inputname);
-    		deleteUsers(users, users_len, inputname);
-    	}else if(strcmp("--opretbruger", argv[i]) == 0){
-    		char inputname[80];
-    		int inputpriority;
-    		printf("Opret Bruger ved følgende syntax [prioritet] [Navn] \n");
-    		scanf("%d%s", &inputpriority, inputname);
-    		addUsers(users, users_len, inputname, inputpriority);
+
     	} else if (strcmp("--testfree", argv[i]) == 0) {
     		char *t[10];
     		int m, k = splitString("scenare printer stue printer hyggeaften", t,  10);
@@ -115,7 +102,7 @@ int main(int argc, char *argv[]) {
 				
 				/* Udfør kommandoen */
 				if (acceptcorrection) {
-					if (!findAndExecuteCommand(selIndex, numwords, controllers, &controller_len, scenarier, &scenarie_len))
+					if (!findAndExecuteCommand(selIndex, numwords, controllers, &controller_len, scenarier, &scenarie_len, users, &users_len))
 						printf(NOTUNDERSTOOD_TEXT, aa);
 				}
 			} else printf(NOTUNDERSTOOD_TEXT, aa);
@@ -214,7 +201,7 @@ int strcmpI(const char *string1, const char *string2) {
 	return out;
 }
 
-int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen) {
+int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen, USERS users[], int *usersLen) {
 	int i, j, numactions;
 	
 	/* Generer actions */
@@ -223,7 +210,7 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 	char position[POSITION_NAME_LEN];
 	
 	/* Find kommando */
-	for (i = 0, numactions = 0; i < len; i++) {
+	for (i = 0, numactions = 0; i < len; i++) { /* *** Burde denne også splittes op i en bette funktion? *** */
 		/* Find keyword */
 		if (strcmpI(input[i], "tænd") == 0 || strcmpI(input[i], "taend") == 0)
 			type = turn_on;
@@ -247,6 +234,10 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
             type = status_all;
         else if (strcmpI(input[i], "allescenarier") == 0)
             type = scenarie_all;
+        else if (strcmpI(input[i], "tilføjbruger") == 0 || strcmpI(input[i], "tilfoejbruger") == 0)
+            type = add_user;
+        else if (strcmpI(input[i], "sletbruger") == 0)
+            type = remove_user;
 		
 		/* Find controllers */
 		for (j = 0; j < *controllersLen; j++) {
@@ -267,7 +258,7 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 	if (numactions > 0)
         return executeNormalCommand(controllers, scenarier, controlScenarieTmp, position, controllersLen, scenarierLen, numactions, type);
 	else
-        return executeSpecialCommand(controllers, scenarier, controlScenarieTmp, position, controllersLen, scenarierLen, numactions, type);
+        return executeSpecialCommand(controllers, scenarier, users, controlScenarieTmp, position, controllersLen, scenarierLen, usersLen, numactions, type);
 	
 	/* Ved ingen match fundet */
 	return 0;
@@ -339,7 +330,7 @@ int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char 
    return 1;
 }
 
-int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type) {
+int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], USERS users[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int *usersLen, int numactions, ACTIONTYPE type) {
    switch (type) {
       case add_controller:                
          if (addController(controllers, *controllersLen) == -1) return 0;
@@ -356,6 +347,14 @@ int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char
       case remove_scenarie:
          if (removeScenarie(scenarier, *scenarierLen) == -1) return 0;
          printf("Scenariet er fjernet!\n"); (*scenarierLen)--; return 1;
+      case add_user:
+         if (addUser(users, *usersLen) == -1) return 0;
+         printf("Brugeren er nu tilf%sjet!\n", oe); (*usersLen)++;
+         return 1;
+      case remove_user:
+         if (removeUser(users, *usersLen) == -1) return 0;
+         printf("Brugeren er nu slettet!\n"); (*usersLen)--;
+         return 1;
       case help:
          helpMe();
          return 1;

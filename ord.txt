@@ -17,3 +17,4 @@ taendkontor slukkontor taendalt slukalt
 tilfoejcontroller sletcontroller tilfoejscenarie sletscenarie
 tilføjcontroller tilføjscenarie
 hjælp hjaelp statusalle allescenarier
+tilføjbruger tilfoejbruger sletbruger

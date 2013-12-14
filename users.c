@@ -8,9 +8,8 @@ int readUsers(USERS users[]) {
     
     FILE *pFile = fopen(FILE_USERS, "r");
 
-	if (pFile == NULL) {
-		return -1;
-	}
+	if (pFile == NULL) 
+	   return -1;
     
     for (i = 0; !feof(pFile); i++) {
     	fscanf(pFile, " %d %[^\n]s", &users[i].priority, users[i].name);
@@ -30,25 +29,60 @@ void printUsers(const USERS users[], int len) {
 	}
 }
 
-void deleteUsers(const USERS users[], int len, char inputname[]){
-	int i;
-   	FILE *pFile1 = fopen(FILE_USERS, "w");
-    for (i = 0; i < len; i++) {
-    	
-    	if (strcmp(users[i].name, inputname) != 0){
-    		fprintf(pFile1, "%d\t%s\n", users[i].priority, users[i].name);
-    	}
-    }
-	fclose(pFile1);  
+void readInputUser(char name[], int askPriority, int *priority) {
+	printf("Hvilken person er der tale om?\nIndtast input => ");
+    scanf("%s", name);    
+    if (askPriority == 1) {
+      printf("Hvilken prioritet?\nIndtast input => ");
+      scanf("%d", priority); }
 }
 
-void addUsers(const USERS users[], int len, char inputname[], int inputpriority){
-	int i;
-   	FILE *pFile1 = fopen(FILE_USERS, "w");
+int removeUser(USERS users[], int len) {
+    int i, j, success = -1;
+    USERS user;
+	
+	readInputUser(user.name, 0, &user.priority);
     
-    for (i = 0; i<len; i++) {
-    	fprintf(pFile1, "%d\t%s\n", users[i].priority, users[i].name); }
+    for (i = 0; i < len; i++) {
+        if (strcmpI(users[i].name, user.name) == 0) {
+          	len--;
+            success = 1;
+          
+          	for (j = i; j < len; j++) {
+             	users[j] = users[j + 1];
+             }
+        }
+    }
+    if (success != -1) saveUsers(users, len);
+    return success;
+}
+
+int addUser(USERS users[], int len) {
+	USERS user;
+	
+	readInputUser(user.name, 1, &user.priority);
+	addUserC(users, user, len);
+	
+	return 1;
+}
+
+void addUserC(USERS users[], USERS user, int len) {
+    users[len].priority = user.priority;
+	strcpy(users[len].name, user.name);
+	saveUsers(users, len + 1);
+}
+
+int saveUsers(const USERS users[], int len) {
+	int i;
+   	FILE *pFile = fopen(FILE_USERS, "w");
+    
+    if (pFile == NULL)
+	   return 0;
+    
+    for (i = 0; i < len; i++) {
+    	fprintf(pFile, "\n%d\t%s", users[i].priority, users[i].name); }
         
-    fprintf(pFile1, "%d\t%s\n", inputpriority, inputname);
-	fclose(pFile1);  
+	fclose(pFile);  
+    
+    return 1;
 }
