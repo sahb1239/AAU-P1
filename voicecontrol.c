@@ -305,7 +305,11 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 }
 
 void helpMe(void) {
-    system("CLS");
+	#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+    	system("CLS");
+    #else
+    	system("clear");
+    #endif
     
     printf("STATUS FOR CONTROLLER\n\"Jarvis status for [genstand] i [position]\"\n\n");
     
