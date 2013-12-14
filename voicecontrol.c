@@ -313,7 +313,7 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 	
 	/* Udfør kommando - del nedstående op i 2 funktioner */
 	int id;
-	if (numactions > 0) {
+	if (numactions > 0) { /* Dette burde være en swich... med 2 case blokke */
 		for (i = 0; i < numactions; i++) {
 			switch (type) {
 				case turn_on: case turn_off:
