@@ -10,7 +10,7 @@
 #include "users.h"
 #include "Corrector.h"
 
-int runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len); /* Skal fjernes */
+void runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len); /* Skal fjernes */
 
 int main(int argc, char *argv[]) {
 	int i, scenarie_len, controller_len, users_len;
@@ -280,27 +280,20 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 			type = status;
 		else if (strcmpI(input[i], "scenarie") == 0)
 			type = scenarie;
-        else if (strcmpI(input[i], "tilføjcontroller") == 0 || strcmpI(input[i], "tilfoejcontroller") == 0) {
+        else if (strcmpI(input[i], "tilføjcontroller") == 0 || strcmpI(input[i], "tilfoejcontroller") == 0)
             type = add_controller;
-            numactions++; }
-        else if (strcmpI(input[i], "sletcontroller") == 0) {
+        else if (strcmpI(input[i], "sletcontroller") == 0)
             type = remove_controller;
-            numactions++; }
-        else if (strcmpI(input[i], "tilføjscenarie") == 0 || strcmpI(input[i], "tilfoejscenarie") == 0) {
+        else if (strcmpI(input[i], "tilføjscenarie") == 0 || strcmpI(input[i], "tilfoejscenarie") == 0)
             type = add_scenarie;
-            numactions++; }
-        else if (strcmpI(input[i], "sletscenarie") == 0) {
+        else if (strcmpI(input[i], "sletscenarie") == 0)
             type = remove_scenarie;
-            numactions++; }
-        else if (strcmpI(input[i], "hjælp") == 0 || strcmpI(input[i], "hjaelp") == 0) {
+        else if (strcmpI(input[i], "hjælp") == 0 || strcmpI(input[i], "hjaelp") == 0)
             type = help;
-            numactions++; }
-        else if (strcmpI(input[i], "statusalle") == 0) {
+        else if (strcmpI(input[i], "statusalle") == 0)
             type = status_all;
-            numactions++; }
-        else if (strcmpI(input[i], "allescenarier") == 0) {
+        else if (strcmpI(input[i], "allescenarier") == 0)
             type = scenarie_all;
-            numactions++; }
 		
 		/* Find controllers */
 		for (j = 0; j < *controllersLen; j++) {
@@ -318,55 +311,72 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 		}
 	}
 	
-	/* Udfør kommando */
+	/* Udfør kommando - del nedstående op i 2 funktioner */
 	int id;
-	for (i = 0; i < numactions; i++) {
-		switch (type) {
-			case turn_on: case turn_off:
-				id = findController(controllers, controlScenarieTmp[i], position, *controllersLen);
+	if (numactions > 0) {
+		for (i = 0; i < numactions; i++) {
+			switch (type) {
+				case turn_on: case turn_off:
+					id = findController(controllers, controlScenarieTmp[i], position, *controllersLen);
+					
+					/* Tjek id om ID'et er gyldigt */
+					if (id < 0)
+						return 0;
 				
-				/* Tjek id om ID'et er gyldigt */
-				if (id < 0)
-					return 0;
-				
-				changeControllerState(controllers, id, type == turn_on ? 1 : 0, *controllersLen);
-			case status:
-				id = findController(controllers, controlScenarieTmp[i], position, *controllersLen);
-				
-				if (id < 0)
-					return 0;
+					changeControllerState(controllers, id, type == turn_on ? 1 : 0, *controllersLen);
+				case status:
+					id = findController(controllers, controlScenarieTmp[i], position, *controllersLen);
+					
+					if (id < 0)
+						return 0;
 			
-				/* Print status */
-				statusControllerPrint(controllers, id);
-                break;
-			case scenarie:
-				return runScenarie(scenarier[findScenarie(scenarier, controlScenarieTmp[i], *scenarierLen)], controllers, *controllersLen) != -1;
-                break;
-            case add_controller:                
+					/* Print status */
+					statusControllerPrint(controllers, id);
+                	break;
+				case scenarie:
+					runScenarie(scenarier[findScenarie(scenarier, controlScenarieTmp[i], *scenarierLen)], controllers, *controllersLen);
+                	break;
+                default:
+                	/* Fejl - burde være endt nede i anden gruppe */
+                	return 0;
+			}
+		}
+		
+		return numactions != 0;
+	} else {
+		switch (type) {
+			case add_controller:                
                 if (addController(controllers, *controllersLen) == -1) return 0;
-                printf("Controlleren er tilf%sjet!\n", oe); (*controllersLen)++; break;
+                printf("Controlleren er tilf%sjet!\n", oe); (*controllersLen)++; 
+                return 1;
             case remove_controller:
                 if (removeController(controllers, *controllersLen) == -1) return 0;
-                printf("Controlleren er fjernet!\n"); (*controllersLen)--; break;
+                printf("Controlleren er fjernet!\n"); (*controllersLen)--;
+                return 1;
             case add_scenarie:
                 if (addScenarie(scenarier, *scenarierLen) == -1) return 0;
-                printf("Scenariet er tilf%sjet!\n", oe); (*scenarierLen)++; break;
+                printf("Scenariet er tilf%sjet!\n", oe); (*scenarierLen)++;
+                return 1;
             case remove_scenarie:
                 if (removeScenarie(scenarier, *scenarierLen) == -1) return 0;
-                printf("Scenariet er fjernet!\n"); (*scenarierLen)--; break;
+                printf("Scenariet er fjernet!\n"); (*scenarierLen)--; return 1;
             case help:
                 helpMe();
-                break;
+                return 1;
             case status_all:
                 statusControllerPrintAll(controllers, *controllersLen);
-                break;
+                return 1;
             case scenarie_all:
                 printAllScenarier(scenarier, *scenarierLen);
-                break;
-		}
+                return 1;
+            default:
+            	/* Fejl - burde være endt i anden gruppe */
+            	return 0;
+        }
 	}
 	
-	return numactions != 0;
+	/* Ved ingen match fundet */
+	return 0;
 }
 
 void helpMe(void) {

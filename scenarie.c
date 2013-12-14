@@ -144,7 +144,7 @@ int findScenarie(const SCENARIE scenarier[], const char name[], int len) {
    
 }
 
-int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len) {
+void runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len) {
     int i, res = ERROR_OCCURRED;
     char status[STATUS_LEN];
     
@@ -167,7 +167,5 @@ int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len) {
        res = changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c3_id, len), scenarie.c3_state, len);
        statusControllerPrint(controllers, controllerIDtoIndex(controllers, scenarie.c3_id, len));
        }
-    
-    return res;
     
 }

@@ -47,14 +47,6 @@ int addController(CONTROLLERS controllers[], int len) {
 	return controller.id;
 }
 
-void addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int len) {
-	controllers[len].id = controllers[len - 1].id + 1;
-	controllers[len].status = controller.status;
-	strcpy(controllers[len].unit, controller.unit);
-	strcpy(controllers[len].position, controller.position);
-	saveControllers(controllers, len + 1);
-}
-
 int changeControllerState(CONTROLLERS controllers[], int index, int state, int len) {
     controllers[index].status = state; 
 
@@ -115,12 +107,36 @@ int controllerIDtoIndex(const CONTROLLERS controllers[], int cid, int len) {
 	return ERROR_OCCURRED;
 }
 
+/* Det er da åndsvagt (tror det er mig selv der har lavet det sådan) at len ikke er en pointer... */
+/* Derudover burde den returnere output af saveControllers */
+void addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int len) {
+	controllers[len].id = controllers[len - 1].id + 1;
+	controllers[len].status = controller.status;
+	strcpy(controllers[len].unit, controller.unit);
+	strcpy(controllers[len].position, controller.position);
+	saveControllers(controllers, len + 1);
+}
+
+int removeControllerC(CONTROLLERS controllers[], int index, int *len) {
+    int i;
+    
+    /* Tæller længden 1 ned */
+    (*len)--;
+    
+    /* Rykker alle efterfølgende elementer (efter index) en plads tilbage */
+	for (i = index; i < *len; i++) {
+    	controllers[i] = controllers[i + 1];
+    }
+    
+    return saveControllers(controllers, *len);
+}
+
 int readControllers(CONTROLLERS controllers[]) {
 	int i = 0;
 
 	FILE *pFile = fopen(FILE_CONTROLLERS, "r");
 	if (pFile == NULL)
-		return ERROR_OCCURRED;
+		return 0;
    
     for (i = 0; !feof(pFile); i++) {
     	fscanf(pFile, " #%d %[0-9a-zA-Z ]s", &controllers[i].id, controllers[i].unit);
@@ -139,7 +155,7 @@ int saveControllers(const CONTROLLERS controllers[], int len) {
     FILE *pFile = fopen(FILE_CONTROLLERS, "w");
     
     if (pFile == NULL) {
-	  	return ERROR_OCCURRED;
+	  	return 0;
 	}
     
     for (i = 0; i < len; i++) {
