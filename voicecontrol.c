@@ -8,7 +8,7 @@
 #include "test.h"
 #include "Corrector.h"
 
-void runScenarie(SCENARIE scenarie, CONTROLLERS controllers[], int len); /* Skal fjernes */
+void runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len); /* Skal fjernes */
 
 int main(int argc, char *argv[]) {
 	int i, scenarie_len, controller_len, users_len;
@@ -299,55 +299,69 @@ void checkPTRALLOC(void **ptr) {
 }
 
 int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type) {
-   int i, index;
-   for (i = 0; i < numactions; i++) {
-		switch (type) {
-	     	case turn_on: case turn_off:
-	     		index = findControllerFromName(controllers, controlScenarieTmp[i], position, *controllersLen);
-	     		
-	     		if (index < 0)
-		      		return 0;
-	     		
-		   		changeControllerState(controllers, index, type == turn_on ? 1 : 0, *controllersLen);
-		   		break;
-	     	case status:
-		   		index = findControllerFromName(controllers, controlScenarieTmp[i], position, *controllersLen);
-				
-		   		if (index < 0)
-		      		return 0;
-			
-		   		/* Print status */
-		   		statusControllerPrint(controllers, index);
-		   		break;
-		 	case scenarie:
-		   		runScenarie(scenarier[findScenarie(scenarier, controlScenarieTmp[i], *scenarierLen)], controllers, *controllersLen);
-		   		break;
-		 	default:
-		   		/* Fejl - burde være endt nede i anden gruppe */
-		   		return 0;
-		}
-	}
-	
-   	return numactions;
+	int i, index;
+   	for (i = 0; i < numactions; i++) {
+        switch (type) {
+            case turn_on: case turn_off:
+                index = findControllerFromName(controllers, controlScenarieTmp[i], position, *controllersLen);
+                
+                if (index < 0)
+                    return 0;
+                             
+                changeControllerState(controllers, index, type == turn_on ? 1 : 0, *controllersLen);
+                break;
+            case status:
+                index = findControllerFromName(controllers, controlScenarieTmp[i], position, *controllersLen);
+                                
+                if (index < 0)
+                    return 0;
+                        
+                /* Print status */
+                statusControllerPrint(controllers, index);
+                break;
+            case scenarie:
+            	index = findScenarieFromName(scenarier, controlScenarieTmp[i], *scenarierLen);
+            	
+            	if (index < 0)
+            		return 0;
+            
+                runScenarie(scenarier[index], controllers, *controllersLen);
+                break;
+            default:
+                /* Fejl - burde være endt nede i anden gruppe */
+                return 0;
+            }
+    }
+        
+    return numactions;
 }
 
 int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], USERS users[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int *usersLen, int numactions, ACTIONTYPE type) {
    switch (type) {
       case add_controller:                
-         if (!addController(controllers, controllersLen)) return 0;
-         printf("Controlleren er tilf%sjet!\n", oe); 
+         if (!addController(controllers, controllersLen)) 
+         	return 0;
+         	
+         printf("Controlleren er tilf%sjet!\n", oe);
          return 1;
       case remove_controller:
-         if (!removeController(controllers, controllersLen)) return 0;
+         if (!removeController(controllers, controllersLen)) 
+         	return 0;
+         	
          printf("Controlleren er fjernet!\n");
          return 1;
       case add_scenarie:
-         if (addScenarie(scenarier, *scenarierLen) == -1) return 0;
-         printf("Scenariet er tilf%sjet!\n", oe); (*scenarierLen)++;
+         if (!addScenarie(scenarier, scenarierLen)) 
+         	return 0;
+         	
+         printf("Scenariet er tilf%sjet!\n", oe);
          return 1;
       case remove_scenarie:
-         if (removeScenarie(scenarier, *scenarierLen) == -1) return 0;
-         printf("Scenariet er fjernet!\n"); (*scenarierLen)--; return 1;
+         if (!removeScenarie(scenarier, scenarierLen)) 
+         	return 0;
+         	
+         printf("Scenariet er fjernet!\n"); 
+         return 1;
       case add_user:
          if (addUser(users, *usersLen) == -1) return 0;
          printf("Brugeren er nu tilf%sjet!\n", oe); (*usersLen)++;

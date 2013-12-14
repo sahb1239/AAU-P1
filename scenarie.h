@@ -8,17 +8,17 @@ typedef struct {
 	char desc[COMMAND_LEN];
 } SCENARIE;
 
-/* View */
-int addScenarie(SCENARIE scenarier[], int len);
 void readInputScenarie (int *pp1, int *pp2, int *pp3, int *pstate1, int *pid1, int *pstate2, int *pid2, int *pstate3, int *pid3, char *command);
+void removeScenarieInput (char *name);
 void printAllScenarier (const SCENARIE scenarier[], int len);
 
-/* Controller */
-void addScenarieC(SCENARIE scenarier[], SCENARIE scenarie, int len);
-int removeScenarie(SCENARIE scenarier[], int len);
-void removeScenarieInput (char *name);
-int findScenarie(const SCENARIE scenarier[], const char name[], int len);
+int addScenarie(SCENARIE scenarier[], int *len);
+int removeScenarie(SCENARIE scenarier[], int *len);
 
-/* Model */
+int findScenarieFromName(const SCENARIE scenarier[], const char name[], int len);
+
+int addScenarieC(SCENARIE scenarier[], SCENARIE scenarie, int *len);
+int removeScenarieC(SCENARIE scenarier[], int index, int *len);
+
 int readScenarie(SCENARIE scenarier[]);
 int saveScenarier(const SCENARIE scenarier[], int len);

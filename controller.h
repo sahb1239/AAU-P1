@@ -10,12 +10,12 @@ typedef struct {
 } CONTROLLERS;
 
 void readInputController (char genstand[], char placering[]);
+void statusControllerPrint (const CONTROLLERS controllers[], int index);
+void statusControllerPrintAll (const CONTROLLERS controllers[], int len);
 
 int addController(CONTROLLERS controllers[], int *len);
 int removeController(CONTROLLERS controllers[], int *len);
 void changeControllerState(CONTROLLERS controllers[], int index, int state, int len);
-void statusControllerPrint (const CONTROLLERS controllers[], int index);
-void statusControllerPrintAll (const CONTROLLERS controllers[], int len);
 
 int findControllerFromName(const CONTROLLERS controllers[], const char name[], const char room[], int len);
 int findControllerFromId(const CONTROLLERS controllers[], int cid, int len);

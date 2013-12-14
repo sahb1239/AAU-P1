@@ -18,8 +18,7 @@ void statusControllerPrint (const CONTROLLERS controllers[], int index) {
 	else
     	strcpy(status, "slukket");
 	
-   	printf("%s i %s er %s\n", controllers[index].unit, controllers[index].position, status);
-   
+	printf("%s i %s er %s\n", controllers[index].unit, controllers[index].position, status);
 }
 
 void statusControllerPrintAll (const CONTROLLERS controllers[], int len) {
@@ -49,7 +48,12 @@ int removeController(CONTROLLERS controllers[], int *len) {
     CONTROLLERS controller;
 	
 	readInputController(controller.unit, controller.position);
-	return removeControllerC(controllers, findControllerFromName(controllers, controller.unit, controller.position, *len), len);
+	
+	int index = findControllerFromName(controllers, controller.unit, controller.position, *len);
+	if (index != ERROR_OCCURRED)
+		return removeControllerC(controllers, index , len);
+	else
+		return 0;
 }
 
 void changeControllerState(CONTROLLERS controllers[], int index, int state, int len) {
