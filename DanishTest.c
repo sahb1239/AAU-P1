@@ -6,6 +6,7 @@ int main(void) {
 	
 	char chr[10], chr2[10], chr3[] = "æ";
 	
+	printf("Indtast input => ");
 	fscanf(file, "%s", chr);
 	scanf("%s", chr2);
 	
