@@ -55,10 +55,13 @@ int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len, USERS cu
     switch (currentUser.priority) {
        case 1:
           if (scenarie.allow_p1 != 1) return 0;
+          break;
        case 2:
           if (scenarie.allow_p2 != 1) return 0;
+          break;
        case 3:
           if (scenarie.allow_p3 != 1) return 0;
+          break;
     }
           
     

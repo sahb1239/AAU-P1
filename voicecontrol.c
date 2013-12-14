@@ -39,9 +39,11 @@ int main(int argc, char *argv[]) {
     		return EXIT_SUCCESS;
     	}
     /* Skal nok flyttes eller laves på en anden måde */
+    do {
     printf("Hej. Du skal starte med at logge ind.\n");
     selectUser(users, users_len, &currentUser);
-    printf("\n");
+    printf("\n"); }
+    while (currentUser.priority <= 0);
     /* Slut på blok der skal flyttes */
 	while(1) {
 		printf("Indtast input => ");
@@ -106,7 +108,7 @@ int main(int argc, char *argv[]) {
 				
 				/* Udfør kommandoen */
 				if (acceptcorrection) {
-					if (!findAndExecuteCommand(selIndex, numwords, controllers, &controller_len, scenarier, &scenarie_len, users, &users_len, currentUser))
+					if (!findAndExecuteCommand(selIndex, numwords, controllers, &controller_len, scenarier, &scenarie_len, users, &users_len, &currentUser))
 						printf(NOTUNDERSTOOD_TEXT, aa);
 				}
 			} else printf(NOTUNDERSTOOD_TEXT, aa);
@@ -205,7 +207,7 @@ int strcmpI(const char *string1, const char *string2) {
 	return out;
 }
 
-int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen, USERS users[], int *usersLen, USERS currentUser) {
+int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen, USERS users[], int *usersLen, USERS *currentUser) {
 	int i, j, numactions;
 	
 	/* Generer actions */
@@ -242,6 +244,8 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
             type = add_user;
         else if (strcmpI(input[i], "sletbruger") == 0)
             type = remove_user;
+        else if (strcmpI(input[i], "bruger") == 0)
+            type = switch_user;
 		
 		/* Find controllers */
 		for (j = 0; j < *controllersLen; j++) {
@@ -262,7 +266,7 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 	if (numactions > 0)
         return executeNormalCommand(controllers, scenarier, controlScenarieTmp, position, controllersLen, scenarierLen, numactions, type, currentUser);
 	else
-        return executeSpecialCommand(controllers, scenarier, users, controlScenarieTmp, position, controllersLen, scenarierLen, usersLen, numactions, type);
+        return executeSpecialCommand(controllers, scenarier, users, controlScenarieTmp, position, controllersLen, scenarierLen, usersLen, numactions, type, currentUser);
 	
 	/* Ved ingen match fundet */
 	return 0;
@@ -302,7 +306,7 @@ void checkPTRALLOC(void **ptr) {
 	}
 }
 
-int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type, USERS currentUser) {
+int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type, USERS *currentUser) {
 	int i, index;
    	for (i = 0; i < numactions; i++) {
         switch (type) {
@@ -329,7 +333,7 @@ int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char 
             	if (index < 0)
             		return 0;
             
-                if (runScenarie(scenarier[index], controllers, *controllersLen, currentUser) == 0)
+                if (runScenarie(scenarier[index], controllers, *controllersLen, *currentUser) == 0)
                    printf("%s", NOT_ALLOWED_TEXT);
                 break;
             default:
@@ -341,7 +345,7 @@ int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char 
     return numactions;
 }
 
-int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], USERS users[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int *usersLen, int numactions, ACTIONTYPE type) {
+int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], USERS users[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int *usersLen, int numactions, ACTIONTYPE type, USERS *currentUser) {
    switch (type) {
       case add_controller:                
          if (!addController(controllers, controllersLen)) 
@@ -384,6 +388,9 @@ int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], USER
       case scenarie_all:
           printAllScenarier(scenarier, *scenarierLen);
          return 1;
+      case switch_user:
+          selectUser(users, *usersLen, currentUser);
+          return 1;
       default:
          /* Fejl - burde være endt i anden gruppe */
          return 0;
