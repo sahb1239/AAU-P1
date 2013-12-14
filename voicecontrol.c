@@ -265,7 +265,7 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 	}
 	
 	if (numactions > 0) { 
-        executeNormalCommand(controllers, scenarier, controlScenarieTmp[i], position, controllersLen, scenarierLen, numactions, type);
+        executeNormalCommand(controllers, scenarier, controlScenarieTmp, position, controllersLen, scenarierLen, numactions, type);
 		
 		return numactions != 0;
 	} else {
