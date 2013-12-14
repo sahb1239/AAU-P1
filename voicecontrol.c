@@ -264,7 +264,7 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 	return 0;
 }
 
-void helpMe(void) {
+void helpMe(void) { /* Skal opdateres med users */
 	#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
     	system("CLS");
     #else
