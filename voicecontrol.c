@@ -127,11 +127,11 @@ int yesno(const char *text) {
 		printf("Mente du: %s(ja/nej)? => ", text);
 		scanf(" %s", ans);
 		
-		if (strcmpI(ans, "j") || strcmpI(ans, "y") ||
-			strcmpI(ans, "ja") || strcmpI(ans, "yes"))
+		if (strcmpI(ans, "j") == 0 || strcmpI(ans, "y") == 0 ||
+			strcmpI(ans, "ja") == 0 || strcmpI(ans, "yes") == 0)
 			return 1;
-		else if (strcmpI(ans, "n") ||
-			strcmpI(ans, "nej") || strcmpI(ans, "no"))
+		else if (strcmpI(ans, "n") == 0 ||
+			strcmpI(ans, "nej") == 0 || strcmpI(ans, "no") == 0)
 			return 0;
 			
 		printf("Indtast venligst et gyldigt svar\n");
