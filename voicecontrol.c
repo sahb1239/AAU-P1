@@ -45,6 +45,7 @@ int main(int argc, char *argv[]) {
     printf("\n"); }
     while (currentUser.priority <= 0);
     /* Slut på blok der skal flyttes */
+    
 	while(1) {
 		printf("Indtast input => ");
 		if (scanf(" %[^\n]s", voiceinput)) {
