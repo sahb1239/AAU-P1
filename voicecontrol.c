@@ -264,41 +264,10 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 		}
 	}
 	
-	if (numactions > 0) { 
-        executeNormalCommand(controllers, scenarier, controlScenarieTmp, position, controllersLen, scenarierLen, numactions, type);
-		
-		return numactions != 0;
-	} else {
-		switch (type) {
-			case add_controller:                
-                if (addController(controllers, *controllersLen) == -1) return 0;
-                printf("Controlleren er tilf%sjet!\n", oe); (*controllersLen)++; 
-                return 1;
-            case remove_controller:
-                if (removeController(controllers, *controllersLen) == -1) return 0;
-                printf("Controlleren er fjernet!\n"); (*controllersLen)--;
-                return 1;
-            case add_scenarie:
-                if (addScenarie(scenarier, *scenarierLen) == -1) return 0;
-                printf("Scenariet er tilf%sjet!\n", oe); (*scenarierLen)++;
-                return 1;
-            case remove_scenarie:
-                if (removeScenarie(scenarier, *scenarierLen) == -1) return 0;
-                printf("Scenariet er fjernet!\n"); (*scenarierLen)--; return 1;
-            case help:
-                helpMe();
-                return 1;
-            case status_all:
-                statusControllerPrintAll(controllers, *controllersLen);
-                return 1;
-            case scenarie_all:
-                printAllScenarier(scenarier, *scenarierLen);
-                return 1;
-            default:
-            	/* Fejl - burde være endt i anden gruppe */
-            	return 0;
-        }
-	}
+	if (numactions > 0)
+        return executeNormalCommand(controllers, scenarier, controlScenarieTmp, position, controllersLen, scenarierLen, numactions, type);
+	else
+        return executeSpecialCommand(controllers, scenarier, controlScenarieTmp, position, controllersLen, scenarierLen, numactions, type);
 	
 	/* Ved ingen match fundet */
 	return 0;
@@ -367,10 +336,37 @@ int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char 
 		   return 0;
 			}
 		}
-
    return 1;
 }
 
-void executeSpecialCommand (void) {
-
+int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type) {
+   switch (type) {
+      case add_controller:                
+         if (addController(controllers, *controllersLen) == -1) return 0;
+         printf("Controlleren er tilf%sjet!\n", oe); (*controllersLen)++; 
+         return 1;
+      case remove_controller:
+         if (removeController(controllers, *controllersLen) == -1) return 0;
+         printf("Controlleren er fjernet!\n"); (*controllersLen)--;
+         return 1;
+      case add_scenarie:
+         if (addScenarie(scenarier, *scenarierLen) == -1) return 0;
+         printf("Scenariet er tilf%sjet!\n", oe); (*scenarierLen)++;
+         return 1;
+      case remove_scenarie:
+         if (removeScenarie(scenarier, *scenarierLen) == -1) return 0;
+         printf("Scenariet er fjernet!\n"); (*scenarierLen)--; return 1;
+      case help:
+         helpMe();
+         return 1;
+      case status_all:
+         statusControllerPrintAll(controllers, *controllersLen);
+         return 1;
+      case scenarie_all:
+          printAllScenarier(scenarier, *scenarierLen);
+         return 1;
+      default:
+         /* Fejl - burde være endt i anden gruppe */
+         return 0;
+        }
 }
