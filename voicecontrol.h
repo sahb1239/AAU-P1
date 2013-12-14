@@ -30,7 +30,6 @@ int yesno(const char *text);
 /* Beregningslag */
 int splitString(const char *input, char *out[], int maxwords);
 int strcmpI(const char *string1, const char *string2);
-int correctInput(char **in, int *understoodPercent, int numwords);
 void checkPTRALLOC(void **ptr);
 
 int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen);

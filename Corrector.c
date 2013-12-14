@@ -4,6 +4,53 @@
 #include "Corrector.h"
 #include "voicecontrol.h"
 
+/* Hjælpefunktion til lighedsgrad ud fra et string array */
+int correctInput(char **in, int *understoodPercent, int numwords) {
+	/* Variabler til at indeholde hvor mange procent af sætningen/ordet at stavekontrollen forstod */
+	int understood = 100,
+		likeness,
+		i;
+		
+	/* Indeholder det rettede ord */
+	char *corrected_word;
+	
+	for (i = 0; i < numwords; i++) {
+		/* Resetter procent forstået af ordet */
+		likeness = 0;
+		
+		/* Udfører stavekontrollen */
+		corrected_word = correct(in[i], &likeness);
+		
+		/* 
+		 * Tjekker at der ikke blev fundet et match (pointeren er NULL hvis der ikke blev fundet et). 
+		 * Afslutter funktionen med false for at symbolere at inputtet kunne ikke forstås 
+		 */
+		if (corrected_word == NULL) {
+			return 0;
+		}
+		
+		/* Free'er det gamle memory og allokerer nyt */
+		free(in[i]);
+		in[i] = malloc((1 + strlen(corrected_word)) * sizeof(char)); /* +1 for plads til \0 tegnet */
+		
+		/* Tjek at der blev allokeret hukommelse */
+		checkPTRALLOC((void **) &in[i]);
+		
+		/* Kopierer output over i in */
+		strcpy(in[i], corrected_word);
+		
+		/* Free'er det midlertidige hukommelse fra funktionen */
+		free(corrected_word);
+		
+		/* Opdaterer graden at sætningen matcher den oprindelige sætning */
+		understood -= (100 - likeness) / numwords;
+	}
+	
+	/* Returnerer i hvor høj grad at input matcher med det nye */
+	*understoodPercent = understood;
+	return 1;
+}
+
 char *correct (const char input[], int *likeness) {
 	int num_words, i, j;
 	char **db_words = database_extract(&num_words);

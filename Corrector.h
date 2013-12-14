@@ -8,6 +8,7 @@
 #define DATABASE_SIZE 200
 #define DATABASE_SIZE_WORD 30
 
+int correctInput(char **in, int *understoodPercent, int numwords);
 char *correct (const char input[], int *likeness);
 char **database_extract (int *len);
 
