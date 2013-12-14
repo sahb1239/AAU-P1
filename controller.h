@@ -9,20 +9,18 @@ typedef struct {
 	char unit[UNIT_NAME_LEN], position[POSITION_NAME_LEN];
 } CONTROLLERS;
 
-int addController(CONTROLLERS controllers[], int len);
 void readInputController (char genstand[], char placering[]);
+
+int addController(CONTROLLERS controllers[], int *len);
+int removeController(CONTROLLERS controllers[], int *len);
+void changeControllerState(CONTROLLERS controllers[], int index, int state, int len);
 void statusControllerPrint (const CONTROLLERS controllers[], int index);
 void statusControllerPrintAll (const CONTROLLERS controllers[], int len);
 
-int removeController(CONTROLLERS controllers[], int len);
-int changeControllerState(CONTROLLERS controllers[], int cid, int state, int len);
-int controllerState (const CONTROLLERS controllers[], int cid, int len);
-int findController(const CONTROLLERS controllers[], const char name[], const char room[], int len);
-int controllerIDtoIndex(const CONTROLLERS controllers[], int cid, int len);
+int findControllerFromName(const CONTROLLERS controllers[], const char name[], const char room[], int len);
+int findControllerFromId(const CONTROLLERS controllers[], int cid, int len);
 
-
-
-void addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int len);
+int addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int *len);
 int removeControllerC(CONTROLLERS controllers[], int index, int *len);
 
 int readControllers(CONTROLLERS controllers[]);

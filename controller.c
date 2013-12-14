@@ -10,15 +10,15 @@ void readInputController (char genstand[], char placering[]) {
     scanf("%s", placering);              
 }
 
-void statusControllerPrint (const CONTROLLERS controllers[], int i) {
+void statusControllerPrint (const CONTROLLERS controllers[], int index) {
 	char status[STATUS_LEN];
 	
-	if (controllers[i].status)
+	if (controllers[index].status)
     	sprintf(status, "t%sndt", ae);
 	else
     	strcpy(status, "slukket");
 	
-   	printf("%s i %s er %s\n", controllers[i].unit, controllers[i].position, status);
+   	printf("%s i %s er %s\n", controllers[index].unit, controllers[index].position, status);
    
 }
 
@@ -38,83 +38,35 @@ void statusControllerPrintAll (const CONTROLLERS controllers[], int len) {
     }
 }
 
-int addController(CONTROLLERS controllers[], int len) {
+int addController(CONTROLLERS controllers[], int *len) {
 	CONTROLLERS controller;
 	
 	readInputController(controller.unit, controller.position);
-	addControllerC(controllers, controller, len);
-	
-	return controller.id;
+	return addControllerC(controllers, controller, len);
 }
 
-int changeControllerState(CONTROLLERS controllers[], int index, int state, int len) {
-    controllers[index].status = state; 
-
-    return state;
-}
-
-int removeController(CONTROLLERS controllers[], int len) {
-    int i, j, success = -1;
+int removeController(CONTROLLERS controllers[], int *len) {
     CONTROLLERS controller;
 	
 	readInputController(controller.unit, controller.position);
-    
-    for (i = 0; i < len; i++) {
-        if (strcmpI(controllers[i].unit, controller.unit) == 0 && strcmpI(controllers[i].position, controller.position) == 0) { /* Skal vel køres igennem stavekontrollen? */
-          	len--;
-            success = 1;
-          
-          	for (j = i; j < len; j++) {
-             	controllers[j] = controllers[j + 1];
-             }
-        }
-    }
-    if (success != -1) saveControllers(controllers, len);
-    return success;
+	return removeControllerC(controllers, findControllerFromName(controllers, controller.unit, controller.position, *len), len);
 }
 
-int controllerState (const CONTROLLERS controllers[], int cid, int len) {
-    int i;
-    
-    for (i = 0; i <= len; i++) {
-      	if (controllers[i].id == cid) {
-        	statusControllerPrint(controllers, i);
-        	break; 
-    	}
-    }
-    return 1;
-}
-
-int findController(const CONTROLLERS controllers[], const char name[], const char room[], int len) {
-   int i;
-   
-   for (i = 0; i < len; i++) {
-      if (strcmpI(room, controllers[i].position) == 0 && strcmpI(name, controllers[i].unit) == 0) {
-         return i;
-      }
-   }
-   return ERROR_OCCURRED;
-}
-
-int controllerIDtoIndex(const CONTROLLERS controllers[], int cid, int len) {
-	int i;
-	
-	for (i = 0; i < len; i++) {
-		if (controllers[i].id == cid)
-			return i;
-	}
-	
-	return ERROR_OCCURRED;
+void changeControllerState(CONTROLLERS controllers[], int index, int state, int len) {
+	controllers[index].status = state;
+	statusControllerPrint(controllers, index);
+	saveControllers(controllers, len);
 }
 
 /* Det er da åndsvagt (tror det er mig selv der har lavet det sådan) at len ikke er en pointer... */
 /* Derudover burde den returnere output af saveControllers */
-void addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int len) {
-	controllers[len].id = controllers[len - 1].id + 1;
-	controllers[len].status = controller.status;
-	strcpy(controllers[len].unit, controller.unit);
-	strcpy(controllers[len].position, controller.position);
-	saveControllers(controllers, len + 1);
+int addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int *len) {
+	controllers[*len].id = controllers[*len - 1].id + 1;
+	controllers[*len].status = controller.status;
+	strcpy(controllers[*len].unit, controller.unit);
+	strcpy(controllers[*len].position, controller.position);
+	
+	return saveControllers(controllers, ++(*len));
 }
 
 int removeControllerC(CONTROLLERS controllers[], int index, int *len) {
@@ -129,6 +81,28 @@ int removeControllerC(CONTROLLERS controllers[], int index, int *len) {
     }
     
     return saveControllers(controllers, *len);
+}
+
+int findControllerFromName(const CONTROLLERS controllers[], const char name[], const char room[], int len) {
+   int i;
+   
+   for (i = 0; i < len; i++) {
+      if (strcmpI(room, controllers[i].position) == 0 && strcmpI(name, controllers[i].unit) == 0) {
+         return i;
+      }
+   }
+   return ERROR_OCCURRED;
+}
+
+int findControllerFromId(const CONTROLLERS controllers[], int cid, int len) {
+	int i;
+	
+	for (i = 0; i < len; i++) {
+		if (controllers[i].id == cid)
+			return i;
+	}
+	
+	return ERROR_OCCURRED;
 }
 
 int readControllers(CONTROLLERS controllers[]) {

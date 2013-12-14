@@ -299,46 +299,47 @@ void checkPTRALLOC(void **ptr) {
 }
 
 int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type) {
-   int i, id;
+   int i, index;
    for (i = 0; i < numactions; i++) {
-      switch (type) {
-	     case turn_on: case turn_off:
-		   id = findController(controllers, controlScenarieTmp[i], position, *controllersLen);
-					
-			/* Tjek id om ID'et er gyldigt */
-		   if (id < 0)
-		   return 0;
+		switch (type) {
+	     	case turn_on: case turn_off:
+	     		index = findControllerFromName(controllers, controlScenarieTmp[i], position, *controllersLen);
+	     		
+	     		if (index < 0)
+		      		return 0;
+	     		
+		   		changeControllerState(controllers, index, type == turn_on ? 1 : 0, *controllersLen);
+		   		break;
+	     	case status:
+		   		index = findControllerFromName(controllers, controlScenarieTmp[i], position, *controllersLen);
 				
-		   changeControllerState(controllers, id, type == turn_on ? 1 : 0, *controllersLen);
-	     case status:
-		   id = findController(controllers, controlScenarieTmp[i], position, *controllersLen);
-					
-		   if (id < 0)
-		      return 0;
+		   		if (index < 0)
+		      		return 0;
 			
-		   /* Print status */
-		   statusControllerPrint(controllers, id);
-		   break;
-		 case scenarie:
-		   runScenarie(scenarier[findScenarie(scenarier, controlScenarieTmp[i], *scenarierLen)], controllers, *controllersLen);
-		   break;
-		 default:
-		   /* Fejl - burde være endt nede i anden gruppe */
-		   return 0;
-			}
+		   		/* Print status */
+		   		statusControllerPrint(controllers, index);
+		   		break;
+		 	case scenarie:
+		   		runScenarie(scenarier[findScenarie(scenarier, controlScenarieTmp[i], *scenarierLen)], controllers, *controllersLen);
+		   		break;
+		 	default:
+		   		/* Fejl - burde være endt nede i anden gruppe */
+		   		return 0;
 		}
-   return 1;
+	}
+	
+   	return numactions;
 }
 
 int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], USERS users[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int *usersLen, int numactions, ACTIONTYPE type) {
    switch (type) {
       case add_controller:                
-         if (addController(controllers, *controllersLen) == -1) return 0;
-         printf("Controlleren er tilf%sjet!\n", oe); (*controllersLen)++; 
+         if (!addController(controllers, controllersLen)) return 0;
+         printf("Controlleren er tilf%sjet!\n", oe); 
          return 1;
       case remove_controller:
-         if (removeController(controllers, *controllersLen) == -1) return 0;
-         printf("Controlleren er fjernet!\n"); (*controllersLen)--;
+         if (!removeController(controllers, controllersLen)) return 0;
+         printf("Controlleren er fjernet!\n");
          return 1;
       case add_scenarie:
          if (addScenarie(scenarier, *scenarierLen) == -1) return 0;

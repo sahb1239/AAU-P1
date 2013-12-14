@@ -149,23 +149,20 @@ void runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len) {
     char status[STATUS_LEN];
     
     if (scenarie.c1_id == 0) {
-       if (scenarie.c1_state)
-          sprintf(status, "t%sndt", ae);
-       else
-    	  strcpy(status, "slukket");
+       	if (scenarie.c1_state)
+          	sprintf(status, "t%sndt", ae);
+       	else
+    	  	strcpy(status, "slukket");
           
-       for (i = 0; i < len; i++) {
-          changeControllerState(controllers, i, scenarie.c1_state, len); }
-       printf("Alt er nu %s\n", status);
+       	for (i = 0; i < len; i++)
+          	changeControllerState(controllers, i, scenarie.c1_state, len); 
+       
+       	printf("Alt er nu %s\n", status);
     }
-    
-    else {	
-       changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c1_id, len), scenarie.c1_state, len);
-       statusControllerPrint(controllers, controllerIDtoIndex(controllers, scenarie.c1_id, len));
-       changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c2_id, len), scenarie.c2_state, len);
-       statusControllerPrint(controllers, controllerIDtoIndex(controllers, scenarie.c2_id, len));
-       changeControllerState(controllers, controllerIDtoIndex(controllers, scenarie.c3_id, len), scenarie.c3_state, len);
-       statusControllerPrint(controllers, controllerIDtoIndex(controllers, scenarie.c3_id, len));
-       }
+    else {
+    	changeControllerState(controllers, findControllerFromId(controllers, scenarie.c1_id, len), scenarie.c1_state, len);
+       	changeControllerState(controllers, findControllerFromId(controllers, scenarie.c2_id, len), scenarie.c2_state, len);
+       	changeControllerState(controllers, findControllerFromId(controllers, scenarie.c3_id, len), scenarie.c3_state, len);
+    }
     
 }
