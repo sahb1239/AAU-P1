@@ -4,7 +4,8 @@
 #include "users.h"
 
 typedef enum {
-	turn_on, turn_off, status, scenarie, add_controller, remove_controller, add_scenarie, remove_scenarie, help, status_all, scenarie_all, add_user, remove_user, switch_user
+	turn_on, turn_off, status, scenarie, add_controller, remove_controller, add_scenarie, remove_scenarie, 
+    help, status_all, scenarie_all, add_user, remove_user, switch_user, users_all
 } ACTIONTYPE;
 
 #define ERROR_OCCURRED -1

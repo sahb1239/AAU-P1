@@ -18,4 +18,4 @@ tilfoejcontroller sletcontroller tilfoejscenarie sletscenarie
 tilføjcontroller tilføjscenarie
 hjælp hjaelp statusalle allescenarier
 tilføjbruger tilfoejbruger sletbruger
-test tester bruger
+test tester bruger allebrugere

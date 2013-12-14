@@ -246,6 +246,8 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
             type = remove_user;
         else if (strcmpI(input[i], "bruger") == 0)
             type = switch_user;
+        else if (strcmpI(input[i], "allebrugere") == 0)
+            type = users_all;
 		
 		/* Find controllers */
 		for (j = 0; j < *controllersLen; j++) {
@@ -285,16 +287,22 @@ void helpMe(void) { /* Skal opdateres med users */
     
     printf("K%sR SCENARIE\n\"Jarvis scenarie [scenarienavn]\"\n\n", OE);
     
-    printf("TILF%sJ OG SLET CONTROLLER\n\"Jarvis tilfoejcontroller/sletcontroller\" (efterfulgt af en dialog)\n\n", OE);
+    printf("SKIFT BRUGER\n\"Jarvis bruger\" (efterfulgt af en dialog)\n\n");
     
-    printf("TILF%sJ OG SLET SCENARIE\n\"Jarvis tilfoejscenarie/sletscenarie\" (efterfulgt af en dialog)\n\n", OE);
+    printf("TILF%sJ OG SLET CONTROLLER\n\"Jarvis tilfoejcontroller / sletcontroller\" (efterfulgt af en dialog)\n\n", OE);
+    
+    printf("TILF%sJ OG SLET SCENARIE\n\"Jarvis tilfoejscenarie / sletscenarie\" (efterfulgt af en dialog)\n\n", OE);
+    
+    printf("TILF%sJ OG SLET BRUGER\n\"Jarvis tilfoejbruger / sletbruger\" (efterfulgt af en dialog)\n\n", OE);
     
     printf("Nedenst%sende kommandoer bruges som hj%slp i simulationen\n"
            "-------------------------------------------------------\n\n", aa, ae);
     
     printf("STATUS FOR ALLE CONTROLLERS\n\"Jarvis statusalle\"\n\n");
     
-    printf("UDSKRIV ALLE SCENARIER\n\"Jarvis allescenarier\"");
+    printf("UDSKRIV ALLE SCENARIER\n\"Jarvis allescenarier\"\n\n");
+    
+    printf("UDSKRIV ALLE BRUGERE\n\"Jarvis allebrugere\"");
     
     printf("\n\n");
 }
@@ -390,6 +398,9 @@ int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], USER
          return 1;
       case switch_user:
           selectUser(users, *usersLen, currentUser);
+          return 1;
+      case users_all:
+          printUsers(users, *usersLen);
           return 1;
       default:
          /* Fejl - burde være endt i anden gruppe */
