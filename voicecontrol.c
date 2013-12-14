@@ -4,7 +4,6 @@
 #include <ctype.h>
 
 #include "voicecontrol.h"
-#include "rooms.h"
 #include "danish.h"
 #include "test.h"
 #include "users.h"
