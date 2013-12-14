@@ -264,36 +264,8 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 		}
 	}
 	
-	/* Udfør kommando - del nedstående op i 2 funktioner */
-	int id;
-	if (numactions > 0) { /* Dette burde være en swich... med 2 case blokke */
-		for (i = 0; i < numactions; i++) {
-			switch (type) {
-				case turn_on: case turn_off:
-					id = findController(controllers, controlScenarieTmp[i], position, *controllersLen);
-					
-					/* Tjek id om ID'et er gyldigt */
-					if (id < 0)
-						return 0;
-				
-					changeControllerState(controllers, id, type == turn_on ? 1 : 0, *controllersLen);
-				case status:
-					id = findController(controllers, controlScenarieTmp[i], position, *controllersLen);
-					
-					if (id < 0)
-						return 0;
-			
-					/* Print status */
-					statusControllerPrint(controllers, id);
-                	break;
-				case scenarie:
-					runScenarie(scenarier[findScenarie(scenarier, controlScenarieTmp[i], *scenarierLen)], controllers, *controllersLen);
-                	break;
-                default:
-                	/* Fejl - burde være endt nede i anden gruppe */
-                	return 0;
-			}
-		}
+	if (numactions > 0) { 
+        executeNormalCommand(controllers, scenarier, controlScenarieTmp[i], position, controllersLen, scenarierLen, numactions, type);
 		
 		return numactions != 0;
 	} else {
@@ -360,4 +332,41 @@ void checkPTRALLOC(void **ptr) {
 		printf(MEMORYERROR_TEXT);
 		exit(EXIT_FAILURE);
 	}
+}
+
+int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type) {
+   int i, id;
+   for (i = 0; i < numactions; i++) {
+      switch (type) {
+	     case turn_on: case turn_off:
+		   id = findController(controllers, controlScenarieTmp[i], position, *controllersLen);
+					
+			/* Tjek id om ID'et er gyldigt */
+		   if (id < 0)
+		   return 0;
+				
+		   changeControllerState(controllers, id, type == turn_on ? 1 : 0, *controllersLen);
+	     case status:
+		   id = findController(controllers, controlScenarieTmp[i], position, *controllersLen);
+					
+		   if (id < 0)
+		      return 0;
+			
+		   /* Print status */
+		   statusControllerPrint(controllers, id);
+		   break;
+		 case scenarie:
+		   runScenarie(scenarier[findScenarie(scenarier, controlScenarieTmp[i], *scenarierLen)], controllers, *controllersLen);
+		   break;
+		 default:
+		   /* Fejl - burde være endt nede i anden gruppe */
+		   return 0;
+			}
+		}
+
+   return 1;
+}
+
+void executeSpecialCommand (void) {
+
 }
