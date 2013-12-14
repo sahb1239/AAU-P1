@@ -2,6 +2,7 @@
 #include <string.h>
 #include "scenarie.h"
 #include "controller.h"
+#include "users.h"
 #include "danish.h"
 
 int strcmpI(const char *string1, const char *string2);
@@ -46,9 +47,20 @@ void printAllScenarier (const SCENARIE scenarier[], int len) {
 
 }
 
-void runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len) {
+int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len, USERS currentUser) {
     int i;
     char status[STATUS_LEN];
+    
+    /* Vi starter med at tjekke om brugeren har adgang til dette scenarie */
+    switch (currentUser.priority) {
+       case 1:
+          if (scenarie.allow_p1 != 1) return 0;
+       case 2:
+          if (scenarie.allow_p2 != 1) return 0;
+       case 3:
+          if (scenarie.allow_p3 != 1) return 0;
+    }
+          
     
     if (scenarie.c1_id == 0) {
        	if (scenarie.c1_state)
@@ -66,6 +78,7 @@ void runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len) {
        	changeControllerState(controllers, findControllerFromId(controllers, scenarie.c2_id, len), scenarie.c2_state, len);
        	changeControllerState(controllers, findControllerFromId(controllers, scenarie.c3_id, len), scenarie.c3_state, len);
     }
+    return 1;
 }
 
 int addScenarie(SCENARIE scenarier[], int *len) {

@@ -8,7 +8,7 @@
 #include "test.h"
 #include "Corrector.h"
 
-void runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len); /* Skal fjernes */
+int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len, USERS currentUser); /* Skal fjernes */
 
 int main(int argc, char *argv[]) {
 	int i, scenarie_len, controller_len, users_len;
@@ -26,13 +26,9 @@ int main(int argc, char *argv[]) {
     for (i = 1; i < argc; i++)
     	if (strcmp("--test", argv[i]) == 0) {
     		testAll();
-    		return EXIT_SUCCESS; 
-    	}
-        else if (strcmp("--user", argv[i]) == 0) {
-            selectUser(users, users_len, currentUser);
-            printf("%s med prioritet %d", currentUser.name, currentUser.priority); 
-        }
-        else if (strcmp("--testfree", argv[i]) == 0) {
+    		return EXIT_SUCCESS; }
+                        
+            else if (strcmp("--testfree", argv[i]) == 0) {
     		char *t[10];
     		int m, k = splitString("scenare printer stue printer hyggeaften", t,  10);
     		for (i = 0; i < k; i++) {
@@ -42,7 +38,11 @@ int main(int argc, char *argv[]) {
     		}
     		return EXIT_SUCCESS;
     	}
-     
+    /* Skal nok flyttes eller laves på en anden måde */
+    printf("Hej. Du skal starte med at logge ind.\n");
+    selectUser(users, users_len, &currentUser);
+    printf("\n");
+    /* Slut på blok der skal flyttes */
 	while(1) {
 		printf("Indtast input => ");
 		if (scanf(" %[^\n]s", voiceinput)) {
@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
 				
 				/* Udfør kommandoen */
 				if (acceptcorrection) {
-					if (!findAndExecuteCommand(selIndex, numwords, controllers, &controller_len, scenarier, &scenarie_len, users, &users_len))
+					if (!findAndExecuteCommand(selIndex, numwords, controllers, &controller_len, scenarier, &scenarie_len, users, &users_len, currentUser))
 						printf(NOTUNDERSTOOD_TEXT, aa);
 				}
 			} else printf(NOTUNDERSTOOD_TEXT, aa);
@@ -125,11 +125,11 @@ int yesno(const char *text) {
 		printf("Mente du: %s(ja/nej)? => ", text);
 		scanf(" %s", ans);
 		
-		if (strcmpI(ans, "j") == 0 || strcmpI(ans, "y") == 0 ||
-			strcmpI(ans, "ja") == 0 || strcmpI(ans, "yes") == 0)
+		if (strcmpI(ans, "j") || strcmpI(ans, "y") ||
+			strcmpI(ans, "ja") || strcmpI(ans, "yes"))
 			return 1;
-		else if (strcmpI(ans, "n") == 0 ||
-			strcmpI(ans, "nej") == 0 || strcmpI(ans, "no") == 0)
+		else if (strcmpI(ans, "n") ||
+			strcmpI(ans, "nej") || strcmpI(ans, "no"))
 			return 0;
 			
 		printf("Indtast venligst et gyldigt svar\n");
@@ -205,7 +205,7 @@ int strcmpI(const char *string1, const char *string2) {
 	return out;
 }
 
-int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen, USERS users[], int *usersLen) {
+int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen, USERS users[], int *usersLen, USERS currentUser) {
 	int i, j, numactions;
 	
 	/* Generer actions */
@@ -260,7 +260,7 @@ int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int
 	}
 	
 	if (numactions > 0)
-        return executeNormalCommand(controllers, scenarier, controlScenarieTmp, position, controllersLen, scenarierLen, numactions, type);
+        return executeNormalCommand(controllers, scenarier, controlScenarieTmp, position, controllersLen, scenarierLen, numactions, type, currentUser);
 	else
         return executeSpecialCommand(controllers, scenarier, users, controlScenarieTmp, position, controllersLen, scenarierLen, usersLen, numactions, type);
 	
@@ -302,7 +302,7 @@ void checkPTRALLOC(void **ptr) {
 	}
 }
 
-int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type) {
+int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type, USERS currentUser) {
 	int i, index;
    	for (i = 0; i < numactions; i++) {
         switch (type) {
@@ -329,7 +329,8 @@ int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char 
             	if (index < 0)
             		return 0;
             
-                runScenarie(scenarier[index], controllers, *controllersLen);
+                if (runScenarie(scenarier[index], controllers, *controllersLen, currentUser) == 0)
+                   printf("%s", NOT_ALLOWED_TEXT);
                 break;
             default:
                 /* Fejl - burde være endt nede i anden gruppe */

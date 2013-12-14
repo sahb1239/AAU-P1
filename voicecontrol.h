@@ -21,6 +21,7 @@ typedef enum {
 
 #define NOTUNDERSTOOD_TEXT "Input blev ikke forst%set\n"
 #define MEMORYERROR_TEXT "Fejl: ikke nok hukommelse"
+#define NOT_ALLOWED_TEXT "Du har ikke adgang til dette scenarie\n"
 
 /* Prototyper */
 void helpMe(void);
@@ -33,7 +34,7 @@ int splitString(const char *input, char *out[], int maxwords);
 int strcmpI(const char *string1, const char *string2);
 void checkPTRALLOC(void **ptr);
 
-int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen, USERS users[], int *usersLen);
+int findAndExecuteCommand(char *input[], int len, CONTROLLERS controllers[], int *controllersLen, SCENARIE scenarier[], int *scenarierLen, USERS users[], int *usersLen, USERS currentUser);
 
-int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type);
+int executeNormalCommand (CONTROLLERS controllers[], SCENARIE scenarier[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int numactions, ACTIONTYPE type, USERS currentUser);
 int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], USERS users[], char *controlScenarieTmp[], char position[], int *controllersLen, int *scenarierLen, int *usersLen, int numactions, ACTIONTYPE type);

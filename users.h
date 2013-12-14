@@ -7,7 +7,7 @@ typedef struct {
 } USERS;
 
 int readUsers(USERS users[]);
-void selectUser(const USERS users[], int len, USERS currentUser);
+void selectUser(const USERS users[], int len, USERS *currentUser);
 void printUsers(const USERS users[], int len);
 void readInputUser(char name[], int askPriority, int *priority);
 int removeUser(USERS users[], int len);
