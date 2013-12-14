@@ -62,8 +62,6 @@ void changeControllerState(CONTROLLERS controllers[], int index, int state, int 
 	saveControllers(controllers, len);
 }
 
-/* Det er da åndsvagt (tror det er mig selv der har lavet det sådan) at len ikke er en pointer... */
-/* Derudover burde den returnere output af saveControllers */
 int addControllerC(CONTROLLERS controllers[], CONTROLLERS controller, int *len) {
 	controllers[*len].id = controllers[*len - 1].id + 1;
 	controllers[*len].status = controller.status;
