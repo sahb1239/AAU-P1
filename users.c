@@ -50,23 +50,31 @@ void readInputUser(char name[], int askPriority, int *priority) {
 }
 
 int removeUser(USERS users[], int len) {
-    int i, j, success = -1;
+    
     USERS user;
 	
 	readInputUser(user.name, 0, &user.priority);
-    
+
+    return removeUserC(users, len, user);
+}
+
+int removeUserC(USERS users[], int len, USERS user) {
+   int i, j, success = -1;
+   
     for (i = 0; i < len; i++) {
-        if (strcmpI(users[i].name, user.name) == 0) {
-          	len--;
-            success = 1;
+       if (strcmpI(users[i].name, user.name) == 0) {
+         len--;
+          success = 1;
           
-          	for (j = i; j < len; j++) {
-             	users[j] = users[j + 1];
-             }
-        }
+         for (j = i; j < len; j++) {
+           	users[j] = users[j + 1];
+         }
+       }
     }
-    if (success != -1) saveUsers(users, len);
-    return success;
+    if (success == 1)
+       return saveUsers(users, len);
+    else
+       return ERROR_OCCURRED;
 }
 
 int addUser(USERS users[], int len) {
