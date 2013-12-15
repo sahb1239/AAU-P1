@@ -57,7 +57,7 @@ char *correct (const char input[], int *likeness) {
 
 	/* Punkt 1: compare af input og database ord. */
   	for (i = 0; i < num_words; i++) {
-    	if (strcmp(input, db_words[i]) == 0) {
+    	if (strcmpI(input, db_words[i]) == 0) {
 	  		/* Rydder op og returnerer */
 	  		for (j = 0; j < num_words; j++)
 	  			free(db_words[j]);
