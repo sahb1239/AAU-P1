@@ -157,7 +157,7 @@ char *correct (const char input[], int *likeness) {
   	/* Punkt 5: sammenligning af output fra edit2 med input. Returnering hvis match. */
   	for (i = 0; i < totalLen2; i++) {
   		for (j = 0; j < num_words; j++) {
-  	 		if (strcmp(combinations2[i], db_words[j]) == 0) {
+  	 		if (strcmpI(combinations2[i], db_words[j]) == 0) {
   	 			char *out = malloc((strlen(combinations2[i]) + 1) * sizeof(char));
   	 			
   	 			/* Tjek pointeren */
