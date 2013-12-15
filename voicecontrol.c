@@ -39,12 +39,14 @@ int main(int argc, char *argv[]) {
     		return EXIT_SUCCESS;
     	}
     /* Skal nok flyttes eller laves på en anden måde */
+    currentUser.priority = 0;
     do {
-    printf("Hej. Du skal starte med at logge ind.\n");
-    selectUser(users, users_len, &currentUser);
-    printf("\n"); }
-    while (currentUser.priority <= 0);
+    	printf("Hej. Du skal starte med at logge ind.\n");
+    	selectUser(users, users_len, &currentUser); 
+    } while (currentUser.priority <= 0);
     /* Slut på blok der skal flyttes */
+    
+    printf("Velkommen %s\n\n", currentUser.name);
     
 	while(1) {
 		printf("Indtast input => ");
