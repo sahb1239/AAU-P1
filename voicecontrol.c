@@ -398,7 +398,8 @@ int executeSpecialCommand (CONTROLLERS controllers[], SCENARIE scenarier[], USER
           printAllScenarier(scenarier, *scenarierLen);
          return 1;
       case switch_user:
-          selectUser(users, *usersLen, currentUser);
+          if (selectUser(users, *usersLen, currentUser) == ERROR_OCCURRED) return 0;
+          printf("%s er logget ind\n", currentUser->name);
           return 1;
       case users_all:
           printUsers(users, *usersLen);
