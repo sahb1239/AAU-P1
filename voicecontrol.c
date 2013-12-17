@@ -8,7 +8,7 @@
 #include "test.h"
 #include "Corrector.h"
 
-int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len, USERS currentUser); /* Skal fjernes */
+int runScenarie (SCENARIE scenarie, CONTROLLERS controllers[], int len, USERS currentUser);
 
 int main(int argc, char *argv[]) {
 	int i, scenarie_len, controller_len, users_len;
@@ -26,9 +26,9 @@ int main(int argc, char *argv[]) {
     for (i = 1; i < argc; i++)
     	if (strcmp("--test", argv[i]) == 0) {
     		testAll();
-    		return EXIT_SUCCESS; }
-                        
-            else if (strcmp("--testfree", argv[i]) == 0) {
+    		return EXIT_SUCCESS; 
+    	}                
+        else if (strcmp("--testfree", argv[i]) == 0) {
     		char *t[10];
     		int m, k = splitString("scenare printer stue printer hyggeaften", t,  10);
     		for (i = 0; i < k; i++) {
