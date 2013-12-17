@@ -34,3 +34,7 @@ INKLUDEREDE FILER
 		dtest				Fil indeholdende et dansk æ encoded i UTF8 - benyttes med DanishTest.c
 		
 		FindLines.sh		Script der finder antallet af linjer i alle c og h filer
+		
+HJÆLP
+
+	For hjælp benyttes kommandoen jarvis hjælp
